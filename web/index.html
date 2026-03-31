@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hvad skal vi lave?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav class="navbar">
+      <a href="#" class="logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">Hvad skal vi lave?</span>
+      </a>
+      <div class="nav-links">
+        <a href="#">Opdag</a>
+        <a href="#">Gem</a>
+        <a href="#">Planlæg</a>
+      </div>
+      <button class="nav-user" aria-label="Bruger">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <p class="hero-label">DIN DAGLIGE INSPIRATION</p>
+        <h1 class="hero-heading">
+          Hvad skal vi lave<br />
+          <em>i dag?</em>
+        </h1>
+        <p class="hero-sub">
+          Vælg hvem du er med, dit budget, tid og stemning, og få kuraterede
+          forslag til en uforglemmelig oplevelse nær dig.
+        </p>
+
+        <div class="filter-bar">
+          <div class="filter-item">
+            <label>Sted</label>
+            <select>
+              <option value="">Vælg sted</option>
+              <option>København</option>
+              <option>Aarhus</option>
+              <option>Odense</option>
+              <option>Aalborg</option>
+            </select>
+          </div>
+          <div class="filter-divider"></div>
+          <div class="filter-item">
+            <label>Slags</label>
+            <select>
+              <option value="">Vælg type</option>
+              <option>Romantisk</option>
+              <option>Familie</option>
+              <option>Venner</option>
+              <option>Solo</option>
+            </select>
+          </div>
+          <div class="filter-divider"></div>
+          <div class="filter-item">
+            <label>Dato</label>
+            <select>
+              <option value="">Vælg dato</option>
+              <option>I dag</option>
+              <option>I morgen</option>
+              <option>Denne weekend</option>
+            </select>
+          </div>
+          <div class="filter-divider"></div>
+          <div class="filter-item">
+            <label>Tid</label>
+            <select>
+              <option value="">Varighed</option>
+              <option>1 time</option>
+              <option>2–3 timer</option>
+              <option>Halvdag</option>
+              <option>Hel dag</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-primary">Find planer</button>
+      </div>
+      <div class="hero-image">
+        <img
+          src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=800&q=80"
+          alt="Oplev noget nyt"
+        />
+      </div>
+    </section>
+
+    <!-- RECOMMENDED PLANS -->
+    <section class="recommended">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Anbefalede <em>planer</em></h2>
+          <p class="section-sub">Baseret på og kriterier af vores redaktion</p>
+        </div>
+        <div class="carousel-nav">
+          <button class="carousel-btn" id="prevBtn" aria-label="Forrige">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+          <button class="carousel-btn" id="nextBtn" aria-label="Næste">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="cards-wrapper">
+        <div class="cards-track" id="cardsTrack">
+          <article class="card">
+            <div class="card-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80"
+                alt="Vinsmagning og Tapas"
+              />
+              <span class="card-tag">2–3 timer</span>
+            </div>
+            <div class="card-body">
+              <h3>Vinsmagning &amp; Tapas</h3>
+              <p>
+                En afslappet aften i godt selskab — smag lokale vine og nyd et
+                udvalg af antipasti nær dig.
+              </p>
+              <a href="#" class="card-link">Læs mere <span>→</span></a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1522163182402-834f871fd851?w=600&q=80"
+                alt="Action i Klatrepark"
+              />
+              <span class="card-tag">3–4 timer</span>
+            </div>
+            <div class="card-body">
+              <h3>Action i Klatrepark</h3>
+              <p>
+                Test grænser og nyd udsigten fra toppen. Perfekt til venner
+                eller familie der søger adrenalinet.
+              </p>
+              <a href="#" class="card-link">Læs mere <span>→</span></a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=600&q=80"
+                alt="Romantikfyldt af Kaffe"
+              />
+              <span class="card-tag">1–2 timer</span>
+            </div>
+            <div class="card-body">
+              <h3>Romantikfyldt af Kaffe</h3>
+              <p>
+                Find et hyggeligt hjørne i byens bedste kaffebar og nyd en
+                eftermiddag med god samtale.
+              </p>
+              <a href="#" class="card-link">Læs mere <span>→</span></a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?w=600&q=80"
+                alt="Middag under åben himmel"
+              />
+              <span class="card-tag">2–3 timer</span>
+            </div>
+            <div class="card-body">
+              <h3>Middag under åben himmel</h3>
+              <p>
+                Nyd et frisk måltid på en af byens bedste tagterrasser med
+                panoramaudsigt og god stemning.
+              </p>
+              <a href="#" class="card-link">Læs mere <span>→</span></a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=600&q=80"
+                alt="Kunstgalleri &amp; Frokost"
+              />
+              <span class="card-tag">3–5 timer</span>
+            </div>
+            <div class="card-body">
+              <h3>Kunstgalleri &amp; Frokost</h3>
+              <p>
+                Udforsk lokale kunstudstillinger og afslut med en lækker frokost
+                på gallerikafeen.
+              </p>
+              <a href="#" class="card-link">Læs mere <span>→</span></a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-img-wrap">
+              <img
+                src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=600&q=80"
+                alt="Bymarked &amp; Streetfood"
+              />
+              <span class="card-tag">2–4 timer</span>
+            </div>
+            <div class="card-body">
+              <h3>Bymarked &amp; Streetfood</h3>
+              <p>
+                Vandre rundt i byens farverige marked, smag lokale råvarer og
+                nyd stemningen.
+              </p>
+              <a href="#" class="card-link">Læs mere <span>→</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED ARTICLE -->
+    <section class="featured">
+      <div class="featured-card">
+        <img
+          src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=80"
+          alt="Oplev"
+        />
+        <div class="featured-overlay">
+          <span class="featured-tag">2–3 timer</span>
+          <h3>Den perfekte aften begynder med et godt måltid</h3>
+          <a href="#" class="btn-outline">Læs mere</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter">
+      <div class="newsletter-inner">
+        <p class="newsletter-label">BLIV INSPIRERET HVER UGE</p>
+        <h2>Gå aldrig glip af<br /><em>en oplevelse</em></h2>
+        <p class="newsletter-sub">
+          Tilmeld dig vores kuraterede nyhedsbrev og få ugens bedste tips til
+          uforglemmelige stunder i din by.
+        </p>
+        <form class="newsletter-form" onsubmit="handleSubmit(event)">
+          <input type="email" placeholder="Din e-mail adresse" required />
+          <button type="submit">Tilmeld nu</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="logo footer-logo">
+            <span class="logo-icon">✦</span>
+            <span class="logo-text">Hvad skal vi lave?</span>
+          </div>
+          <p>
+            Er et danmarks platform til at inspirere dig til at opleve mere. Få
+            gode idéer til uforglemmelige aktiviteter i din by.
+          </p>
+          <div class="footer-socials">
+            <a href="#" aria-label="Instagram">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a href="#" aria-label="Facebook">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                />
+              </svg>
+            </a>
+            <a href="#" aria-label="TikTok">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>OPDRAG</h4>
+          <ul>
+            <li><a href="#">Restauranter</a></li>
+            <li><a href="#">Oplevelser</a></li>
+            <li><a href="#">Kultur</a></li>
+            <li><a href="#">Natteliv</a></li>
+            <li><a href="#">Udendørs</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>KATEGORIER</h4>
+          <ul>
+            <li><a href="#">Par</a></li>
+            <li><a href="#">Familie</a></li>
+            <li><a href="#">Venner</a></li>
+            <li><a href="#">Solo</a></li>
+            <li><a href="#">Fødselsdage</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>SUPPORT</h4>
+          <ul>
+            <li><a href="#">Om os</a></li>
+            <li><a href="#">Kontakt</a></li>
+            <li><a href="#">Privatlivspolitik</a></li>
+            <li><a href="#">Cookies</a></li>
+            <li><a href="#">Bliv partner</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Hvad skal vi lave? Alle rettigheder forbeholdes.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

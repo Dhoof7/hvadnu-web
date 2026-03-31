@@ -1,0 +1,195 @@
+const express = require('express');
+const Anthropic = require('@anthropic-ai/sdk');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+
+const YELP_API_KEY = process.env.YELP_API_KEY;
+
+async function findYelpPlace(query, city) {
+  if (!YELP_API_KEY) return null;
+  try {
+    const params = new URLSearchParams({
+      term: query,
+      location: city || 'Copenhagen',
+      limit: 1,
+    });
+    const res = await fetch(`https://api.yelp.com/v3/businesses/search?${params}`, {
+      headers: { Authorization: `Bearer ${YELP_API_KEY}` },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const b = data.businesses?.[0];
+    if (!b) return null;
+    return {
+      name: b.name,
+      rating: b.rating,
+      reviewCount: b.review_count,
+      price: b.price || null,
+      address: b.location?.display_address?.join(', ') || null,
+      url: b.url,
+      image: b.image_url || null,
+      phone: b.display_phone || null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+const getAnthropic = () => new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+const WHO_LABELS = {
+  couple: 'a romantic couple on a date',
+  friends: 'a group of friends hanging out',
+  family: 'a family (possibly with kids)',
+};
+const BUDGET_LABELS = {
+  low: 'very low budget, under $15 per person (free activities preferred)',
+  medium: 'medium budget, $15–40 per person',
+  high: 'generous budget, $40+ per person, quality over price',
+};
+const TIME_LABELS = {
+  '1h': 'about 1 hour',
+  '2-3h': '2 to 3 hours',
+  'fullday': 'a full day, 6+ hours',
+};
+
+function buildPrompt(who, budget, time, setting, mood, city) {
+  const location = city ? `in or around ${city}` : 'in their city';
+  return `You are a creative local activity planner. A user wants personalized plans for what to do today.
+
+User preferences:
+- Who: ${WHO_LABELS[who] || who}
+- Budget: ${BUDGET_LABELS[budget] || budget}
+- Time available: ${TIME_LABELS[time] || time}
+- Setting preference: ${setting} (indoor, outdoor, or a mix)
+- Mood / vibe: ${mood}
+- Location: ${location}
+
+Your task: Generate exactly 3 complete activity plans. Each plan is a sequence of 2–4 stops or activities that flow naturally together. The 3 plans should each have a distinct personality — don't just vary one detail.
+
+Rules:
+- Match the time: a 1-hour plan has 2 quick stops; a full-day plan has 4 stops with meals
+- Match the budget strictly: low budget = mostly free or very cheap activities
+- Match the mood: cozy = coffee shops, bookstores, calm parks; active = sports, hiking, markets; romantic = scenic walks, nice dinners, art
+- Match who they are: date ideas feel different from family or friends plans
+- Make the "why" field genuinely explain the match — don't be generic
+
+Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exactly 3 plans:
+
+[
+  {
+    "id": 1,
+    "title": "Short creative plan title (3–5 words)",
+    "tagline": "One catchy sentence that sells the vibe",
+    "emoji": "one relevant emoji",
+    "why": "2–3 sentences explaining specifically why this plan fits this user — mention their mood, who they're with, and budget",
+    "priceLevel": "$ or $$ or $$$",
+    "totalTime": "e.g. 2.5 hours",
+    "totalCost": "e.g. $0–10 per person",
+    "highlights": ["short highlight 1", "short highlight 2", "short highlight 3"],
+    "goodFor": ["label 1", "label 2"],
+    "steps": [
+      {
+        "order": 1,
+        "name": "Name of place or activity",
+        "type": "Park / Café / Restaurant / Museum / Bar / Market / Beach / etc.",
+        "activity": "What exactly to do here — one specific sentence",
+        "duration": "e.g. 45 minutes",
+        "estimatedCost": "Free or e.g. $5–8 per person",
+        "tip": "One practical tip to make this stop better",
+        "mapSearch": "search query for Google Maps e.g. 'cozy café near Nørreport Copenhagen'"
+      }
+    ]
+  }
+]`;
+}
+
+app.post('/api/recommend', async (req, res) => {
+  const { who, budget, time, setting, mood, city } = req.body;
+  if (!who || !budget || !time || !setting || !mood) {
+    return res.status(400).json({ error: 'Missing preferences' });
+  }
+
+  // SSE headers
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+  });
+
+  const send = (data) => res.write(`data: ${JSON.stringify(data)}\n\n`);
+
+  try {
+    const stream = getAnthropic().messages.stream({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 4000,
+      messages: [{ role: 'user', content: buildPrompt(who, budget, time, setting, mood, city) }],
+    });
+
+    let raw = '';
+    for await (const chunk of stream) {
+      if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
+        raw += chunk.delta.text;
+        send({ chunk: chunk.delta.text });
+      }
+    }
+
+    raw = raw.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
+    const plans = JSON.parse(raw);
+
+    send({ status: 'enriching' });
+
+    await Promise.all(
+      plans.flatMap(plan =>
+        plan.steps.map(async step => {
+          step.yelpPlace = await findYelpPlace(step.mapSearch, city);
+        })
+      )
+    );
+
+    send({ plans });
+  } catch (err) {
+    console.error('Error generating plans:', err);
+    send({ error: err.message || 'Could not generate plans.' });
+  }
+
+  res.end();
+});
+
+app.get('/api/test', async (req, res) => {
+  const results = { anthropic: false, yelp: false, errors: [] };
+  try {
+    await getAnthropic().messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 10,
+      messages: [{ role: 'user', content: 'hi' }],
+    });
+    results.anthropic = true;
+  } catch (e) {
+    results.errors.push('Anthropic: ' + e.message);
+  }
+  try {
+    const r = await fetch('https://api.yelp.com/v3/businesses/search?term=cafe&location=Copenhagen&limit=1', {
+      headers: { Authorization: `Bearer ${YELP_API_KEY}` },
+    });
+    results.yelp = r.ok;
+    if (!r.ok) results.errors.push('Yelp: ' + r.status + ' ' + r.statusText);
+  } catch (e) {
+    results.errors.push('Yelp: ' + e.message);
+  }
+  res.json(results);
+});
+
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`\n  What Should We Do Today?\n  Running at http://localhost:${PORT}\n`);
+});

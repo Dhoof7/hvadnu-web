@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find a Plan · What Should We Do Today?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="quiz-page">
+
+  <nav class="navbar">
+    <a href="/" class="logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">What Should We Do?</span>
+    </a>
+    <a href="/" class="nav-exit">✕ Exit</a>
+  </nav>
+
+  <div class="quiz-container">
+
+    <!-- PROGRESS -->
+    <div class="quiz-progress">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <span class="progress-label" id="progressLabel">Step 1 of 6</span>
+    </div>
+
+    <!-- STEPS -->
+    <div class="quiz-steps" id="quizSteps">
+
+      <!-- STEP 1: City -->
+      <div class="quiz-step active" data-step="1" data-key="city">
+        <p class="quiz-eyebrow">LET'S START</p>
+        <h2 class="quiz-question">What city are you in?</h2>
+        <p class="quiz-hint">Optional — helps us tailor the plan to your area.</p>
+        <div class="city-input-wrap">
+          <input type="text" id="cityInput" class="city-input" placeholder="e.g. Copenhagen, New York, London..." autocomplete="off">
+          <ul class="city-dropdown" id="cityDropdown"></ul>
+        </div>
+        <button class="btn-primary btn-large" id="submitBtn" style="margin-top: 32px;">
+          Continue →
+        </button>
+        <p class="skip-link"><a href="#" id="skipCity">Skip this step</a></p>
+      </div>
+
+      <!-- STEP 2: Who -->
+      <div class="quiz-step" data-step="2" data-key="who">
+        <p class="quiz-eyebrow">GOOD TO KNOW</p>
+        <h2 class="quiz-question">Who are you with today?</h2>
+        <div class="option-grid cols-3">
+          <button class="option-card" data-value="couple">
+            <span class="option-emoji">💑</span>
+            <span class="option-label">Date</span>
+            <span class="option-sub">Just the two of you</span>
+          </button>
+          <button class="option-card" data-value="friends">
+            <span class="option-emoji">👫</span>
+            <span class="option-label">Friends</span>
+            <span class="option-sub">Group hang</span>
+          </button>
+          <button class="option-card" data-value="family">
+            <span class="option-emoji">👨‍👩‍👧</span>
+            <span class="option-label">Family</span>
+            <span class="option-sub">Kids may be involved</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Budget -->
+      <div class="quiz-step" data-step="3" data-key="budget">
+        <p class="quiz-eyebrow">YOUR BUDGET</p>
+        <h2 class="quiz-question">What's your budget?</h2>
+        <div class="option-grid cols-3">
+          <button class="option-card" data-value="low">
+            <span class="option-emoji">💸</span>
+            <span class="option-label">Low</span>
+            <span class="option-sub">Under $15 per person</span>
+          </button>
+          <button class="option-card" data-value="medium">
+            <span class="option-emoji">💳</span>
+            <span class="option-label">Medium</span>
+            <span class="option-sub">$15–40 per person</span>
+          </button>
+          <button class="option-card" data-value="high">
+            <span class="option-emoji">✨</span>
+            <span class="option-label">Treat ourselves</span>
+            <span class="option-sub">$40+ per person</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 4: Time -->
+      <div class="quiz-step" data-step="4" data-key="time">
+        <p class="quiz-eyebrow">YOUR SCHEDULE</p>
+        <h2 class="quiz-question">How much time do you have?</h2>
+        <div class="option-grid cols-3">
+          <button class="option-card" data-value="1h">
+            <span class="option-emoji">⚡</span>
+            <span class="option-label">Quick outing</span>
+            <span class="option-sub">About 1 hour</span>
+          </button>
+          <button class="option-card" data-value="2-3h">
+            <span class="option-emoji">🕐</span>
+            <span class="option-label">A few hours</span>
+            <span class="option-sub">2 to 3 hours</span>
+          </button>
+          <button class="option-card" data-value="fullday">
+            <span class="option-emoji">🌅</span>
+            <span class="option-label">Full day</span>
+            <span class="option-sub">6+ hours, make it count</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 5: Setting -->
+      <div class="quiz-step" data-step="5" data-key="setting">
+        <p class="quiz-eyebrow">THE VIBE</p>
+        <h2 class="quiz-question">Indoor or outdoor?</h2>
+        <div class="option-grid cols-3">
+          <button class="option-card" data-value="indoor">
+            <span class="option-emoji">🏠</span>
+            <span class="option-label">Indoor</span>
+            <span class="option-sub">Cafés, galleries, venues</span>
+          </button>
+          <button class="option-card" data-value="outdoor">
+            <span class="option-emoji">🌳</span>
+            <span class="option-label">Outdoor</span>
+            <span class="option-sub">Parks, markets, streets</span>
+          </button>
+          <button class="option-card" data-value="mix">
+            <span class="option-emoji">✨</span>
+            <span class="option-label">Mix it up</span>
+            <span class="option-sub">Both is fine</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 6: Mood -->
+      <div class="quiz-step" data-step="6" data-key="mood">
+        <p class="quiz-eyebrow">LAST QUESTION</p>
+        <h2 class="quiz-question">What's the mood?</h2>
+        <div class="option-grid cols-5">
+          <button class="option-card" data-value="cozy">
+            <span class="option-emoji">☕</span>
+            <span class="option-label">Cozy</span>
+          </button>
+          <button class="option-card" data-value="active">
+            <span class="option-emoji">🏃</span>
+            <span class="option-label">Active</span>
+          </button>
+          <button class="option-card" data-value="relaxed">
+            <span class="option-emoji">😌</span>
+            <span class="option-label">Relaxed</span>
+          </button>
+          <button class="option-card" data-value="romantic">
+            <span class="option-emoji">🌹</span>
+            <span class="option-label">Romantic</span>
+          </button>
+          <button class="option-card" data-value="fun">
+            <span class="option-emoji">🎉</span>
+            <span class="option-label">Fun</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/cities.js"></script>
+  <script src="js/quiz.js"></script>
+</body>
+</html>

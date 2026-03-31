@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Details · What Should We Do Today?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">What Should We Do?</span>
+    </a>
+    <a href="results.html" class="nav-link-plain">← Back to plans</a>
+  </nav>
+
+  <div class="plan-page" id="planPage">
+
+    <!-- PLAN HERO -->
+    <div class="plan-hero" id="planHero">
+      <div class="plan-hero-content">
+        <span class="plan-emoji" id="planEmoji"></span>
+        <h1 id="planTitle"></h1>
+        <p class="plan-tagline" id="planTagline"></p>
+        <div class="plan-stats" id="planStats">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="plan-body">
+
+      <!-- WHY THIS FITS YOU -->
+      <section class="plan-section why-section">
+        <h2>Why this fits you</h2>
+        <blockquote class="why-quote" id="planWhy"></blockquote>
+      </section>
+
+      <!-- GOOD FOR -->
+      <section class="plan-section">
+        <div class="good-for-tags" id="goodForTags"></div>
+      </section>
+
+      <!-- STEP BY STEP -->
+      <section class="plan-section">
+        <h2>Your plan, step by step</h2>
+        <div class="timeline" id="planTimeline">
+          <!-- Steps injected by JS -->
+        </div>
+      </section>
+
+      <!-- MAP -->
+      <section class="plan-section map-section">
+        <h2>Find the spots</h2>
+        <p class="map-note">Click any location below to search for it on Google Maps.</p>
+        <div class="map-links" id="mapLinks">
+          <!-- Map links injected by JS -->
+        </div>
+        <div id="map" class="map-container"></div>
+      </section>
+
+      <!-- ACTIONS -->
+      <section class="plan-section plan-actions">
+        <a href="quiz.html" class="btn-secondary">Find different plans</a>
+        <button class="btn-primary" onclick="window.print()">Print plan</button>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/plan.js"></script>
+</body>
+</html>
