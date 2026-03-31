@@ -98,7 +98,8 @@ async function fetchPlans() {
   if (sub) sub.textContent = buildPreferencesSummary(preferences);
 
   try {
-    const res = await fetch('/api/recommend', {
+    const endpoint = preferences.freetext ? '/api/recommend-free' : '/api/recommend';
+    const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(preferences),

@@ -79,6 +79,7 @@ if (plan.steps && plan.steps.length) {
           <a href="${mapsUrl}" target="_blank" rel="noopener" class="step-map-link">
             🗺 Find on Google Maps
           </a>
+          ${step.bookable ? `<a href="https://www.thefork.com/search#query=${encodeURIComponent(step.name + ' ' + (preferences.city || ''))}" target="_blank" rel="noopener" class="step-book-link">🍽 Book a table →</a>` : ''}
           ${renderYelpCard(step.yelpPlace)}
         </div>
       </div>

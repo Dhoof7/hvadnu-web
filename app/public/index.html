@@ -27,13 +27,32 @@
     <div class="home-hero-content">
       <p class="eyebrow">YOUR PERSONAL PLAN FINDER</p>
       <h1>Stop wondering.<br><em>Start doing.</em></h1>
-      <p class="hero-sub">Answer 5 quick questions and get 3 personalized activity plans — complete with where to go, what to do, and why it's perfect for you.</p>
-      <a href="quiz.html" class="btn-primary btn-large">Find a Plan →</a>
+      <p class="hero-sub">Describe your situation and get 3 personalized plans — with places to go, what to do, and booking links.</p>
+      <div class="free-input-wrap">
+        <textarea id="freeInput" class="free-input" placeholder="e.g. We're 5 guys in Copenhagen, want to eat first then hit the town later tonight..." rows="3"></textarea>
+        <button class="btn-primary btn-large free-submit-btn" id="freeSubmitBtn">Get my plans →</button>
+      </div>
+      <p class="hero-quiz-link">Prefer answering questions? <a href="quiz.html">Take the quiz →</a></p>
     </div>
     <div class="home-hero-image">
       <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80" alt="Friends having fun">
     </div>
   </section>
+
+  <script>
+    document.getElementById('freeSubmitBtn').addEventListener('click', () => {
+      const desc = document.getElementById('freeInput').value.trim();
+      if (!desc) return;
+      localStorage.setItem('preferences', JSON.stringify({ description: desc, freetext: true }));
+      window.location.href = 'results.html';
+    });
+    document.getElementById('freeInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        document.getElementById('freeSubmitBtn').click();
+      }
+    });
+  </script>
 
   <!-- HOW IT WORKS -->
   <section class="how-it-works">

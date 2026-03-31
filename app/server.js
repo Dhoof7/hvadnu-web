@@ -110,28 +110,14 @@ Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exa
 ]`;
 }
 
-app.post('/api/recommend', async (req, res) => {
-  const { who, budget, time, setting, mood, city } = req.body;
-  if (!who || !budget || !time || !setting || !mood) {
-    return res.status(400).json({ error: 'Missing preferences' });
-  }
-
-  // SSE headers
-  res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-  });
-
+async function streamPlans(res, prompt, city) {
   const send = (data) => res.write(`data: ${JSON.stringify(data)}\n\n`);
-
   try {
     const stream = getAnthropic().messages.stream({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 4000,
-      messages: [{ role: 'user', content: buildPrompt(who, budget, time, setting, mood, city) }],
+      messages: [{ role: 'user', content: prompt }],
     });
-
     let raw = '';
     for await (const chunk of stream) {
       if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
@@ -139,12 +125,9 @@ app.post('/api/recommend', async (req, res) => {
         send({ chunk: chunk.delta.text });
       }
     }
-
     raw = raw.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
     const plans = JSON.parse(raw);
-
     send({ status: 'enriching' });
-
     await Promise.all(
       plans.flatMap(plan =>
         plan.steps.map(async step => {
@@ -152,14 +135,79 @@ app.post('/api/recommend', async (req, res) => {
         })
       )
     );
-
     send({ plans });
   } catch (err) {
     console.error('Error generating plans:', err);
     send({ error: err.message || 'Could not generate plans.' });
   }
-
   res.end();
+}
+
+app.post('/api/recommend-free', async (req, res) => {
+  const { description } = req.body;
+  if (!description) return res.status(400).json({ error: 'Missing description' });
+
+  res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive' });
+
+  const prompt = `You are a creative local activity planner. A user described their situation in their own words:
+
+"${description}"
+
+Read their description carefully and extract: who they are, what city, budget hints, time of day, and what kind of experience they want.
+
+Generate exactly 3 complete activity plans that fit their description. Each plan is a sequence of 2–4 stops that flow naturally together.
+
+Rules:
+- If they mention food/dinner, include a restaurant step with a real booking option
+- Match the energy: party night = bars/clubs; relaxed = cafés/parks; family = kid-friendly
+- Each plan should have a distinct personality
+- Use the city they mention for all mapSearch queries
+
+Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exactly 3 plans:
+
+[
+  {
+    "id": 1,
+    "title": "Short creative plan title (3–5 words)",
+    "tagline": "One catchy sentence that sells the vibe",
+    "emoji": "one relevant emoji",
+    "why": "2–3 sentences explaining why this fits their specific situation",
+    "priceLevel": "$ or $$ or $$$",
+    "totalTime": "e.g. 4 hours",
+    "totalCost": "e.g. $30–50 per person",
+    "highlights": ["short highlight 1", "short highlight 2", "short highlight 3"],
+    "goodFor": ["label 1", "label 2"],
+    "steps": [
+      {
+        "order": 1,
+        "name": "Name of place or activity",
+        "type": "Park / Café / Restaurant / Bar / Club / Museum / etc.",
+        "activity": "What exactly to do here — one specific sentence",
+        "duration": "e.g. 1.5 hours",
+        "estimatedCost": "Free or e.g. $20–30 per person",
+        "tip": "One practical tip",
+        "mapSearch": "search query e.g. 'best steakhouse Copenhagen city center'",
+        "bookable": true
+      }
+    ]
+  }
+]
+
+Set "bookable": true only for Restaurant and Bar steps where a reservation makes sense.`;
+
+  const cityMatch = description.match(/\b([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)\b/);
+  const city = cityMatch ? cityMatch[1] : '';
+
+  await streamPlans(res, prompt, city);
+});
+
+app.post('/api/recommend', async (req, res) => {
+  const { who, budget, time, setting, mood, city } = req.body;
+  if (!who || !budget || !time || !setting || !mood) {
+    return res.status(400).json({ error: 'Missing preferences' });
+  }
+  res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive' });
+  await streamPlans(res, buildPrompt(who, budget, time, setting, mood, city), city);
 });
 
 app.get('/api/test', async (req, res) => {
