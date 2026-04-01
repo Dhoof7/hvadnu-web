@@ -204,7 +204,41 @@
     <script src="js/i18n.js"></script>
     <script>
       // Geolocation → nearby sponsors
-      (function () {
+      function renderNearbySponsors(nearby, cityDisplay) {
+        if (!nearby.length) return;
+        const wrap = document.getElementById('nearbySponsorWrap');
+        const container = document.getElementById('nearbySponsors');
+        const label = document.getElementById('nearbyLabel');
+        label.textContent = `📍 Anbefalede steder i ${cityDisplay}`;
+        window._nearbySponsors = nearby;
+        container.innerHTML = nearby.slice(0, 6).map((s, i) => `
+          <button class="nearby-card" onclick="openSponsorModal(${i})">
+            <img class="nearby-img" src="${s.image}" alt="${s.name}" loading="lazy">
+            <div class="nearby-info">
+              <span class="nearby-name">${s.name}</span>
+              <span class="nearby-cats">${s.categories.slice(0, 3).join(' · ')}</span>
+            </div>
+          </button>
+        `).join('');
+        wrap.style.display = 'block';
+      }
+
+      (async function () {
+        const CACHE_KEY = 'nearbyCity';
+        const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+
+        // Try cache first — show instantly
+        try {
+          const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+          if (cached && Date.now() - cached.ts < CACHE_TTL) {
+            const sponsors = await fetch('/api/sponsors').then(r => r.json());
+            const nearby = sponsors.filter(s => cached.city.includes(s.city) || s.city.includes(cached.city));
+            renderNearbySponsors(nearby, cached.cityDisplay);
+            return; // Cache hit — no need for geolocation
+          }
+        } catch {}
+
+        // No cache — use geolocation
         if (!navigator.geolocation) return;
         navigator.geolocation.getCurrentPosition(async (pos) => {
           try {
@@ -214,39 +248,18 @@
             ).then(r => r.json());
 
             const addr = geo.address || {};
-            console.log('[Sponsors] Nominatim address:', addr);
-            // Try all relevant Nominatim fields, strip "Kommune" suffix
             const rawCity = addr.city || addr.town || addr.village || addr.municipality || addr.county || '';
             const city = rawCity.toLowerCase().replace(/\s*kommune\s*/i, '').trim();
-            console.log('[Sponsors] Detected city:', city);
             if (!city) return;
 
-            const sponsors = await fetch('/api/sponsors').then(r => r.json());
-            console.log('[Sponsors] All sponsors:', sponsors.length, '| Nearby matches:', sponsors.filter(s => city.includes(s.city) || s.city.includes(city)).length);
-            const nearby = sponsors.filter(s => city.includes(s.city) || s.city.includes(city));
-            if (!nearby.length) return;
-
-            const wrap = document.getElementById('nearbySponsorWrap');
-            const container = document.getElementById('nearbySponsors');
-            const label = document.getElementById('nearbyLabel');
-
             const cityDisplay = rawCity.replace(/\s*Kommune\s*/i, '').trim();
-            label.textContent = `📍 Anbefalede steder i ${cityDisplay}`;
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ city, cityDisplay, ts: Date.now() }));
 
-            window._nearbySponsors = nearby;
-            container.innerHTML = nearby.slice(0, 6).map((s, i) => `
-              <button class="nearby-card" onclick="openSponsorModal(${i})">
-                <img class="nearby-img" src="${s.image}" alt="${s.name}" loading="lazy">
-                <div class="nearby-info">
-                  <span class="nearby-name">${s.name}</span>
-                  <span class="nearby-cats">${s.categories.slice(0, 3).join(' · ')}</span>
-                </div>
-              </button>
-            `).join('');
-
-            wrap.style.display = 'block';
+            const sponsors = await fetch('/api/sponsors').then(r => r.json());
+            const nearby = sponsors.filter(s => city.includes(s.city) || s.city.includes(city));
+            renderNearbySponsors(nearby, cityDisplay);
           } catch {}
-        }, () => {}, { timeout: 5000 });
+        }, () => {}, { timeout: 8000, maximumAge: 600000 });
       })();
 
       function openSponsorModal(i) {
