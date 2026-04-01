@@ -452,6 +452,13 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   text-decoration: none; transition: opacity .2s;
 }
 .yelp-link:hover { opacity: .75; }
+.sponsored-badge {
+  background: #1a1a28 !important; color: #fff !important;
+}
+.sponsored-card {
+  border-color: #1a1a28;
+  background: #f9f8ff;
+}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {

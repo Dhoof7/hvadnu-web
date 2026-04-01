@@ -5,6 +5,41 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const YELP_API_KEY = process.env.YELP_API_KEY;
 
+const fs = require('fs');
+let SPONSORS = [];
+try {
+  SPONSORS = JSON.parse(fs.readFileSync(path.join(__dirname, 'sponsors.json'), 'utf8'));
+} catch { SPONSORS = []; }
+
+function findSponsor(stepType, city) {
+  if (!city) return null;
+  const cityNorm = city.toLowerCase().trim();
+  const typeNorm = stepType.toLowerCase();
+  return SPONSORS.find(s =>
+    s.active &&
+    s.city === cityNorm &&
+    s.categories.some(c => typeNorm.includes(c) || c.includes(typeNorm))
+  ) || null;
+}
+
+async function findPlace(stepType, mapSearch, city) {
+  const sponsor = findSponsor(stepType, city);
+  if (sponsor) {
+    return {
+      name: sponsor.name,
+      rating: sponsor.rating,
+      reviewCount: null,
+      price: null,
+      address: sponsor.address,
+      url: sponsor.url,
+      image: sponsor.image,
+      phone: sponsor.phone,
+      sponsored: true,
+    };
+  }
+  return findYelpPlace(mapSearch, city);
+}
+
 async function findYelpPlace(query, city) {
   if (!YELP_API_KEY) return null;
   try {
@@ -132,7 +167,7 @@ async function streamPlans(res, prompt, city) {
     await Promise.all(
       plans.flatMap(plan =>
         plan.steps.map(async step => {
-          step.yelpPlace = await findYelpPlace(step.mapSearch, city);
+          step.yelpPlace = await findPlace(step.type, step.mapSearch, city);
         })
       )
     );

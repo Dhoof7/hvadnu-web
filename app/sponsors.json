@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Mortens Kro",
+    "city": "aalborg",
+    "categories": ["restaurant", "dining", "dinner", "food", "eat"],
+    "address": "Mølleå 4-6, 9000 Aalborg",
+    "url": "https://www.mortenskro.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": "+45 98 12 48 60",
+    "rating": 4.9,
+    "active": true
+  },
+  {
+    "id": 2,
+    "name": "Cafe Especially",
+    "city": "aalborg",
+    "categories": ["café", "coffee", "cozy", "brunch", "breakfast"],
+    "address": "Bispensgade 12, 9000 Aalborg",
+    "url": "https://cafeespecially.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": "+45 98 13 00 00",
+    "rating": 4.7,
+    "active": true
+  },
+  {
+    "id": 3,
+    "name": "The Rooftop Bar",
+    "city": "aalborg",
+    "categories": ["bar", "cocktails", "drinks", "nightlife", "party"],
+    "address": "Kennedy Arkaden, 9000 Aalborg",
+    "url": "https://therooftopbar.dk",
+    "image": "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=400&q=80",
+    "phone": "+45 98 00 11 22",
+    "rating": 4.6,
+    "active": true
+  }
+]

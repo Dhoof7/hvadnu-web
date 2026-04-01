@@ -35,23 +35,23 @@ if (plan.goodFor && plan.goodFor.length) {
 function renderYelpCard(y) {
   if (!y) return '';
   const stars = '★'.repeat(Math.round(y.rating)) + '☆'.repeat(5 - Math.round(y.rating));
+  const badge = y.sponsored
+    ? `<span class="yelp-badge sponsored-badge">Anbefalet</span>`
+    : `<span class="yelp-badge">Yelp</span>`;
+  const meta = y.sponsored
+    ? `<span class="yelp-stars">${stars}</span><span class="yelp-rating-num">${y.rating}</span>`
+    : `<span class="yelp-stars">${stars}</span><span class="yelp-rating-num">${y.rating}</span><span class="yelp-dot">·</span><span>${y.reviewCount} reviews</span>${y.price ? `<span class="yelp-dot">·</span><span>${y.price}</span>` : ''}`;
   return `
-    <div class="yelp-card">
+    <div class="yelp-card ${y.sponsored ? 'sponsored-card' : ''}">
       ${y.image ? `<img class="yelp-image" src="${y.image}" alt="${y.name}" loading="lazy">` : ''}
       <div class="yelp-info">
         <div class="yelp-top">
           <span class="yelp-name">${y.name}</span>
-          <span class="yelp-badge">Yelp</span>
+          ${badge}
         </div>
-        <div class="yelp-meta">
-          <span class="yelp-stars">${stars}</span>
-          <span class="yelp-rating-num">${y.rating}</span>
-          <span class="yelp-dot">·</span>
-          <span>${y.reviewCount} reviews</span>
-          ${y.price ? `<span class="yelp-dot">·</span><span>${y.price}</span>` : ''}
-        </div>
+        <div class="yelp-meta">${meta}</div>
         ${y.address ? `<div class="yelp-address">📍 ${y.address}</div>` : ''}
-        <a href="${y.url}" target="_blank" rel="noopener" class="yelp-link">View on Yelp ↗</a>
+        <a href="${y.url}" target="_blank" rel="noopener" class="yelp-link">${y.sponsored ? 'Besøg hjemmeside ↗' : 'View on Yelp ↗'}</a>
       </div>
     </div>
   `;
