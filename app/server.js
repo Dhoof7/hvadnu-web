@@ -232,7 +232,10 @@ Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exa
 
 Set "bookable": true only for Restaurant and Bar steps where a reservation makes sense.`;
 
-  const cityMatch = description.match(/\b([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)\b/);
+  const cityMatch =
+    description.match(/(?:^|\s)i\s+([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)/) ||
+    description.match(/\bin\s+([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)\b/i) ||
+    description.match(/\b([A-ZÆØÅ][a-zæøå]{3,}(?:\s[A-ZÆØÅ][a-zæøå]+)?)\b/);
   const city = cityMatch ? cityMatch[1] : '';
 
   await streamPlans(res, prompt, city);
