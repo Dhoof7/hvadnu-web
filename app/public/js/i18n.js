@@ -9,7 +9,7 @@ const TRANSLATIONS = {
     'nav.exit': '✕ Afslut',
     // Homepage hero
     'hero.eyebrow': 'DIN PERSONLIGE PLANMAGER',
-    'hero.h1': 'Stop med at tænke.<br><em>Begynd at gøre.</em>',
+    'hero.h1': 'Ingen planer i den nye by?<br><em>VI har dem.</em>',
     'hero.sub': 'Beskriv din situation og få 3 personlige planer — med steder, aktiviteter og booking-links.',
     'hero.placeholder': 'Fx vi er 5 drenge i København, vil spise først og så ud i byen bagefter...',
     'hero.cta': 'Find mine planer →',
@@ -118,7 +118,7 @@ const TRANSLATIONS = {
     'nav.tryAgain': '← Try again',
     'nav.exit': '✕ Exit',
     'hero.eyebrow': 'YOUR PERSONAL PLAN FINDER',
-    'hero.h1': 'Stop wondering.<br><em>Start doing.</em>',
+    'hero.h1': 'No plans in the new city?<br><em>We\'ve got them.</em>',
     'hero.sub': 'Describe your situation and get 3 personalized plans — with places to go, what to do, and booking links.',
     'hero.placeholder': 'e.g. We\'re 5 guys in Copenhagen, want to eat first then hit the town later tonight...',
     'hero.cta': 'Get my plans →',
