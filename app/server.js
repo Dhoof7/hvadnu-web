@@ -250,6 +250,10 @@ app.post('/api/recommend', async (req, res) => {
   await streamPlans(res, buildPrompt(who, budget, time, setting, mood, city, lang), city);
 });
 
+app.get('/api/sponsors', (_req, res) => {
+  res.json(SPONSORS.filter(s => s.active));
+});
+
 app.get('/api/test', async (req, res) => {
   const results = { anthropic: false, yelp: false, errors: [] };
   try {

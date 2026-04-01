@@ -50,13 +50,19 @@
             placeholder="Fx vi er 5 drenge i København, vil spise først og så ud i byen bagefter..."
             rows="3"
           ></textarea>
-          <button
+            <button
             class="btn-primary btn-large free-submit-btn"
             id="freeSubmitBtn"
             data-i18n="hero.cta"
           >
             Find mine planer →
           </button>
+        </div>
+
+        <!-- NEARBY SPONSORS -->
+        <div id="nearbySponsorWrap" style="display:none;">
+          <p class="nearby-label" id="nearbyLabel">📍 Populære steder nær dig</p>
+          <div class="nearby-sponsors" id="nearbySponsors"></div>
         </div>
         <p class="hero-quiz-link" data-i18n="hero.quizLink">
           Foretrækker du spørgsmål? <a href="quiz.html">Tag quizzen →</a>
@@ -180,6 +186,52 @@
     </footer>
 
     <script src="js/i18n.js"></script>
+    <script>
+      // Geolocation → nearby sponsors
+      (function () {
+        if (!navigator.geolocation) return;
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          try {
+            const { latitude: lat, longitude: lon } = pos.coords;
+            const geo = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+            ).then(r => r.json());
+            const city = (geo.address?.city || geo.address?.town || geo.address?.village || '').toLowerCase();
+            if (!city) return;
+
+            const sponsors = await fetch('/api/sponsors').then(r => r.json());
+            const nearby = sponsors.filter(s => city.includes(s.city) || s.city.includes(city));
+            if (!nearby.length) return;
+
+            const wrap = document.getElementById('nearbySponsorWrap');
+            const container = document.getElementById('nearbySponsors');
+            const label = document.getElementById('nearbyLabel');
+
+            const cityDisplay = geo.address?.city || geo.address?.town || geo.address?.village || '';
+            label.textContent = `📍 Populære steder i ${cityDisplay}`;
+
+            container.innerHTML = nearby.slice(0, 6).map(s => `
+              <button class="nearby-card" onclick="insertSponsor('${s.name.replace(/'/g, "\\'")}', '${cityDisplay}')">
+                <img class="nearby-img" src="${s.image}" alt="${s.name}" loading="lazy">
+                <div class="nearby-info">
+                  <span class="nearby-name">${s.name}</span>
+                  <span class="nearby-cats">${s.categories.slice(0, 3).join(' · ')}</span>
+                </div>
+              </button>
+            `).join('');
+
+            wrap.style.display = 'block';
+          } catch {}
+        }, () => {}, { timeout: 5000 });
+      })();
+
+      function insertSponsor(name, city) {
+        const input = document.getElementById('freeInput');
+        const current = input.value.trim();
+        input.value = current ? `${current}, inkluder gerne ${name}` : `Vi vil gerne besøge ${name} i ${city}`;
+        input.focus();
+      }
+    </script>
     <script>
       document.getElementById("freeSubmitBtn").addEventListener("click", () => {
         const desc = document.getElementById("freeInput").value.trim();

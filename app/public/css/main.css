@@ -393,6 +393,16 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 }
 .step-book-link:hover { opacity: .85; }
 
+/* Nearby sponsors */
+.nearby-label { font-size: 13px; color: rgba(255,255,255,.6); margin: 16px 0 10px; letter-spacing: .04em; }
+.nearby-sponsors { display: flex; gap: 10px; flex-wrap: wrap; }
+.nearby-card { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 8px 12px 8px 8px; cursor: pointer; transition: background .2s, border-color .2s; text-align: left; }
+.nearby-card:hover { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.3); }
+.nearby-img { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+.nearby-info { display: flex; flex-direction: column; gap: 2px; }
+.nearby-name { font-size: 13px; font-weight: 600; color: #fff; }
+.nearby-cats { font-size: 11px; color: rgba(255,255,255,.5); text-transform: capitalize; }
+
 /* Free text input */
 .free-input-wrap { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 .free-input {
