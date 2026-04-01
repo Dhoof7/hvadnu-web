@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>What Should We Do Today?</title>
+  <title>Hvad Skal Vi?</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -14,36 +14,113 @@
   <nav class="navbar">
     <a href="/" class="logo">
       <span class="logo-icon">✦</span>
-      <span class="logo-text">What Should We Do?</span>
+      <span class="logo-text" data-i18n="nav.logo">Hvad Skal Vi?</span>
     </a>
     <div class="nav-links">
-      <a href="#">How it works</a>
-      <a href="#">About</a>
+      <a href="#" data-i18n="nav.howItWorks">Sådan virker det</a>
+      <a href="#" data-i18n="nav.about">Om os</a>
     </div>
+    <button class="lang-toggle" id="langToggle" onclick="applyLang(getCurrentLang()==='da'?'en':'da')">🇬🇧 EN</button>
   </nav>
 
   <!-- HERO -->
   <section class="home-hero">
     <div class="home-hero-content">
-      <p class="eyebrow">YOUR PERSONAL PLAN FINDER</p>
-      <h1>Stop wondering.<br><em>Start doing.</em></h1>
-      <p class="hero-sub">Describe your situation and get 3 personalized plans — with places to go, what to do, and booking links.</p>
+      <p class="eyebrow" data-i18n="hero.eyebrow">DIN PERSONLIGE PLANMAGER</p>
+      <h1 data-i18n="hero.h1">Stop med at tænke.<br><em>Begynd at gøre.</em></h1>
+      <p class="hero-sub" data-i18n="hero.sub">Beskriv din situation og få 3 personlige planer — med steder, aktiviteter og booking-links.</p>
       <div class="free-input-wrap">
-        <textarea id="freeInput" class="free-input" placeholder="e.g. We're 5 guys in Copenhagen, want to eat first then hit the town later tonight..." rows="3"></textarea>
-        <button class="btn-primary btn-large free-submit-btn" id="freeSubmitBtn">Get my plans →</button>
+        <textarea id="freeInput" class="free-input" data-i18n="hero.placeholder" placeholder="Fx vi er 5 drenge i København, vil spise først og så ud i byen bagefter..." rows="3"></textarea>
+        <button class="btn-primary btn-large free-submit-btn" id="freeSubmitBtn" data-i18n="hero.cta">Find mine planer →</button>
       </div>
-      <p class="hero-quiz-link">Prefer answering questions? <a href="quiz.html">Take the quiz →</a></p>
+      <p class="hero-quiz-link" data-i18n="hero.quizLink">Foretrækker du spørgsmål? <a href="quiz.html">Tag quizzen →</a></p>
     </div>
     <div class="home-hero-image">
       <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80" alt="Friends having fun">
     </div>
   </section>
 
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <p class="eyebrow center" data-i18n="hiw.eyebrow">SÅDAN VIRKER DET</p>
+    <h2 class="section-heading center" data-i18n="hiw.title">Tre trin til en god dag</h2>
+    <div class="steps-row">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3 data-i18n="hiw.step1.title">Beskriv din situation</h3>
+        <p data-i18n="hiw.step1.text">Fortæl os hvem du er med, hvad I har lyst til, og hvad by I er i. Eller tag quizzen.</p>
+      </div>
+      <div class="step-connector">→</div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3 data-i18n="hiw.step2.title">Få 3 personlige planer</h3>
+        <p data-i18n="hiw.step2.text">Vores AI bygger komplette aktivitetsplaner — ikke bare en liste, men en rigtig rækkefølge der hænger sammen.</p>
+      </div>
+      <div class="step-connector">→</div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3 data-i18n="hiw.step3.title">Nyd jeres dag</h3>
+        <p data-i18n="hiw.step3.text">Vælg den plan der passer jer, se trin-for-trin guiden og gå af sted.</p>
+      </div>
+    </div>
+    <div class="center" style="margin-top: 48px;">
+      <a href="quiz.html" class="btn-primary" data-i18n="hiw.cta">Kom i gang →</a>
+    </div>
+  </section>
+
+  <!-- PLAN EXAMPLES -->
+  <section class="examples">
+    <p class="eyebrow center" data-i18n="examples.eyebrow">EKSEMPEL PLANER</p>
+    <h2 class="section-heading center" data-i18n="examples.title">De slags planer vi laver</h2>
+    <div class="example-cards">
+      <div class="example-card">
+        <span class="example-emoji">🌿</span>
+        <h3>The Sunday Reset</h3>
+        <p class="example-tag" data-i18n="examples.tag1">Par · Hyggeligt · 2–3 timer · $</p>
+        <p>Farmers market → specialty coffee → bookshop browse → riverside walk</p>
+      </div>
+      <div class="example-card">
+        <span class="example-emoji">🎉</span>
+        <h3>Crew Night Out</h3>
+        <p class="example-tag" data-i18n="examples.tag2">Venner · Sjovt · Hel dag · $$</p>
+        <p>Street food lunch → escape room → rooftop bar → live music venue</p>
+      </div>
+      <div class="example-card">
+        <span class="example-emoji">🏞️</span>
+        <h3>Family Adventure Day</h3>
+        <p class="example-tag" data-i18n="examples.tag3">Familie · Aktivt · Hel dag · $$</p>
+        <p>Nature trail → picnic in the park → interactive museum → ice cream</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="home-cta">
+    <div class="home-cta-inner">
+      <p class="eyebrow" style="color: var(--accent)" data-i18n="cta.eyebrow">KLAR?</p>
+      <h2 data-i18n="cta.title">Hvad skal I lave <em>i dag?</em></h2>
+      <p data-i18n="cta.sub">Tager under et minut. Du har 3 planer på sekunder.</p>
+      <a href="quiz.html" class="btn-white" data-i18n="cta.btn">Find min plan →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner simple">
+      <div class="logo footer-logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text" data-i18n="nav.logo">Hvad Skal Vi?</span>
+      </div>
+      <p class="footer-note" data-i18n="footer.note">© 2026 Hvad Skal Vi? · Lavet til folk der vil opleve mere.</p>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
   <script>
     document.getElementById('freeSubmitBtn').addEventListener('click', () => {
       const desc = document.getElementById('freeInput').value.trim();
       if (!desc) return;
-      localStorage.setItem('preferences', JSON.stringify({ description: desc, freetext: true }));
+      localStorage.setItem('preferences', JSON.stringify({ description: desc, freetext: true, lang: getCurrentLang() }));
       window.location.href = 'results.html';
     });
     document.getElementById('freeInput').addEventListener('keydown', e => {
@@ -53,81 +130,5 @@
       }
     });
   </script>
-
-  <!-- HOW IT WORKS -->
-  <section class="how-it-works">
-    <p class="eyebrow center">HOW IT WORKS</p>
-    <h2 class="section-heading center">Three steps to a great day</h2>
-    <div class="steps-row">
-      <div class="step-card">
-        <div class="step-num">1</div>
-        <h3>Answer 5 questions</h3>
-        <p>Tell us who you're with, your budget, how much time you have, and what mood you're in.</p>
-      </div>
-      <div class="step-connector">→</div>
-      <div class="step-card">
-        <div class="step-num">2</div>
-        <h3>Get 3 personalized plans</h3>
-        <p>Our AI builds complete activity plans — not just a list of places, but a real sequence that flows.</p>
-      </div>
-      <div class="step-connector">→</div>
-      <div class="step-card">
-        <div class="step-num">3</div>
-        <h3>Go enjoy your day</h3>
-        <p>Pick the plan that feels right, see the step-by-step guide, and head out the door.</p>
-      </div>
-    </div>
-    <div class="center" style="margin-top: 48px;">
-      <a href="quiz.html" class="btn-primary">Let's go →</a>
-    </div>
-  </section>
-
-  <!-- PLAN EXAMPLES -->
-  <section class="examples">
-    <p class="eyebrow center">EXAMPLE PLANS</p>
-    <h2 class="section-heading center">The kind of plans we make</h2>
-    <div class="example-cards">
-      <div class="example-card">
-        <span class="example-emoji">🌿</span>
-        <h3>The Sunday Reset</h3>
-        <p class="example-tag">Couple · Cozy · 2–3 hours · $</p>
-        <p>Farmers market → specialty coffee → bookshop browse → riverside walk</p>
-      </div>
-      <div class="example-card">
-        <span class="example-emoji">🎉</span>
-        <h3>Crew Night Out</h3>
-        <p class="example-tag">Friends · Fun · Full day · $$</p>
-        <p>Street food lunch → escape room → rooftop bar → live music venue</p>
-      </div>
-      <div class="example-card">
-        <span class="example-emoji">🏞️</span>
-        <h3>Family Adventure Day</h3>
-        <p class="example-tag">Family · Active · Full day · $$</p>
-        <p>Nature trail → picnic in the park → interactive museum → ice cream</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="home-cta">
-    <div class="home-cta-inner">
-      <p class="eyebrow" style="color: var(--accent)">READY?</p>
-      <h2>What should you do <em>today?</em></h2>
-      <p>Takes less than a minute. You'll have 3 plans in seconds.</p>
-      <a href="quiz.html" class="btn-white">Find my plan →</a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-inner simple">
-      <div class="logo footer-logo">
-        <span class="logo-icon">✦</span>
-        <span class="logo-text">What Should We Do?</span>
-      </div>
-      <p class="footer-note">© 2026 What Should We Do Today? · Built for people who want to do more.</p>
-    </div>
-  </footer>
-
 </body>
 </html>

@@ -4,17 +4,18 @@ const resultsPage   = document.getElementById('resultsPage');
 const resultsGrid   = document.getElementById('resultsGrid');
 const loadingHint   = document.getElementById('loadingHint');
 
-const HINTS = [
-  'Matching your mood to the best activities...',
-  'Building your step-by-step itinerary...',
-  'Finding the perfect combination of stops...',
-  'Almost there — putting the finishing touches...',
+const HINTS = () => [
+  t('results.hint1'),
+  t('results.hint2'),
+  t('results.hint3'),
+  t('results.hint4'),
 ];
 
 let hintIndex = 0;
 const hintInterval = setInterval(() => {
-  hintIndex = (hintIndex + 1) % HINTS.length;
-  if (loadingHint) loadingHint.textContent = HINTS[hintIndex];
+  const hints = HINTS();
+  hintIndex = (hintIndex + 1) % hints.length;
+  if (loadingHint) loadingHint.textContent = hints[hintIndex];
 }, 2500);
 
 function showError(msg) {
@@ -71,7 +72,7 @@ function renderCard(plan, index) {
         <div class="good-for-pills">${pills}</div>
       </div>
       <div class="result-card-footer">
-        <button class="btn-view-plan" onclick="selectPlan(${index})">View plan →</button>
+        <button class="btn-view-plan" onclick="selectPlan(${index})">${t('results.viewPlan')}</button>
       </div>
     </div>
   `;

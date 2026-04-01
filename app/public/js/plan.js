@@ -77,9 +77,9 @@ if (plan.steps && plan.steps.length) {
           </div>
           ${step.tip ? `<div class="step-tip">${step.tip}</div>` : ''}
           <a href="${mapsUrl}" target="_blank" rel="noopener" class="step-map-link">
-            🗺 Find on Google Maps
+            ${t('plan.mapsLink')}
           </a>
-          ${step.bookable ? `<a href="https://www.thefork.com/search#query=${encodeURIComponent(step.name + ' ' + (preferences.city || ''))}" target="_blank" rel="noopener" class="step-book-link">🍽 Book a table →</a>` : ''}
+          ${step.bookable ? `<a href="https://www.thefork.com/search#query=${encodeURIComponent(step.name + ' ' + (preferences.city || ''))}" target="_blank" rel="noopener" class="step-book-link">${t('plan.bookTable')}</a>` : ''}
           ${renderYelpCard(step.yelpPlace)}
         </div>
       </div>

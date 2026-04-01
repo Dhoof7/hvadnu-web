@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Plans · What Should We Do Today?</title>
+  <title>Dine Planer · Hvad Skal Vi?</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -14,17 +14,18 @@
   <nav class="navbar">
     <a href="/" class="logo">
       <span class="logo-icon">✦</span>
-      <span class="logo-text">What Should We Do?</span>
+      <span class="logo-text" data-i18n="nav.logo">Hvad Skal Vi?</span>
     </a>
-    <a href="quiz.html" class="nav-link-plain">← Try again</a>
+    <a href="quiz.html" class="nav-link-plain" data-i18n="nav.tryAgain">← Prøv igen</a>
+    <button class="lang-toggle" id="langToggle" onclick="applyLang(getCurrentLang()==='da'?'en':'da')">🇬🇧 EN</button>
   </nav>
 
   <!-- LOADING STATE -->
   <div class="loading-screen" id="loadingScreen">
     <div class="loading-inner">
       <div class="loading-spinner"></div>
-      <h2>Finding your perfect plans<span class="dots"><span>.</span><span>.</span><span>.</span></span></h2>
-      <p id="loadingHint">Matching your preferences to the best activities...</p>
+      <h2 data-i18n="results.loading">Finder dine perfekte planer<span class="dots"><span>.</span><span>.</span><span>.</span></span></h2>
+      <p id="loadingHint" data-i18n="results.hint1">Matcher din stemning med de bedste aktiviteter...</p>
     </div>
   </div>
 
@@ -32,9 +33,9 @@
   <div class="error-screen" id="errorScreen" style="display:none;">
     <div class="error-inner">
       <span style="font-size: 48px;">😕</span>
-      <h2>Something went wrong</h2>
+      <h2 data-i18n="results.error">Noget gik galt</h2>
       <p id="errorMsg">Could not generate plans. Please try again.</p>
-      <a href="quiz.html" class="btn-primary" style="margin-top: 24px;">Try again →</a>
+      <a href="quiz.html" class="btn-primary" style="margin-top: 24px;" data-i18n="results.tryAgain">Prøv igen →</a>
     </div>
   </div>
 
@@ -42,22 +43,21 @@
   <div class="results-page" id="resultsPage" style="display:none;">
 
     <div class="results-header">
-      <p class="eyebrow">YOUR PLANS</p>
-      <h1>Here are your <em>3 plans</em></h1>
-      <p class="results-sub" id="resultsSub">Pick the one that feels right.</p>
+      <p class="eyebrow" data-i18n="results.eyebrow">DINE PLANER</p>
+      <h1 data-i18n="results.title">Her er dine <em>3 planer</em></h1>
+      <p class="results-sub" id="resultsSub"></p>
     </div>
 
-    <div class="results-grid" id="resultsGrid">
-      <!-- Cards injected by JS -->
-    </div>
+    <div class="results-grid" id="resultsGrid"></div>
 
     <div class="results-footer">
-      <p>Not feeling any of these?</p>
-      <a href="quiz.html" class="btn-secondary">Generate new plans →</a>
+      <p data-i18n="results.notFeeling">Ikke tilfreds med nogen af dem?</p>
+      <a href="quiz.html" class="btn-secondary" data-i18n="results.newPlans">Generer nye planer →</a>
     </div>
 
   </div>
 
+  <script src="js/i18n.js"></script>
   <script src="js/results.js"></script>
 </body>
 </html>

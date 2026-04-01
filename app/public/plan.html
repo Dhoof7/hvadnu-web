@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plan Details · What Should We Do Today?</title>
+  <title>Din Plan · Hvad Skal Vi?</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -15,9 +15,10 @@
   <nav class="navbar">
     <a href="/" class="logo">
       <span class="logo-icon">✦</span>
-      <span class="logo-text">What Should We Do?</span>
+      <span class="logo-text" data-i18n="nav.logo">Hvad Skal Vi?</span>
     </a>
-    <a href="results.html" class="nav-link-plain">← Back to plans</a>
+    <a href="results.html" class="nav-link-plain" data-i18n="nav.back">← Tilbage til planer</a>
+    <button class="lang-toggle" id="langToggle" onclick="applyLang(getCurrentLang()==='da'?'en':'da')">🇬🇧 EN</button>
   </nav>
 
   <div class="plan-page" id="planPage">
@@ -28,53 +29,43 @@
         <span class="plan-emoji" id="planEmoji"></span>
         <h1 id="planTitle"></h1>
         <p class="plan-tagline" id="planTagline"></p>
-        <div class="plan-stats" id="planStats">
-          <!-- Injected by JS -->
-        </div>
+        <div class="plan-stats" id="planStats"></div>
       </div>
     </div>
 
     <div class="plan-body">
 
-      <!-- WHY THIS FITS YOU -->
       <section class="plan-section why-section">
-        <h2>Why this fits you</h2>
+        <h2 data-i18n="plan.whyTitle">Hvorfor passer det til dig</h2>
         <blockquote class="why-quote" id="planWhy"></blockquote>
       </section>
 
-      <!-- GOOD FOR -->
       <section class="plan-section">
         <div class="good-for-tags" id="goodForTags"></div>
       </section>
 
-      <!-- STEP BY STEP -->
       <section class="plan-section">
-        <h2>Your plan, step by step</h2>
-        <div class="timeline" id="planTimeline">
-          <!-- Steps injected by JS -->
-        </div>
+        <h2 data-i18n="plan.stepsTitle">Din plan, trin for trin</h2>
+        <div class="timeline" id="planTimeline"></div>
       </section>
 
-      <!-- MAP -->
       <section class="plan-section map-section">
-        <h2>Find the spots</h2>
-        <p class="map-note">Click any location below to search for it on Google Maps.</p>
-        <div class="map-links" id="mapLinks">
-          <!-- Map links injected by JS -->
-        </div>
+        <h2 data-i18n="plan.spotsTitle">Find stederne</h2>
+        <p class="map-note" data-i18n="plan.mapsNote">Klik på et sted nedenfor for at søge på Google Maps.</p>
+        <div class="map-links" id="mapLinks"></div>
         <div id="map" class="map-container"></div>
       </section>
 
-      <!-- ACTIONS -->
       <section class="plan-section plan-actions">
-        <a href="quiz.html" class="btn-secondary">Find different plans</a>
-        <button class="btn-primary" onclick="window.print()">Print plan</button>
+        <a href="quiz.html" class="btn-secondary" data-i18n="plan.diffPlans">Find andre planer</a>
+        <button class="btn-primary" data-i18n="plan.printBtn" onclick="window.print()">Print plan</button>
       </section>
 
     </div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/i18n.js"></script>
   <script src="js/plan.js"></script>
 </body>
 </html>

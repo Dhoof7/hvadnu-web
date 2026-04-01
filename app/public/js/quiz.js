@@ -22,6 +22,7 @@ function showStep(n) {
 }
 
 function submitQuiz() {
+  preferences.lang = getCurrentLang();
   localStorage.setItem('preferences', JSON.stringify(preferences));
   window.location.href = 'results.html';
 }

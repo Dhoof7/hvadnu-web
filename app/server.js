@@ -59,9 +59,10 @@ const TIME_LABELS = {
   'fullday': 'a full day, 6+ hours',
 };
 
-function buildPrompt(who, budget, time, setting, mood, city) {
+function buildPrompt(who, budget, time, setting, mood, city, lang = 'da') {
   const location = city ? `in or around ${city}` : 'in their city';
-  return `You are a creative local activity planner. A user wants personalized plans for what to do today.
+  const langNote = lang === 'da' ? 'IMPORTANT: Write ALL content in Danish.' : 'Write all content in English.';
+  return `You are a creative local activity planner. A user wants personalized plans for what to do today. ${langNote}
 
 User preferences:
 - Who: ${WHO_LABELS[who] || who}
@@ -144,12 +145,13 @@ async function streamPlans(res, prompt, city) {
 }
 
 app.post('/api/recommend-free', async (req, res) => {
-  const { description } = req.body;
+  const { description, lang } = req.body;
   if (!description) return res.status(400).json({ error: 'Missing description' });
+  const langNote = lang === 'da' ? 'IMPORTANT: Write ALL content in Danish.' : 'Write all content in English.';
 
   res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive' });
 
-  const prompt = `You are a creative local activity planner. A user described their situation in their own words:
+  const prompt = `You are a creative local activity planner. ${langNote} A user described their situation in their own words:
 
 "${description}"
 
@@ -202,12 +204,12 @@ Set "bookable": true only for Restaurant and Bar steps where a reservation makes
 });
 
 app.post('/api/recommend', async (req, res) => {
-  const { who, budget, time, setting, mood, city } = req.body;
+  const { who, budget, time, setting, mood, city, lang } = req.body;
   if (!who || !budget || !time || !setting || !mood) {
     return res.status(400).json({ error: 'Missing preferences' });
   }
   res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive' });
-  await streamPlans(res, buildPrompt(who, budget, time, setting, mood, city), city);
+  await streamPlans(res, buildPrompt(who, budget, time, setting, mood, city, lang), city);
 });
 
 app.get('/api/test', async (req, res) => {
