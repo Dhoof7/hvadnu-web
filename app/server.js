@@ -134,7 +134,7 @@ Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exa
       {
         "order": 1,
         "name": "Name of place or activity",
-        "type": "Park / Café / Restaurant / Museum / Bar / Market / Beach / etc.",
+        "type": "ALWAYS in English: Park / Café / Restaurant / Museum / Bar / Market / Beach / Bowling / Cinema / Escape Room / Paintball / etc.",
         "activity": "What exactly to do here — one specific sentence",
         "duration": "e.g. 45 minutes",
         "estimatedCost": "Free or e.g. $5–8 per person",
@@ -218,7 +218,7 @@ Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exa
       {
         "order": 1,
         "name": "Name of place or activity",
-        "type": "Park / Café / Restaurant / Bar / Club / Museum / etc.",
+        "type": "ALWAYS in English: Park / Café / Restaurant / Bar / Club / Museum / Bowling / Cinema / Escape Room / etc.",
         "activity": "What exactly to do here — one specific sentence",
         "duration": "e.g. 1.5 hours",
         "estimatedCost": "Free or e.g. $20–30 per person",
