@@ -185,6 +185,22 @@
       </div>
     </footer>
 
+    <!-- SPONSOR MODAL -->
+    <div id="sponsorModal" class="sponsor-modal-overlay" onclick="closeSponsorModal(event)">
+      <div class="sponsor-modal">
+        <button class="sponsor-modal-close" onclick="closeSponsorModal()">&times;</button>
+        <img id="modalImg" class="sponsor-modal-img" src="" alt="">
+        <div class="sponsor-modal-body">
+          <h3 id="modalName"></h3>
+          <div id="modalRating" class="sponsor-modal-rating"></div>
+          <div id="modalCats" class="sponsor-modal-cats"></div>
+          <div id="modalAddress" class="sponsor-modal-row"></div>
+          <div id="modalPhone" class="sponsor-modal-row"></div>
+          <a id="modalUrl" class="sponsor-modal-btn" href="#" target="_blank" rel="noopener">Besøg hjemmeside ↗</a>
+        </div>
+      </div>
+    </div>
+
     <script src="js/i18n.js"></script>
     <script>
       // Geolocation → nearby sponsors
@@ -217,8 +233,9 @@
             const cityDisplay = rawCity.replace(/\s*Kommune\s*/i, '').trim();
             label.textContent = `📍 Populære steder i ${cityDisplay}`;
 
-            container.innerHTML = nearby.slice(0, 6).map(s => `
-              <button class="nearby-card" onclick="insertSponsor(this, '${s.name.replace(/'/g, "\\'")}', '${cityDisplay}')">
+            window._nearbySponsors = nearby;
+            container.innerHTML = nearby.slice(0, 6).map((s, i) => `
+              <button class="nearby-card" onclick="openSponsorModal(${i})">
                 <img class="nearby-img" src="${s.image}" alt="${s.name}" loading="lazy">
                 <div class="nearby-info">
                   <span class="nearby-name">${s.name}</span>
@@ -232,30 +249,26 @@
         }, () => {}, { timeout: 5000 });
       })();
 
-      function insertSponsor(btn, name, city) {
-        const input = document.getElementById('freeInput');
-        const isSelected = btn.classList.contains('selected');
+      function openSponsorModal(i) {
+        const s = window._nearbySponsors[i];
+        if (!s) return;
+        const stars = '★'.repeat(Math.round(s.rating)) + '☆'.repeat(5 - Math.round(s.rating));
+        document.getElementById('modalImg').src = s.image;
+        document.getElementById('modalImg').alt = s.name;
+        document.getElementById('modalName').textContent = s.name;
+        document.getElementById('modalRating').innerHTML = `<span class="modal-stars">${stars}</span> <span class="modal-rating-num">${s.rating}</span>`;
+        document.getElementById('modalCats').innerHTML = s.categories.map(c => `<span class="modal-cat-tag">${c}</span>`).join('');
+        document.getElementById('modalAddress').innerHTML = s.address ? `📍 ${s.address}` : '';
+        document.getElementById('modalPhone').innerHTML = s.phone ? `📞 <a href="tel:${s.phone}">${s.phone}</a>` : '';
+        document.getElementById('modalUrl').href = s.url;
+        document.getElementById('sponsorModal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
 
-        if (isSelected) {
-          // Deselect — remove from textarea
-          btn.classList.remove('selected');
-          const addedEl = btn.querySelector('.nearby-added');
-          if (addedEl) addedEl.remove();
-          input.value = input.value.replace(`, inkluder gerne ${name}`, '').replace(`Vi vil gerne besøge ${name} i ${city}`, '').trim();
-        } else {
-          // Select
-          btn.classList.add('selected');
-          const info = btn.querySelector('.nearby-info');
-          if (!btn.querySelector('.nearby-added')) {
-            const tag = document.createElement('span');
-            tag.className = 'nearby-added';
-            tag.textContent = '✓ Tilføjet';
-            info.appendChild(tag);
-          }
-          const current = input.value.trim();
-          input.value = current ? `${current}, inkluder gerne ${name}` : `Vi vil gerne besøge ${name} i ${city}`;
-        }
-        input.focus();
+      function closeSponsorModal(e) {
+        if (e && e.target !== document.getElementById('sponsorModal') && !e.target.classList.contains('sponsor-modal-close')) return;
+        document.getElementById('sponsorModal').classList.remove('open');
+        document.body.style.overflow = '';
       }
     </script>
     <script>
