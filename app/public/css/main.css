@@ -298,10 +298,10 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 
 /* ===== PLAN DETAIL PAGE ===== */
 .plan-page { }
-.plan-back-wrap { padding: 20px 80px 0; background: var(--dark); }
+.plan-back-wrap { position: sticky; top: 60px; z-index: 90; padding: 12px 80px; background: var(--dark); border-bottom: 1px solid rgba(255,255,255,.08); }
 .plan-back-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; padding: 10px 18px; font-size: 14px; font-weight: 500; text-decoration: none; transition: background .2s, border-color .2s; }
 .plan-back-btn:hover { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.4); }
-@media (max-width: 600px) { .plan-back-wrap { padding: 16px 20px 0; } }
+@media (max-width: 600px) { .plan-back-wrap { padding: 10px 20px; } }
 
 .plan-hero {
   background: var(--dark); padding: 72px 80px 64px;
