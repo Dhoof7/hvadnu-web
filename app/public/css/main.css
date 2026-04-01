@@ -79,7 +79,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 /* Hero */
 .home-hero {
   display: grid; grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 60px); max-height: 820px;
+  min-height: calc(100vh - 60px);
 }
 .home-hero-content {
   display: flex; flex-direction: column; justify-content: center;
@@ -412,7 +412,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .sponsor-modal-btn { display: block; margin-top: 16px; background: var(--dark); color: #fff; text-align: center; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none; transition: opacity .2s; }
 .sponsor-modal-btn:hover { opacity: .85; }
 
-.nearby-label { font-size: 13px; color: rgba(255,255,255,.6); margin: 20px 0 12px; letter-spacing: .04em; }
+.nearby-heading { font-size: 16px; font-weight: 600; color: rgba(255,255,255,.85); margin: 28px 0 14px; letter-spacing: .01em; }
 .nearby-sponsors { display: flex; gap: 12px; flex-wrap: wrap; }
 .nearby-card { display: flex; flex-direction: column; width: 140px; background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.15); border-radius: 12px; overflow: hidden; cursor: pointer; transition: background .2s, border-color .2s, transform .15s; text-align: left; }
 .nearby-card:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.35); transform: translateY(-2px); }

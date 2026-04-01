@@ -61,7 +61,7 @@
 
         <!-- NEARBY SPONSORS -->
         <div id="nearbySponsorWrap" style="display:none;">
-          <p class="nearby-label" id="nearbyLabel">📍 Populære steder nær dig</p>
+          <h3 class="nearby-heading" id="nearbyLabel">📍 Anbefalede steder i din by</h3>
           <div class="nearby-sponsors" id="nearbySponsors"></div>
         </div>
         <p class="hero-quiz-link" data-i18n="hero.quizLink">
@@ -231,7 +231,7 @@
             const label = document.getElementById('nearbyLabel');
 
             const cityDisplay = rawCity.replace(/\s*Kommune\s*/i, '').trim();
-            label.textContent = `📍 Populære steder i ${cityDisplay}`;
+            label.textContent = `📍 Anbefalede steder i ${cityDisplay}`;
 
             window._nearbySponsors = nearby;
             container.innerHTML = nearby.slice(0, 6).map((s, i) => `
