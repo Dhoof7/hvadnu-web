@@ -97,6 +97,7 @@ const TRANSLATIONS = {
     'results.error': 'Noget gik galt',
     'results.tryAgain': 'Prøv igen →',
     // Plan detail
+    'plan.backBtn': '← Se alle 3 planer',
     'plan.whyTitle': 'Hvorfor passer det til dig',
     'plan.stepsTitle': 'Din plan, trin for trin',
     'plan.spotsTitle': 'Find stederne',
@@ -199,6 +200,7 @@ const TRANSLATIONS = {
     'results.enriching': 'Finding real places near you...',
     'results.error': 'Something went wrong',
     'results.tryAgain': 'Try again →',
+    'plan.backBtn': '← See all 3 plans',
     'plan.whyTitle': 'Why this fits you',
     'plan.stepsTitle': 'Your plan, step by step',
     'plan.spotsTitle': 'Find the spots',
