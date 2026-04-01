@@ -196,10 +196,17 @@
             const geo = await fetch(
               `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
             ).then(r => r.json());
-            const city = (geo.address?.city || geo.address?.town || geo.address?.village || '').toLowerCase();
+
+            const addr = geo.address || {};
+            console.log('[Sponsors] Nominatim address:', addr);
+            // Try all relevant Nominatim fields, strip "Kommune" suffix
+            const rawCity = addr.city || addr.town || addr.village || addr.municipality || addr.county || '';
+            const city = rawCity.toLowerCase().replace(/\s*kommune\s*/i, '').trim();
+            console.log('[Sponsors] Detected city:', city);
             if (!city) return;
 
             const sponsors = await fetch('/api/sponsors').then(r => r.json());
+            console.log('[Sponsors] All sponsors:', sponsors.length, '| Nearby matches:', sponsors.filter(s => city.includes(s.city) || s.city.includes(city)).length);
             const nearby = sponsors.filter(s => city.includes(s.city) || s.city.includes(city));
             if (!nearby.length) return;
 
@@ -207,7 +214,7 @@
             const container = document.getElementById('nearbySponsors');
             const label = document.getElementById('nearbyLabel');
 
-            const cityDisplay = geo.address?.city || geo.address?.town || geo.address?.village || '';
+            const cityDisplay = rawCity.replace(/\s*Kommune\s*/i, '').trim();
             label.textContent = `📍 Populære steder i ${cityDisplay}`;
 
             container.innerHTML = nearby.slice(0, 6).map(s => `
