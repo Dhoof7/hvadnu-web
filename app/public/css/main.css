@@ -509,12 +509,12 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   .lang-toggle { font-size: 13px; padding: 6px 10px; }
 
   /* Hero */
-  .home-hero { grid-template-columns: 1fr; max-height: none; }
-  .home-hero-content { padding: 40px 20px 36px; justify-content: flex-start; }
-  .home-hero-content h1 { font-size: clamp(32px, 8vw, 48px); margin-bottom: 16px; }
-  .hero-sub { font-size: 15px; margin-bottom: 24px; }
-  .home-hero-image { height: 220px; order: -1; }
-  .eyebrow { font-size: 11px; }
+  .home-hero { grid-template-columns: 1fr; min-height: auto; }
+  .home-hero-content { padding: 32px 20px 40px; justify-content: flex-start; }
+  .home-hero-content h1 { font-size: 32px; line-height: 1.2; margin-bottom: 14px; }
+  .hero-sub { font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+  .home-hero-image { height: 200px; order: -1; }
+  .eyebrow { font-size: 11px; margin-bottom: 10px; }
 
   /* Free input */
   .free-input { font-size: 14px; padding: 14px 16px; }
