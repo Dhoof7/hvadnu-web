@@ -308,13 +308,24 @@
             `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
           ).then(r => r.json());
           const addr = geo.address || {};
-          const rawCity = addr.city || addr.town || addr.village || addr.municipality || addr.county || '';
-          const city = rawCity.toLowerCase().replace(/\s*kommune\s*/i, '').trim();
-          if (!city) { showFallback(); return; }
+          // Collect all location name candidates (suburb/village may be "Lystrup" even if city is "Aarhus")
+          const candidates = [
+            addr.suburb, addr.village, addr.town, addr.city,
+            addr.municipality, addr.county
+          ].filter(Boolean).map(v => v.toLowerCase().replace(/\s*kommune\s*/i, '').trim());
+          if (!candidates.length) { showFallback(); return; }
+          const sponsors = await fetch('/api/sponsors').then(r => r.json());
+          // Find first candidate that matches a sponsor city
+          let nearby = [];
+          let matchedCity = '';
+          for (const c of candidates) {
+            const found = sponsors.filter(s => c.includes(s.city) || s.city.includes(c));
+            if (found.length) { nearby = found; matchedCity = c; break; }
+          }
+          const city = matchedCity || candidates[0];
+          const rawCity = addr.suburb || addr.village || addr.town || addr.city || addr.municipality || addr.county || '';
           const cityDisplay = rawCity.replace(/\s*Kommune\s*/i, '').trim();
           localStorage.setItem(CACHE_KEY, JSON.stringify({ city, cityDisplay, ts: Date.now() }));
-          const sponsors = await fetch('/api/sponsors').then(r => r.json());
-          const nearby = sponsors.filter(s => city.includes(s.city) || s.city.includes(city));
           if (!nearby.length) { showFallback(); return; }
           renderNearbySponsors(nearby, cityDisplay);
         } catch { showFallback(); }
