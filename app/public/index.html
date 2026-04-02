@@ -76,6 +76,14 @@
           </h3>
           <div class="nearby-sponsors" id="nearbySponsors"></div>
         </div>
+        <!-- Location prompt (shown when no cache) -->
+        <div id="locationPrompt" class="hero-sponsor-panel" style="display:none; text-align:center; padding: 32px 24px;">
+          <div style="font-size:40px; margin-bottom:16px;">📍</div>
+          <h3 style="color:#fff; font-size:17px; margin-bottom:8px;" data-i18n="hero.loc.title">Anbefalede steder nær dig</h3>
+          <p style="color:rgba(255,255,255,.6); font-size:13px; margin-bottom:20px;" data-i18n="hero.loc.sub">Tillad lokation og se de bedste steder i din by</p>
+          <button onclick="requestLocation()" class="btn-white" style="font-size:14px; padding:10px 20px;" data-i18n="hero.loc.btn">Tillad lokation →</button>
+        </div>
+
         <!-- Fallback feature card -->
         <div class="hero-feature-card" id="heroFeatureCard">
           <div class="hero-feature-item">
@@ -284,66 +292,52 @@
         wrap.style.display = "block";
       }
 
-      (async function () {
-        const CACHE_KEY = "nearbyCity";
-        const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+      const CACHE_KEY = "nearbyCity";
+      const CACHE_TTL = 60 * 60 * 1000;
 
+      async function resolveLocation(lat, lon) {
+        const geo = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+        ).then(r => r.json());
+        const addr = geo.address || {};
+        const rawCity = addr.city || addr.town || addr.village || addr.municipality || addr.county || '';
+        const city = rawCity.toLowerCase().replace(/\s*kommune\s*/i, '').trim();
+        if (!city) return;
+        const cityDisplay = rawCity.replace(/\s*Kommune\s*/i, '').trim();
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ city, cityDisplay, ts: Date.now() }));
+        const sponsors = await fetch('/api/sponsors').then(r => r.json());
+        const nearby = sponsors.filter(s => city.includes(s.city) || s.city.includes(city));
+        renderNearbySponsors(nearby, cityDisplay);
+        document.getElementById('locationPrompt').style.display = 'none';
+      }
+
+      function requestLocation() {
+        if (!navigator.geolocation) return;
+        document.getElementById('locationPrompt').style.display = 'none';
+        navigator.geolocation.getCurrentPosition(
+          pos => resolveLocation(pos.coords.latitude, pos.coords.longitude).catch(() => {}),
+          () => {},
+          { timeout: 8000 }
+        );
+      }
+
+      (async function () {
         // Try cache first — show instantly
         try {
-          const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+          const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
           if (cached && Date.now() - cached.ts < CACHE_TTL) {
-            const sponsors = await fetch("/api/sponsors").then((r) => r.json());
-            const nearby = sponsors.filter(
-              (s) =>
-                cached.city.includes(s.city) || s.city.includes(cached.city),
-            );
+            const sponsors = await fetch('/api/sponsors').then(r => r.json());
+            const nearby = sponsors.filter(s => cached.city.includes(s.city) || s.city.includes(cached.city));
             renderNearbySponsors(nearby, cached.cityDisplay);
-            return; // Cache hit — no need for geolocation
+            return;
           }
         } catch {}
 
-        // No cache — use geolocation
-        if (!navigator.geolocation) return;
-        navigator.geolocation.getCurrentPosition(
-          async (pos) => {
-            try {
-              const { latitude: lat, longitude: lon } = pos.coords;
-              const geo = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
-              ).then((r) => r.json());
-
-              const addr = geo.address || {};
-              const rawCity =
-                addr.city ||
-                addr.town ||
-                addr.village ||
-                addr.municipality ||
-                addr.county ||
-                "";
-              const city = rawCity
-                .toLowerCase()
-                .replace(/\s*kommune\s*/i, "")
-                .trim();
-              if (!city) return;
-
-              const cityDisplay = rawCity.replace(/\s*Kommune\s*/i, "").trim();
-              localStorage.setItem(
-                CACHE_KEY,
-                JSON.stringify({ city, cityDisplay, ts: Date.now() }),
-              );
-
-              const sponsors = await fetch("/api/sponsors").then((r) =>
-                r.json(),
-              );
-              const nearby = sponsors.filter(
-                (s) => city.includes(s.city) || s.city.includes(city),
-              );
-              renderNearbySponsors(nearby, cityDisplay);
-            } catch {}
-          },
-          () => {},
-          { timeout: 8000, maximumAge: 600000 },
-        );
+        // No cache — show location prompt button
+        if (navigator.geolocation) {
+          document.getElementById('locationPrompt').style.display = 'block';
+          document.getElementById('heroFeatureCard').style.display = 'none';
+        }
       })();
 
       function openSponsorModal(i) {
