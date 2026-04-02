@@ -108,6 +108,14 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .home-hero-content .hero-quiz-link a { color: rgba(255,255,255,.9); }
 .home-hero-content .free-input { background: rgba(255,255,255,.95); }
 
+/* Hero right panel */
+.hero-right-panel { position: relative; z-index: 1; display: flex; align-items: center; justify-content: flex-end; padding: 80px 80px 80px 40px; margin-left: auto; }
+.hero-feature-card { background: rgba(255,255,255,.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.2); border-radius: 20px; padding: 32px 28px; display: flex; flex-direction: column; gap: 24px; min-width: 280px; }
+.hero-feature-item { display: flex; align-items: flex-start; gap: 14px; }
+.hero-feature-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+.hero-feature-item strong { display: block; color: #fff; font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+.hero-feature-item p { color: rgba(255,255,255,.6); font-size: 13px; line-height: 1.4; margin: 0; }
+
 /* How it works */
 .how-it-works { background: var(--bg-soft); padding: 100px 80px; }
 .section-heading { font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; margin-bottom: 56px; }
@@ -522,6 +530,8 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   .navbar { padding: 0 16px; height: 56px; }
   .nav-links { display: none; }
   .lang-toggle { font-size: 13px; padding: 6px 10px; }
+
+  .hero-right-panel { display: none; }
 
   /* Hero — image as background on mobile */
   .home-hero { display: block; min-height: auto; position: relative; }
