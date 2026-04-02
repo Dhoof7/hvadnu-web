@@ -56,7 +56,7 @@ function renderCard(plan, index) {
         <div class="result-stats">
           <div class="stat-item">
             <span class="stat-label">Price</span>
-            <span class="stat-value">${plan.priceLevel || '$'}</span>
+            <span class="stat-value">${(plan.priceLevel || 'kr').replace(/krkrkr/g,'kr kr kr').replace(/krkr/g,'kr kr')}</span>
           </div>
           <div class="stat-item">
             <span class="stat-label">Time</span>
