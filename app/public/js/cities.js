@@ -1,7 +1,7 @@
 const CITIES = [
   // Denmark
   "Aalborg, Denmark","Aarhus, Denmark","Albertslund, Denmark","Ballerup, Denmark",
-  "Copenhagen, Denmark","Esbjerg, Denmark","Fredericia, Denmark","Frederiksberg, Denmark",
+  "København, Denmark","Copenhagen, Denmark","Esbjerg, Denmark","Fredericia, Denmark","Frederiksberg, Denmark",
   "Frederikshavn, Denmark","Gladsaxe, Denmark","Helsingør, Denmark","Herning, Denmark",
   "Hillerød, Denmark","Hjørring, Denmark","Holbæk, Denmark","Holstebro, Denmark",
   "Horsens, Denmark","Hvidovre, Denmark","Ikast, Denmark","Kolding, Denmark",
