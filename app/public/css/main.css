@@ -109,7 +109,11 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .home-hero-content .free-input { background: rgba(255,255,255,.95); }
 
 /* Hero right panel */
-.hero-right-panel { position: relative; z-index: 1; display: flex; align-items: center; justify-content: flex-end; padding: 80px 80px 80px 40px; margin-left: auto; }
+.hero-right-panel { position: relative; z-index: 1; display: flex; align-items: center; justify-content: flex-end; padding: 60px 72px 60px 40px; }
+.hero-sponsor-panel { background: rgba(20,20,35,.65); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.18); border-radius: 20px; padding: 24px; min-width: 320px; max-width: 360px; }
+.hero-sponsor-panel .nearby-heading { font-size: 14px; margin: 0 0 14px; }
+.hero-sponsor-panel .nearby-sponsors { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-wrap: unset; overflow: visible; }
+.hero-sponsor-panel .nearby-card { width: auto; }
 .hero-feature-card { background: rgba(255,255,255,.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.2); border-radius: 20px; padding: 32px 28px; display: flex; flex-direction: column; gap: 24px; min-width: 280px; }
 .hero-feature-item { display: flex; align-items: flex-start; gap: 14px; }
 .hero-feature-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }

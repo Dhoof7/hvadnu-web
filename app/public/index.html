@@ -59,18 +59,20 @@
           </button>
         </div>
 
-        <!-- NEARBY SPONSORS -->
-        <div id="nearbySponsorWrap" style="display:none;">
-          <h3 class="nearby-heading" id="nearbyLabel">📍 Anbefalede steder i din by</h3>
-          <div class="nearby-sponsors" id="nearbySponsors"></div>
-        </div>
         <p class="hero-quiz-link" data-i18n="hero.quizLink">
           Foretrækker du spørgsmål? <a href="quiz.html">Tag quizzen →</a>
         </p>
       </div>
+
       <!-- HERO RIGHT PANEL -->
       <div class="hero-right-panel">
-        <div class="hero-feature-card">
+        <!-- Nearby sponsors (shown when geolocation available) -->
+        <div id="nearbySponsorWrap" class="hero-sponsor-panel" style="display:none;">
+          <h3 class="nearby-heading" id="nearbyLabel">📍 Anbefalede steder i din by</h3>
+          <div class="nearby-sponsors" id="nearbySponsors"></div>
+        </div>
+        <!-- Fallback feature card -->
+        <div class="hero-feature-card" id="heroFeatureCard">
           <div class="hero-feature-item">
             <span class="hero-feature-icon">⚡</span>
             <div>
@@ -237,6 +239,9 @@
         const container = document.getElementById('nearbySponsors');
         const label = document.getElementById('nearbyLabel');
         label.textContent = `📍 Anbefalede steder i ${cityDisplay}`;
+        // Hide fallback feature card
+        const fc = document.getElementById('heroFeatureCard');
+        if (fc) fc.style.display = 'none';
         window._nearbySponsors = nearby;
         container.innerHTML = nearby.slice(0, 6).map((s, i) => `
           <button class="nearby-card" onclick="openSponsorModal(${i})">
