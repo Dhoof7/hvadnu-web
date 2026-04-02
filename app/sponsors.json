@@ -754,5 +754,101 @@
     "phone": null,
     "rating": 4.7,
     "active": true
+  },
+  {
+    "id": 64,
+    "name": "Lystrup Kro",
+    "city": "lystrup",
+    "categories": ["restaurant", "danish", "dinner", "lunch", "food", "local"],
+    "address": "Lystrupvej 35, 8520 Lystrup",
+    "url": "https://lystruupkro.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": "+45 86 22 11 00",
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 65,
+    "name": "Café Lystrup",
+    "city": "lystrup",
+    "categories": ["café", "coffee", "cozy", "brunch", "breakfast", "lunch"],
+    "address": "Centerparken 1, 8520 Lystrup",
+    "url": "https://cafelystrup.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": "+45 86 22 22 00",
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 66,
+    "name": "Egådalen Naturpark",
+    "city": "lystrup",
+    "categories": ["park", "nature", "outdoor", "walk", "hiking", "family", "free"],
+    "address": "Egåvej, 8520 Lystrup",
+    "url": "https://naturstyrelsen.dk",
+    "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=80",
+    "phone": null,
+    "rating": 4.8,
+    "active": true
+  },
+  {
+    "id": 67,
+    "name": "Lystrup Pizzeria",
+    "city": "lystrup",
+    "categories": ["restaurant", "pizza", "casual", "dinner", "takeaway", "family"],
+    "address": "Lystrupvej 12, 8520 Lystrup",
+    "url": "https://lystruupizza.dk",
+    "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80",
+    "phone": "+45 86 22 33 44",
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 68,
+    "name": "Lystrup Idrætscenter",
+    "city": "lystrup",
+    "categories": ["activity", "sport", "indoor", "active", "fitness", "family"],
+    "address": "Gl. Egå Vej 10, 8520 Lystrup",
+    "url": "https://lystrupic.dk",
+    "image": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "phone": "+45 86 22 55 66",
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 69,
+    "name": "Egå Marina",
+    "city": "lystrup",
+    "categories": ["outdoor", "water", "walk", "relaxed", "nature", "summer", "family"],
+    "address": "Egå Havnevej 1, 8250 Egå",
+    "url": "https://egaamarina.dk",
+    "image": "https://images.unsplash.com/photo-1500514966906-fe245eea9344?w=400&q=80",
+    "phone": "+45 86 22 70 00",
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 70,
+    "name": "Superbrugsen Lystrup",
+    "city": "lystrup",
+    "categories": ["shopping", "food", "casual", "lunch", "takeaway"],
+    "address": "Centerparken 3, 8520 Lystrup",
+    "url": "https://coop.dk",
+    "image": "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=400&q=80",
+    "phone": "+45 86 22 10 20",
+    "rating": 4.2,
+    "active": true
+  },
+  {
+    "id": 71,
+    "name": "Lystrup Strand",
+    "city": "lystrup",
+    "categories": ["beach", "outdoor", "nature", "summer", "relaxed", "family", "free"],
+    "address": "Strandvejen, 8250 Egå",
+    "url": "https://visitaarhus.dk",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
   }
 ]
