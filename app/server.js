@@ -84,9 +84,9 @@ const WHO_LABELS = {
   family: 'a family (possibly with kids)',
 };
 const BUDGET_LABELS = {
-  low: 'very low budget, under $15 per person (free activities preferred)',
-  medium: 'medium budget, $15–40 per person',
-  high: 'generous budget, $40+ per person, quality over price',
+  low: 'very low budget, under 100kr per person (free activities preferred)',
+  medium: 'medium budget, 100–300kr per person',
+  high: 'generous budget, 300kr+ per person, quality over price',
 };
 const TIME_LABELS = {
   '1h': 'about 1 hour',
@@ -125,9 +125,9 @@ Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exa
     "tagline": "One catchy sentence that sells the vibe",
     "emoji": "one relevant emoji",
     "why": "2–3 sentences explaining specifically why this plan fits this user — mention their mood, who they're with, and budget",
-    "priceLevel": "$ or $$ or $$$",
+    "priceLevel": "kr or krkr or krkrkr",
     "totalTime": "e.g. 2.5 hours",
-    "totalCost": "e.g. $0–10 per person",
+    "totalCost": "e.g. 0–80kr per person",
     "highlights": ["short highlight 1", "short highlight 2", "short highlight 3"],
     "goodFor": ["label 1", "label 2"],
     "steps": [
@@ -137,7 +137,7 @@ Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exa
         "type": "ALWAYS in English: Park / Café / Restaurant / Museum / Bar / Market / Beach / Bowling / Cinema / Escape Room / Paintball / etc.",
         "activity": "What exactly to do here — one specific sentence",
         "duration": "e.g. 45 minutes",
-        "estimatedCost": "Free or e.g. $5–8 per person",
+        "estimatedCost": "Free or e.g. 40–65kr per person",
         "tip": "One practical tip to make this stop better",
         "mapSearch": "search query for Google Maps e.g. 'cozy café near Nørreport Copenhagen'"
       }
@@ -209,9 +209,9 @@ Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exa
     "tagline": "One catchy sentence that sells the vibe",
     "emoji": "one relevant emoji",
     "why": "2–3 sentences explaining why this fits their specific situation",
-    "priceLevel": "$ or $$ or $$$",
+    "priceLevel": "kr or krkr or krkrkr",
     "totalTime": "e.g. 4 hours",
-    "totalCost": "e.g. $30–50 per person",
+    "totalCost": "e.g. 200–350kr per person",
     "highlights": ["short highlight 1", "short highlight 2", "short highlight 3"],
     "goodFor": ["label 1", "label 2"],
     "steps": [
@@ -221,7 +221,7 @@ Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exa
         "type": "ALWAYS in English: Park / Café / Restaurant / Bar / Club / Museum / Bowling / Cinema / Escape Room / etc.",
         "activity": "What exactly to do here — one specific sentence",
         "duration": "e.g. 1.5 hours",
-        "estimatedCost": "Free or e.g. $20–30 per person",
+        "estimatedCost": "Free or e.g. 150–200kr per person",
         "tip": "One practical tip",
         "mapSearch": "search query e.g. 'best steakhouse Copenhagen city center'",
         "bookable": true
