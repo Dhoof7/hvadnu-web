@@ -102,7 +102,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .home-hero-content h1 em { color: var(--accent); }
 .hero-sub { font-size: 16px; color: rgba(255,255,255,.75); max-width: 420px; line-height: 1.7; margin-bottom: 36px; }
 .home-hero-content .eyebrow { color: rgba(255,255,255,.6); }
-.home-hero-content .hero-quiz-link { color: rgba(255,255,255,.6); font-size: 15px; }
+.home-hero-content .hero-quiz-link { color: rgba(255,255,255,.65); font-size: 16px; }
 .home-hero-content .hero-quiz-link a { color: #fff; font-weight: 600; text-decoration: underline; }
 .home-hero-content .free-input { background: rgba(255,255,255,.95); }
 
@@ -464,8 +464,8 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 }
 .free-input:focus { border-color: var(--dark); }
 .free-input::placeholder { color: var(--muted); }
-.hero-quiz-link { font-size: 15px; color: var(--muted); margin-top: 4px; }
-.hero-quiz-link a { color: var(--muted); text-decoration: underline; font-weight: 500; }
+.hero-quiz-link { font-size: 16px; color: var(--muted); margin-top: 4px; }
+.hero-quiz-link a { color: var(--muted); text-decoration: underline; font-weight: 600; }
 .hero-quiz-link a:hover { color: var(--text); }
 
 /* Map */
