@@ -508,13 +508,20 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   .nav-links { display: none; }
   .lang-toggle { font-size: 13px; padding: 6px 10px; }
 
-  /* Hero */
-  .home-hero { grid-template-columns: 1fr; min-height: auto; }
-  .home-hero-content { padding: 32px 20px 40px; justify-content: flex-start; }
-  .home-hero-content h1 { font-size: 32px; line-height: 1.2; margin-bottom: 14px; }
-  .hero-sub { font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
-  .home-hero-image { height: 200px; order: -1; }
-  .eyebrow { font-size: 11px; margin-bottom: 10px; }
+  /* Hero — image as background on mobile */
+  .home-hero { display: block; min-height: auto; position: relative; }
+  .home-hero-image { position: absolute; inset: 0; height: 100%; z-index: 0; }
+  .home-hero-image img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .home-hero-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(26,26,40,.55) 0%, rgba(26,26,40,.82) 60%, rgba(26,26,40,.97) 100%); }
+  .home-hero-content { position: relative; z-index: 1; padding: 56px 20px 44px; background: transparent; }
+  .home-hero-content h1 { font-size: 30px; line-height: 1.25; margin-bottom: 12px; color: #fff; }
+  .home-hero-content h1 em { color: var(--accent); }
+  .eyebrow { font-size: 11px; color: rgba(255,255,255,.6); margin-bottom: 10px; }
+  .hero-sub { font-size: 14px; color: rgba(255,255,255,.75); margin-bottom: 20px; line-height: 1.6; }
+  .hero-quiz-link { color: rgba(255,255,255,.6); }
+  .hero-quiz-link a { color: rgba(255,255,255,.9); }
+  .free-input { background: rgba(255,255,255,.95); }
+  .nearby-heading { color: rgba(255,255,255,.85); }
 
   /* Free input */
   .free-input { font-size: 14px; padding: 14px 16px; }
