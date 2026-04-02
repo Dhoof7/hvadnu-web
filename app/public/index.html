@@ -274,6 +274,8 @@
         // Hide fallback feature card
         const fc = document.getElementById("heroFeatureCard");
         if (fc) fc.style.display = "none";
+        const lp = document.getElementById("locationPrompt");
+        if (lp) lp.style.display = "none";
         window._nearbySponsors = nearby;
         container.innerHTML = nearby
           .slice(0, 6)
