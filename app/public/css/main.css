@@ -537,7 +537,12 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   .nav-links { display: none; }
   .lang-toggle { font-size: 13px; padding: 6px 10px; }
 
-  .hero-right-panel { display: none; }
+  .hero-right-panel { display: block; position: relative; z-index: 1; padding: 0 20px 32px; }
+  .hero-feature-card { min-width: unset; }
+  .hero-sponsor-panel { width: 100%; }
+  .hero-sponsor-panel .nearby-img { height: 100px; }
+  .hero-sponsor-panel .nearby-name { font-size: 12px; }
+  .hero-sponsor-panel .nearby-cats { font-size: 10px; }
 
   /* Hero — image as background on mobile */
   .home-hero { display: block; min-height: auto; position: relative; }
