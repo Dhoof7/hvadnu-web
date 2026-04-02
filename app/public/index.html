@@ -294,7 +294,7 @@
         wrap.style.display = "block";
       }
 
-      const CACHE_KEY = "nearbyCity";
+      const CACHE_KEY = "nearbyCity_v2";
       const CACHE_TTL = 60 * 60 * 1000;
 
       function showFallback() {
@@ -349,9 +349,10 @@
           const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
           if (cached && Date.now() - cached.ts < CACHE_TTL) {
             const sponsors = await fetch('/api/sponsors').then(r => r.json());
+            // cached.city may be suburb (e.g. "lystrup") — direct match
             const nearby = sponsors.filter(s => cached.city.includes(s.city) || s.city.includes(cached.city));
-            renderNearbySponsors(nearby, cached.cityDisplay);
-            return;
+            if (nearby.length) { renderNearbySponsors(nearby, cached.cityDisplay); return; }
+            // If no match, fall through to re-detect
           }
         } catch {}
 
