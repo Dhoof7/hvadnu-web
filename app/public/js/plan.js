@@ -16,7 +16,7 @@ document.getElementById('planTagline').textContent = plan.tagline;
 // Stats
 const statsEl = document.getElementById('planStats');
 statsEl.innerHTML = `
-  <div class="plan-stat"><span class="plan-stat-icon">💰</span> ${plan.priceLevel} · ${plan.totalCost}</div>
+  <div class="plan-stat"><span class="plan-stat-icon">💰</span> ${(plan.priceLevel||'kr').replace(/krkrkr/gi,'kr').replace(/krkr/gi,'kr').replace(/kr kr kr/gi,'kr').replace(/kr kr/gi,'kr')} · ${plan.totalCost}</div>
   <span class="plan-stat-sep">|</span>
   <div class="plan-stat"><span class="plan-stat-icon">⏱</span> ${plan.totalTime}</div>
   <span class="plan-stat-sep">|</span>
