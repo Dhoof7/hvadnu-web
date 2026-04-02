@@ -60,9 +60,15 @@ const skipCity = document.getElementById('skipCity');
 cityInput.addEventListener('input', () => {
   const q = cityInput.value.trim().toLowerCase();
   if (q.length < 1) { cityDropdown.innerHTML = ''; return; }
-  const aliases = { 'københavn': 'copenhagen', 'kobenhavn': 'copenhagen', 'aarhus': 'aarhus', 'arhus': 'aarhus' };
-  const qNorm = aliases[q] || q;
-  const matches = CITIES.filter(c => c.toLowerCase().startsWith(q) || c.toLowerCase().startsWith(qNorm)).slice(0, 6);
+  const normalize = s => s.toLowerCase()
+    .replace(/ø/g,'o').replace(/æ/g,'ae').replace(/å/g,'a')
+    .replace(/ö/g,'o').replace(/ä/g,'a').replace(/ü/g,'u');
+  const qNorm = normalize(q);
+  const matches = CITIES.filter(c => {
+    const cl = c.toLowerCase();
+    const cn = normalize(c);
+    return cl.startsWith(q) || cn.startsWith(qNorm) || cn.startsWith(q);
+  }).slice(0, 6);
   if (!matches.length) { cityDropdown.innerHTML = ''; return; }
   cityDropdown.innerHTML = matches.map(c => `<li class="city-dropdown-item">${c}</li>`).join('');
   cityDropdown.querySelectorAll('.city-dropdown-item').forEach(li => {
