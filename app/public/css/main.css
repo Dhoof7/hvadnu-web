@@ -123,20 +123,21 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .hero-feature-item p { color: rgba(255,255,255,.6); font-size: 13px; line-height: 1.4; margin: 0; }
 
 /* How it works */
-.how-it-works { background: var(--bg-soft); padding: 100px 80px; }
-.section-heading { font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; margin-bottom: 56px; }
+.how-it-works { background: linear-gradient(135deg, #0a1628 0%, #0d2247 50%, #1a3a6e 100%); padding: 100px 80px; }
+.how-it-works .eyebrow { color: rgba(255,255,255,.5); }
+.section-heading { font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; margin-bottom: 56px; color: #fff; }
 .steps-row { display: flex; align-items: center; gap: 0; max-width: 900px; margin: 0 auto; }
 .step-card { flex: 1; text-align: center; padding: 0 24px; }
 .step-num {
   width: 52px; height: 52px; border-radius: 50%;
-  background: var(--dark); color: #fff;
+  background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.3);
   font-family: var(--serif); font-size: 22px; font-weight: 700;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 20px;
 }
-.step-card h3 { font-family: var(--serif); font-size: 20px; margin-bottom: 12px; }
-.step-card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
-.step-connector { font-size: 28px; color: var(--border); flex-shrink: 0; padding: 0 8px; margin-bottom: 40px; }
+.step-card h3 { font-family: var(--serif); font-size: 20px; margin-bottom: 12px; color: #fff; }
+.step-card p { font-size: 14px; color: rgba(255,255,255,.6); line-height: 1.65; }
+.step-connector { font-size: 28px; color: rgba(255,255,255,.3); flex-shrink: 0; padding: 0 8px; margin-bottom: 40px; }
 
 /* Examples */
 .examples { padding: 100px 80px; background: linear-gradient(135deg, #0a1628 0%, #0d2247 50%, #1a3a6e 100%); }
@@ -161,10 +162,10 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .home-cta p { font-size: 16px; color: rgba(255,255,255,.6); margin-bottom: 36px; }
 
 /* Footer */
-.footer { border-top: 1px solid var(--border); padding: 40px 80px; }
+.footer { background: #0a1628; border-top: 1px solid rgba(255,255,255,.1); padding: 40px 80px; }
 .footer-inner.simple { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.footer-logo .logo-text { color: var(--text) !important; }
-.footer-note { font-size: 13px; color: var(--muted); }
+.footer-logo .logo-text { color: #fff !important; }
+.footer-note { font-size: 13px; color: rgba(255,255,255,.4); }
 
 /* ===== QUIZ PAGE ===== */
 .quiz-page { background: var(--bg-soft); min-height: 100vh; }
