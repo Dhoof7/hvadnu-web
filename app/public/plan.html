@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Din Plan · Hvad Skal Vi?</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,7 +62,7 @@
 
       <section class="plan-section plan-actions">
         <a href="quiz.html" class="btn-secondary" data-i18n="plan.diffPlans">Find andre planer</a>
-        <button class="btn-primary" id="savePlanBtn" onclick="savePlan(JSON.parse(localStorage.getItem('selectedPlan')||'null'))">Gem plan</button>
+        <button class="btn-primary" id="savePlanBtn" onclick="savePlan(plan)">Gem plan</button>
         <button class="btn-primary" data-i18n="plan.printBtn" onclick="window.print()">Print plan</button>
       </section>
 

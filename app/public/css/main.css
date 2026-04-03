@@ -24,8 +24,28 @@ button { font-family: var(--sans); cursor: pointer; }
 .navbar {
   position: sticky; top: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  background: var(--dark); padding: 0 48px; height: 60px; gap: 24px;
+  background: var(--dark); padding: 0 48px; height: 60px; gap: 12px;
+  overflow: hidden;
 }
+#navAuthWrap { display: flex; align-items: center; gap: 8px; min-width: 0; flex-shrink: 1; overflow: hidden; }
+#navAuthWrap .nav-desktop { display: flex; align-items: center; gap: 8px; }
+#navAuthWrap .nav-mobile-btn { display: none; position: relative; }
+.nav-dropdown {
+  display: none; position: fixed; top: 60px; right: 16px;
+  background: #1a1a28; border: 1px solid rgba(255,255,255,.15);
+  border-radius: 14px; padding: 6px; min-width: 180px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5); z-index: 200;
+}
+.nav-dropdown.open { display: block; }
+.nav-dropdown a, .nav-dropdown button {
+  display: block; width: 100%; text-align: left;
+  padding: 10px 16px; color: rgba(255,255,255,.85);
+  font-size: 14px; font-weight: 500; cursor: pointer;
+  background: none; border: none; border-radius: 8px;
+  font-family: inherit; text-decoration: none; transition: background .15s;
+}
+.nav-dropdown a:hover, .nav-dropdown button:hover { background: rgba(255,255,255,.08); }
+.nav-dropdown .nav-dd-divider { height: 1px; background: rgba(255,255,255,.1); margin: 4px 0; }
 .logo { display: flex; align-items: center; gap: 10px; color: #fff; }
 .logo-icon { font-size: 16px; color: var(--accent); }
 .logo-text { font-family: var(--serif); font-size: 15px; font-weight: 600; color: #fff; }
@@ -540,6 +560,12 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   .navbar { padding: 0 16px; height: 56px; }
   .nav-links { display: none; }
   .lang-toggle { font-size: 13px; padding: 6px 10px; }
+  #navAuthWrap .nav-desktop { display: none; }
+  #navAuthWrap .nav-mobile-btn { display: block; }
+  .nav-dropdown { top: 56px; }
+
+  /* Prevent iOS zoom on input focus */
+  input, textarea, select { font-size: 16px !important; }
 
   .hero-right-panel { display: block; position: relative; z-index: 1; padding: 0 20px 32px; }
   .hero-feature-card { min-width: unset; }

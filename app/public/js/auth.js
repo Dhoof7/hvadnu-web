@@ -338,33 +338,68 @@ async function updateNavAuth() {
   if (!wrap) return;
   const { data: { session } } = await _sb.auth.getSession();
   wrap.innerHTML = '';
+
   if (session) {
     const meta = session.user.user_metadata || {};
     const name = meta.first_name || (meta.full_name ? meta.full_name.split(' ')[0] : null) || session.user.email.split('@')[0];
+    const initial = name.charAt(0).toUpperCase();
+
+    // ---- Desktop ----
+    const desktop = document.createElement('div');
+    desktop.className = 'nav-desktop';
 
     const nameSpan = document.createElement('span');
     nameSpan.style.cssText = 'color:rgba(255,255,255,.8);font-size:12px;font-weight:600;white-space:nowrap;';
     nameSpan.textContent = name;
 
-    const profileBtn = document.createElement('button');
-    profileBtn.style.cssText = _navBtnStyle;
-    profileBtn.textContent = 'Min profil';
-    profileBtn.onclick = () => { window.location.href = '/profile.html'; };
-
-    const plansBtn = document.createElement('button');
-    plansBtn.style.cssText = _navBtnStyle;
-    plansBtn.textContent = 'Mine planer';
-    plansBtn.onclick = () => { window.location.href = '/saved.html'; };
-
+    const mk = (label, href) => {
+      const b = document.createElement('button');
+      b.style.cssText = _navBtnStyle;
+      b.textContent = label;
+      b.onclick = () => { window.location.href = href; };
+      return b;
+    };
     const logoutBtn = document.createElement('button');
     logoutBtn.style.cssText = 'background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;';
     logoutBtn.textContent = 'Log ud';
     logoutBtn.onclick = async () => { await _sb.auth.signOut(); window.location.href = '/'; };
 
-    wrap.appendChild(nameSpan);
-    wrap.appendChild(profileBtn);
-    wrap.appendChild(plansBtn);
-    wrap.appendChild(logoutBtn);
+    desktop.appendChild(nameSpan);
+    desktop.appendChild(mk('Min profil', '/profile.html'));
+    desktop.appendChild(mk('Mine planer', '/saved.html'));
+    desktop.appendChild(logoutBtn);
+
+    // ---- Mobile: avatar button + dropdown ----
+    const mobileWrap = document.createElement('div');
+    mobileWrap.className = 'nav-mobile-btn';
+
+    const avatar = document.createElement('button');
+    avatar.style.cssText = 'width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;';
+    avatar.textContent = initial;
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'nav-dropdown';
+    dropdown.id = 'navDropdown';
+    dropdown.innerHTML = `
+      <span style="display:block;padding:8px 16px 4px;color:rgba(255,255,255,.4);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">${name}</span>
+      <div class="nav-dd-divider"></div>
+      <a href="/profile.html">Min profil</a>
+      <a href="/saved.html">Mine planer</a>
+      <div class="nav-dd-divider"></div>
+      <button onclick="(async()=>{await _sb.auth.signOut();window.location.href='/'})()">Log ud</button>
+    `;
+
+    avatar.onclick = (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+    };
+    document.addEventListener('click', () => dropdown.classList.remove('open'), { once: false });
+
+    mobileWrap.appendChild(avatar);
+    mobileWrap.appendChild(dropdown);
+
+    wrap.appendChild(desktop);
+    wrap.appendChild(mobileWrap);
   } else {
     const btn = document.createElement('button');
     btn.style.cssText = _navBtnStyle;
