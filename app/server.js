@@ -4,6 +4,9 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const YELP_API_KEY = process.env.YELP_API_KEY;
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
 
 const fs = require('fs');
 let SPONSORS = [];
@@ -276,6 +279,54 @@ app.get('/api/test', async (req, res) => {
     results.errors.push('Yelp: ' + e.message);
   }
   res.json(results);
+});
+
+app.get('/api/admin/stats', async (req, res) => {
+  if (!ADMIN_SECRET || req.headers['x-admin-secret'] !== ADMIN_SECRET) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+    return res.status(500).json({ error: 'Supabase service key not configured' });
+  }
+  try {
+    const [usersRes, plansRes] = await Promise.all([
+      fetch(`${SUPABASE_URL}/auth/v1/admin/users?page=1&per_page=1`, {
+        headers: { apikey: SUPABASE_SERVICE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY}` },
+      }),
+      fetch(`${SUPABASE_URL}/rest/v1/saved_plans?select=count`, {
+        headers: {
+          apikey: SUPABASE_SERVICE_KEY,
+          Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+          Prefer: 'count=exact',
+          'Range-Unit': 'items',
+          Range: '0-0',
+        },
+      }),
+    ]);
+
+    const usersData = await usersRes.json();
+    const totalUsers = usersData.total || 0;
+
+    const totalPlans = parseInt(plansRes.headers.get('content-range')?.split('/')[1] || '0', 10);
+
+    // Fetch recent signups (last 10)
+    const recentRes = await fetch(
+      `${SUPABASE_URL}/auth/v1/admin/users?page=1&per_page=10`,
+      { headers: { apikey: SUPABASE_SERVICE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_KEY}` } }
+    );
+    const recentData = await recentRes.json();
+    const recentUsers = (recentData.users || []).map(u => ({
+      email: u.email,
+      name: u.user_metadata?.full_name || u.user_metadata?.name || '—',
+      provider: u.app_metadata?.provider || 'email',
+      created_at: u.created_at,
+      confirmed: !!u.email_confirmed_at,
+    }));
+
+    res.json({ totalUsers, totalPlans, recentUsers });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.get('*', (_req, res) => {

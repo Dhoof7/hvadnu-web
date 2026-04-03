@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · Hvad Skal Vi?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; }
+
+    .admin-wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px; }
+
+    h1 { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 6px; }
+    .sub { color: rgba(255,255,255,.4); font-size: 14px; margin-bottom: 40px; }
+
+    /* Login */
+    .login-card {
+      background: #161b22; border: 1px solid #30363d; border-radius: 16px;
+      padding: 40px; max-width: 380px; margin: 0 auto;
+    }
+    .login-card h2 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 20px; }
+    .login-input {
+      width: 100%; padding: 12px 14px; background: #0d1117; border: 1px solid #30363d;
+      border-radius: 8px; color: #e6edf3; font-size: 14px; font-family: inherit;
+      outline: none; margin-bottom: 12px; display: block;
+    }
+    .login-input:focus { border-color: #58a6ff; }
+    .login-btn {
+      width: 100%; padding: 12px; background: #238636; color: #fff;
+      border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+    }
+    .login-btn:hover { background: #2ea043; }
+    .login-err { color: #f85149; font-size: 13px; margin-top: 10px; min-height: 18px; }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 36px; }
+    .stat-card {
+      background: #161b22; border: 1px solid #30363d; border-radius: 14px;
+      padding: 28px 24px;
+    }
+    .stat-value { font-size: 42px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+    .stat-label { color: rgba(255,255,255,.4); font-size: 13px; }
+    .stat-card.users .stat-value { color: #58a6ff; }
+    .stat-card.plans .stat-value { color: #3fb950; }
+
+    /* Table */
+    .section-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: rgba(255,255,255,.7); }
+    .users-table { width: 100%; border-collapse: collapse; }
+    .users-table th {
+      text-align: left; padding: 10px 14px; font-size: 11px; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.35);
+      border-bottom: 1px solid #30363d;
+    }
+    .users-table td {
+      padding: 12px 14px; font-size: 13px; border-bottom: 1px solid #21262d;
+      vertical-align: middle;
+    }
+    .users-table tr:last-child td { border-bottom: none; }
+    .provider-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600;
+    }
+    .provider-badge.google { background: rgba(66,133,244,.2); color: #4285f4; }
+    .provider-badge.email  { background: rgba(139,148,158,.15); color: #8b949e; }
+    .confirmed-dot {
+      display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    }
+    .confirmed-dot.yes { background: #3fb950; }
+    .confirmed-dot.no  { background: #f85149; }
+
+    .refresh-btn {
+      margin-top: 32px; padding: 10px 20px; background: transparent; color: rgba(255,255,255,.5);
+      border: 1px solid #30363d; border-radius: 8px; font-size: 13px;
+      cursor: pointer; font-family: inherit;
+    }
+    .refresh-btn:hover { color: #fff; border-color: #58a6ff; }
+
+    .loading { color: rgba(255,255,255,.3); font-size: 14px; padding: 40px 0; text-align: center; }
+    .error-msg { color: #f85149; font-size: 14px; padding: 20px 0; }
+  </style>
+</head>
+<body>
+  <div class="admin-wrap">
+    <h1>Admin</h1>
+    <p class="sub">Hvad Skal Vi? — brugeroverblik</p>
+
+    <!-- Login -->
+    <div id="loginSection" class="login-card">
+      <h2>Log ind</h2>
+      <input class="login-input" id="secretInput" type="password" placeholder="Admin adgangskode" onkeydown="if(event.key==='Enter')login()">
+      <button class="login-btn" onclick="login()">Fortsæt</button>
+      <p class="login-err" id="loginErr"></p>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" style="display:none;">
+      <div class="stats-grid">
+        <div class="stat-card users">
+          <div class="stat-value" id="statUsers">—</div>
+          <div class="stat-label">Registrerede brugere</div>
+        </div>
+        <div class="stat-card plans">
+          <div class="stat-value" id="statPlans">—</div>
+          <div class="stat-label">Gemte planer</div>
+        </div>
+      </div>
+
+      <div id="content">
+        <p class="loading">Henter data...</p>
+      </div>
+
+      <button class="refresh-btn" onclick="loadStats()">Opdater</button>
+    </div>
+  </div>
+
+  <script>
+    let _secret = '';
+
+    function login() {
+      const val = document.getElementById('secretInput').value.trim();
+      if (!val) return;
+      _secret = val;
+      document.getElementById('loginSection').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      loadStats();
+    }
+
+    async function loadStats() {
+      document.getElementById('content').innerHTML = '<p class="loading">Henter data...</p>';
+      document.getElementById('statUsers').textContent = '—';
+      document.getElementById('statPlans').textContent = '—';
+
+      try {
+        const res = await fetch('/api/admin/stats', {
+          headers: { 'x-admin-secret': _secret }
+        });
+
+        if (res.status === 401) {
+          document.getElementById('dashboard').style.display = 'none';
+          document.getElementById('loginSection').style.display = 'block';
+          document.getElementById('loginErr').textContent = 'Forkert adgangskode.';
+          _secret = '';
+          return;
+        }
+
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        document.getElementById('statUsers').textContent = data.totalUsers;
+        document.getElementById('statPlans').textContent = data.totalPlans;
+
+        const rows = data.recentUsers.map(u => {
+          const date = new Date(u.created_at).toLocaleDateString('da-DK', { day: '2-digit', month: 'short', year: 'numeric' });
+          return `<tr>
+            <td>${u.name}</td>
+            <td style="color:rgba(255,255,255,.6)">${u.email}</td>
+            <td><span class="provider-badge ${u.provider}">${u.provider}</span></td>
+            <td><span class="confirmed-dot ${u.confirmed ? 'yes' : 'no'}" title="${u.confirmed ? 'Bekræftet' : 'Ikke bekræftet'}"></span></td>
+            <td style="color:rgba(255,255,255,.4)">${date}</td>
+          </tr>`;
+        }).join('');
+
+        document.getElementById('content').innerHTML = `
+          <p class="section-title">Seneste 10 brugere</p>
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Navn</th>
+                <th>Email</th>
+                <th>Metode</th>
+                <th>Bekræftet</th>
+                <th>Oprettet</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      } catch (err) {
+        document.getElementById('content').innerHTML = `<p class="error-msg">Fejl: ${err.message}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
