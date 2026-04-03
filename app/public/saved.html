@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mine Planer · Hvad Skal Vi?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .saved-page { max-width: 760px; margin: 0 auto; padding: 60px 24px; }
+    .saved-page h1 { font-family: 'Playfair Display', serif; font-size: 36px; color: #fff; margin-bottom: 8px; }
+    .saved-page .sub { color: rgba(255,255,255,.6); font-size: 15px; margin-bottom: 40px; }
+    .saved-grid { display: flex; flex-direction: column; gap: 16px; }
+    .saved-card {
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px; padding: 24px 28px;
+      display: flex; align-items: center; gap: 20px;
+      transition: background .2s;
+    }
+    .saved-card:hover { background: rgba(255,255,255,.12); }
+    .saved-emoji { font-size: 36px; flex-shrink: 0; }
+    .saved-info { flex: 1; }
+    .saved-title { color: #fff; font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+    .saved-tagline { color: rgba(255,255,255,.6); font-size: 13px; }
+    .saved-date { color: rgba(255,255,255,.4); font-size: 12px; margin-top: 6px; }
+    .saved-actions { display: flex; gap: 10px; flex-shrink: 0; }
+    .btn-open { background: #fff; color: #1a1a28; border: none; border-radius: 50px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background .2s; }
+    .btn-open:hover { background: #f0ece8; }
+    .btn-del { background: rgba(255,255,255,.08); color: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.15); border-radius: 50px; padding: 10px 16px; font-size: 13px; cursor: pointer; font-family: inherit; transition: all .2s; }
+    .btn-del:hover { background: rgba(217,79,58,.2); color: #d94f3a; border-color: #d94f3a; }
+    .empty-state { text-align: center; padding: 80px 0; color: rgba(255,255,255,.5); }
+    .empty-state p { font-size: 16px; margin-bottom: 20px; }
+    .loading-state { text-align: center; padding: 80px 0; color: rgba(255,255,255,.5); }
+    @media (max-width: 600px) {
+      .saved-card { flex-wrap: wrap; }
+      .saved-actions { width: 100%; }
+      .btn-open, .btn-del { flex: 1; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/" class="logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">Hvad Skal Vi?</span>
+    </a>
+    <button class="lang-toggle" id="langToggle">Mine planer</button>
+  </nav>
+
+  <div class="saved-page">
+    <h1>Mine planer</h1>
+    <p class="sub">Dine gemte aktivitetsplaner</p>
+
+    <div id="savedState" class="loading-state">Henter planer...</div>
+    <div id="savedGrid" class="saved-grid" style="display:none;"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/i18n.js"></script>
+  <script>
+    const SUPABASE_URL = 'https://kqpxhefvnrlsuxmiqhhy.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxcHhoZWZ2bnJsc3V4bWlxaGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMzE4NjEsImV4cCI6MjA5MDgwNzg2MX0.-fw759yENbo2UZTdgzIU4TpjUqOON4ogtpEUYvE8fqA';
+    const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    function formatDate(iso) {
+      const d = new Date(iso);
+      return d.toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    async function loadSaved() {
+      const { data: { session } } = await _sb.auth.getSession();
+      if (!session) {
+        document.getElementById('savedState').innerHTML = '<p>Log ind for at se dine gemte planer.</p><a href="/" style="color:#d94f3a;font-weight:600;">Gå til forsiden</a>';
+        return;
+      }
+      const { data, error } = await _sb.from('saved_plans')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        document.getElementById('savedState').textContent = 'Fejl ved hentning af planer.';
+        return;
+      }
+      if (!data.length) {
+        document.getElementById('savedState').innerHTML = '<p>Du har ingen gemte planer endnu.</p><a href="/" style="color:#d94f3a;font-weight:600;">Find en plan</a>';
+        return;
+      }
+      document.getElementById('savedState').style.display = 'none';
+      const grid = document.getElementById('savedGrid');
+      grid.style.display = 'flex';
+      grid.innerHTML = data.map(p => `
+        <div class="saved-card" id="card-${p.id}">
+          <div class="saved-emoji">${p.emoji || '✨'}</div>
+          <div class="saved-info">
+            <div class="saved-title">${p.title}</div>
+            <div class="saved-tagline">${p.tagline || ''}</div>
+            <div class="saved-date">${formatDate(p.created_at)}</div>
+          </div>
+          <div class="saved-actions">
+            <button class="btn-open" onclick="openPlan('${p.id}', ${JSON.stringify(p.content).replace(/"/g, '&quot;')})">Åbn plan</button>
+            <button class="btn-del" onclick="deletePlan('${p.id}')">Slet</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openPlan(id, contentJson) {
+      try {
+        const plan = typeof contentJson === 'string' ? JSON.parse(contentJson) : contentJson;
+        localStorage.setItem('selectedPlan', JSON.stringify(plan));
+        window.location.href = 'plan.html';
+      } catch { alert('Kunne ikke åbne planen.'); }
+    }
+
+    async function deletePlan(id) {
+      if (!confirm('Slet denne plan?')) return;
+      const { error } = await _sb.from('saved_plans').delete().eq('id', id);
+      if (error) { alert('Fejl: ' + error.message); return; }
+      const card = document.getElementById('card-' + id);
+      if (card) card.remove();
+      if (!document.querySelector('.saved-card')) {
+        document.getElementById('savedGrid').style.display = 'none';
+        document.getElementById('savedState').style.display = 'block';
+        document.getElementById('savedState').innerHTML = '<p>Du har ingen gemte planer endnu.</p><a href="/" style="color:#d94f3a;font-weight:600;">Find en plan</a>';
+      }
+    }
+
+    loadSaved();
+  </script>
+</body>
+</html>
