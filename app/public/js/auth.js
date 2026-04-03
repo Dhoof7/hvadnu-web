@@ -74,6 +74,25 @@ document.body.insertAdjacentHTML('beforeend', `
   </div>
 </div>
 
+<!-- New password modal (for reset flow) -->
+<div id="newPwOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:10001;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:24px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,.3);">
+    <h2 style="font-family:'Playfair Display',serif;font-size:24px;color:#1a1a28;margin-bottom:8px;">Nyt kodeord</h2>
+    <p style="color:#6b6b6b;font-size:14px;margin-bottom:24px;">Vælg et stærkt kodeord til din konto.</p>
+    <div id="newPwError" style="display:none;background:#fde8e8;color:#c0392b;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:16px;"></div>
+    <input id="newPwInput" type="password" placeholder="Nyt kodeord" oninput="checkNewPw(this.value)" style="width:100%;box-sizing:border-box;padding:13px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;outline:none;font-family:inherit;margin-bottom:8px;">
+    <input id="newPwConfirm" type="password" placeholder="Gentag kodeord" style="width:100%;box-sizing:border-box;padding:13px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;outline:none;font-family:inherit;margin-bottom:10px;">
+    <div style="display:flex;gap:4px;margin-bottom:6px;">
+      <div id="np1" style="flex:1;height:4px;border-radius:4px;background:#e5e0da;transition:background .3s;"></div>
+      <div id="np2" style="flex:1;height:4px;border-radius:4px;background:#e5e0da;transition:background .3s;"></div>
+      <div id="np3" style="flex:1;height:4px;border-radius:4px;background:#e5e0da;transition:background .3s;"></div>
+      <div id="np4" style="flex:1;height:4px;border-radius:4px;background:#e5e0da;transition:background .3s;"></div>
+    </div>
+    <p id="npLabel" style="font-size:11px;color:#aaa;margin:0 0 16px;"></p>
+    <button onclick="submitNewPassword()" id="newPwBtn" style="width:100%;padding:14px;background:#1a1a28;color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">Gem nyt kodeord</button>
+  </div>
+</div>
+
 <!-- Google profile completion modal -->
 <div id="profileOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:10000;align-items:center;justify-content:center;padding:16px;">
   <div style="background:#fff;border-radius:24px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,.3);">
@@ -152,6 +171,40 @@ async function signInWithGoogle() {
   });
 }
 
+function checkNewPw(pw) {
+  const has8 = pw.length >= 8, hasU = /[A-Z]/.test(pw), hasN = /[0-9]/.test(pw), hasS = /[^A-Za-z0-9]/.test(pw);
+  const score = [has8, hasU, hasN, hasS].filter(Boolean).length;
+  const colors = ['#e5e0da','#e74c3c','#e67e22','#f1c40f','#27ae60'];
+  const labels = ['','For svag','Svag','Okay','Stærk'];
+  for (let i = 1; i <= 4; i++) document.getElementById('np'+i).style.background = i <= score ? colors[score] : '#e5e0da';
+  document.getElementById('npLabel').textContent = pw.length ? labels[score] : '';
+}
+
+async function submitNewPassword() {
+  const pw = document.getElementById('newPwInput').value;
+  const confirm = document.getElementById('newPwConfirm').value;
+  const errEl = document.getElementById('newPwError');
+  const btn = document.getElementById('newPwBtn');
+  errEl.style.display = 'none';
+  if (!isPasswordStrong(pw)) { errEl.textContent = 'Kodeordet er ikke stærkt nok.'; errEl.style.display = 'block'; return; }
+  if (pw !== confirm) { errEl.textContent = 'Kodeordene matcher ikke.'; errEl.style.display = 'block'; return; }
+  btn.textContent = '...'; btn.disabled = true;
+  const { error } = await _sb.auth.updateUser({ password: pw });
+  if (error) {
+    errEl.textContent = 'Fejl: ' + error.message; errEl.style.display = 'block';
+    btn.textContent = 'Gem nyt kodeord'; btn.disabled = false;
+  } else {
+    document.getElementById('newPwOverlay').style.display = 'none';
+    await _sb.auth.signOut();
+    updateNavAuth();
+    // Show confirmation via login modal
+    openAuthModal('login');
+    _showErr('Kodeord opdateret! Log ind med dit nye kodeord.');
+    document.getElementById('authError').style.background = '#e8fde8';
+    document.getElementById('authError').style.color = '#1e7e34';
+  }
+}
+
 async function submitAuth() {
   const email = document.getElementById('authEmail').value.trim();
   const password = document.getElementById('authPassword').value;
@@ -161,8 +214,9 @@ async function submitAuth() {
     if (!email) { _showErr('Indtast din email.'); return; }
     btn.textContent = '...'; btn.disabled = true;
     try {
+      localStorage.setItem('sbResetPending', '1');
       const { error } = await _sb.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/reset-password.html'
+        redirectTo: window.location.origin
       });
       if (error) throw error;
       document.getElementById('authForm').style.display = 'none';
@@ -282,12 +336,23 @@ async function updateNavAuth() {
   }
 }
 
-// ---- detect new Google user and prompt for name ----
+// ---- auth state changes ----
 _sb.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    // Implicit flow recovery
+    document.getElementById('newPwOverlay').style.display = 'flex';
+    return;
+  }
   if (event === 'SIGNED_IN' && session) {
+    // Check if this is a PKCE recovery (flag set before redirect)
+    if (localStorage.getItem('sbResetPending') === '1') {
+      localStorage.removeItem('sbResetPending');
+      window.history.replaceState({}, '', window.location.pathname);
+      document.getElementById('newPwOverlay').style.display = 'flex';
+      return;
+    }
     const meta = session.user.user_metadata || {};
     const provider = session.user.app_metadata?.provider;
-    // New Google user without our custom name fields
     if (provider === 'google' && !meta.first_name) {
       showProfileModal();
     }
