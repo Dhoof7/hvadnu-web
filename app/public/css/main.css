@@ -375,7 +375,12 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 
 .plan-body { max-width: 760px; margin: 0 auto; padding: 64px 24px 80px; }
 .plan-section { margin-bottom: 64px; }
-.plan-section h2 { font-family: var(--serif); font-size: 28px; margin-bottom: 24px; }
+.plan-section h2 { font-family: var(--serif); font-size: 28px; margin-bottom: 24px; color: #fff; }
+.map-note { font-size: 14px; color: rgba(255,255,255,.6) !important; margin-bottom: 20px; }
+.plan-actions .btn-secondary {
+  color: rgba(255,255,255,.85); border-color: rgba(255,255,255,.25); background: transparent;
+}
+.plan-actions .btn-secondary:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.45); }
 
 /* Why quote */
 .why-quote {
