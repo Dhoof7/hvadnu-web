@@ -45,7 +45,7 @@ document.body.insertAdjacentHTML('beforeend', `
 
       <div style="position:relative;margin-bottom:8px;">
         <input id="authPassword" type="password" placeholder="Adgangskode" style="width:100%;box-sizing:border-box;padding:12px 48px 12px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;outline:none;font-family:inherit;" oninput="checkPasswordStrength(this.value)">
-        <button type="button" onclick="togglePw('authPassword',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;font-size:18px;padding:0;line-height:1;">👁</button>
+        <button type="button" onclick="togglePw('authPassword',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;padding:0;line-height:1;display:flex;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
       </div>
 
       <div id="pwStrengthWrap" style="display:none;margin-bottom:16px;">
@@ -85,11 +85,11 @@ document.body.insertAdjacentHTML('beforeend', `
     <div id="newPwError" style="display:none;background:#fde8e8;color:#c0392b;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:16px;"></div>
     <div style="position:relative;margin-bottom:8px;">
       <input id="newPwInput" type="password" placeholder="Nyt kodeord" oninput="checkNewPw(this.value)" style="width:100%;box-sizing:border-box;padding:13px 48px 13px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;outline:none;font-family:inherit;">
-      <button type="button" onclick="togglePw('newPwInput',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;font-size:18px;padding:0;line-height:1;">👁</button>
+      <button type="button" onclick="togglePw('newPwInput',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;padding:0;line-height:1;display:flex;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
     </div>
     <div style="position:relative;margin-bottom:10px;">
       <input id="newPwConfirm" type="password" placeholder="Gentag kodeord" style="width:100%;box-sizing:border-box;padding:13px 48px 13px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;outline:none;font-family:inherit;">
-      <button type="button" onclick="togglePw('newPwConfirm',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;font-size:18px;padding:0;line-height:1;">👁</button>
+      <button type="button" onclick="togglePw('newPwConfirm',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;padding:0;line-height:1;display:flex;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
     </div>
     <div style="display:flex;gap:4px;margin-bottom:6px;">
       <div id="np1" style="flex:1;height:4px;border-radius:4px;background:#e5e0da;transition:background .3s;"></div>
@@ -153,11 +153,14 @@ function _applyMode() {
 function showForgotMode() { authMode = 'forgot'; _applyMode(); }
 function toggleAuthMode() { authMode = authMode === 'login' ? 'signup' : 'login'; _applyMode(); }
 
+const _eyeOpen = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const _eyeOff  = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+
 function togglePw(inputId, btn) {
   const input = document.getElementById(inputId);
   const isText = input.type === 'text';
   input.type = isText ? 'password' : 'text';
-  btn.textContent = isText ? '👁' : '🙈';
+  btn.innerHTML = isText ? _eyeOpen : _eyeOff;
 }
 
 // Password strength
