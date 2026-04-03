@@ -43,7 +43,10 @@ document.body.insertAdjacentHTML('beforeend', `
 
       <input id="authEmail" type="email" placeholder="Email" style="width:100%;box-sizing:border-box;padding:12px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;margin-bottom:12px;outline:none;font-family:inherit;display:block;">
 
-      <input id="authPassword" type="password" placeholder="Adgangskode" style="width:100%;box-sizing:border-box;padding:12px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;outline:none;font-family:inherit;margin-bottom:8px;" oninput="checkPasswordStrength(this.value)">
+      <div style="position:relative;margin-bottom:8px;">
+        <input id="authPassword" type="password" placeholder="Adgangskode" style="width:100%;box-sizing:border-box;padding:12px 48px 12px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;outline:none;font-family:inherit;" oninput="checkPasswordStrength(this.value)">
+        <button type="button" onclick="togglePw('authPassword',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;font-size:18px;padding:0;line-height:1;">👁</button>
+      </div>
 
       <div id="pwStrengthWrap" style="display:none;margin-bottom:16px;">
         <div style="display:flex;gap:4px;margin-bottom:6px;">
@@ -80,8 +83,14 @@ document.body.insertAdjacentHTML('beforeend', `
     <h2 style="font-family:'Playfair Display',serif;font-size:24px;color:#1a1a28;margin-bottom:8px;">Nyt kodeord</h2>
     <p style="color:#6b6b6b;font-size:14px;margin-bottom:24px;">Vælg et stærkt kodeord til din konto.</p>
     <div id="newPwError" style="display:none;background:#fde8e8;color:#c0392b;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:16px;"></div>
-    <input id="newPwInput" type="password" placeholder="Nyt kodeord" oninput="checkNewPw(this.value)" style="width:100%;box-sizing:border-box;padding:13px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;outline:none;font-family:inherit;margin-bottom:8px;">
-    <input id="newPwConfirm" type="password" placeholder="Gentag kodeord" style="width:100%;box-sizing:border-box;padding:13px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;outline:none;font-family:inherit;margin-bottom:10px;">
+    <div style="position:relative;margin-bottom:8px;">
+      <input id="newPwInput" type="password" placeholder="Nyt kodeord" oninput="checkNewPw(this.value)" style="width:100%;box-sizing:border-box;padding:13px 48px 13px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;outline:none;font-family:inherit;">
+      <button type="button" onclick="togglePw('newPwInput',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;font-size:18px;padding:0;line-height:1;">👁</button>
+    </div>
+    <div style="position:relative;margin-bottom:10px;">
+      <input id="newPwConfirm" type="password" placeholder="Gentag kodeord" style="width:100%;box-sizing:border-box;padding:13px 48px 13px 16px;border:1.5px solid #e5e0da;border-radius:10px;font-size:14px;outline:none;font-family:inherit;">
+      <button type="button" onclick="togglePw('newPwConfirm',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#aaa;font-size:18px;padding:0;line-height:1;">👁</button>
+    </div>
     <div style="display:flex;gap:4px;margin-bottom:6px;">
       <div id="np1" style="flex:1;height:4px;border-radius:4px;background:#e5e0da;transition:background .3s;"></div>
       <div id="np2" style="flex:1;height:4px;border-radius:4px;background:#e5e0da;transition:background .3s;"></div>
@@ -143,6 +152,13 @@ function _applyMode() {
 
 function showForgotMode() { authMode = 'forgot'; _applyMode(); }
 function toggleAuthMode() { authMode = authMode === 'login' ? 'signup' : 'login'; _applyMode(); }
+
+function togglePw(inputId, btn) {
+  const input = document.getElementById(inputId);
+  const isText = input.type === 'text';
+  input.type = isText ? 'password' : 'text';
+  btn.textContent = isText ? '👁' : '🙈';
+}
 
 // Password strength
 function checkPasswordStrength(pw) {
@@ -295,44 +311,55 @@ async function saveProfile() {
   updateNavAuth();
 }
 
-// ---- nav auth button ----
+// ---- nav auth ----
+const _navBtnStyle = 'background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;';
+
 function injectNavAuthBtn() {
   const navbar = document.querySelector('.navbar');
   if (!navbar) return;
-  const btn = document.createElement('button');
-  btn.id = 'navAuthBtn';
-  btn.style.cssText = 'background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;';
-  btn.textContent = 'Log ind';
-  btn.addEventListener('click', handleNavAuthClick);
+  const wrap = document.createElement('div');
+  wrap.id = 'navAuthWrap';
+  wrap.style.cssText = 'display:flex;align-items:center;gap:8px;';
   const langToggle = document.getElementById('langToggle');
-  if (langToggle) navbar.insertBefore(btn, langToggle);
-  else navbar.appendChild(btn);
+  if (langToggle) navbar.insertBefore(wrap, langToggle);
+  else navbar.appendChild(wrap);
 }
 
 async function handleNavAuthClick() {
   const { data: { session } } = await _sb.auth.getSession();
-  if (session) {
-    if (confirm('Vil du logge ud?')) {
-      await _sb.auth.signOut();
-      window.location.href = '/';
-    }
-  } else {
-    openAuthModal('login');
-  }
+  if (!session) openAuthModal('login');
 }
 
 async function updateNavAuth() {
-  const btn = document.getElementById('navAuthBtn');
-  if (!btn) return;
+  const wrap = document.getElementById('navAuthWrap');
+  if (!wrap) return;
   const { data: { session } } = await _sb.auth.getSession();
+  wrap.innerHTML = '';
   if (session) {
     const meta = session.user.user_metadata || {};
     const name = meta.first_name || (meta.full_name ? meta.full_name.split(' ')[0] : null) || session.user.email.split('@')[0];
-    btn.textContent = `${name} · Mine planer`;
-    btn.onclick = () => { window.location.href = '/saved.html'; };
+
+    const plansBtn = document.createElement('button');
+    plansBtn.style.cssText = _navBtnStyle;
+    plansBtn.textContent = `${name} · Mine planer`;
+    plansBtn.onclick = () => { window.location.href = '/saved.html'; };
+
+    const logoutBtn = document.createElement('button');
+    logoutBtn.style.cssText = 'background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;';
+    logoutBtn.textContent = 'Log ud';
+    logoutBtn.onclick = async () => {
+      await _sb.auth.signOut();
+      window.location.href = '/';
+    };
+
+    wrap.appendChild(plansBtn);
+    wrap.appendChild(logoutBtn);
   } else {
+    const btn = document.createElement('button');
+    btn.style.cssText = _navBtnStyle;
     btn.textContent = 'Log ind';
     btn.onclick = handleNavAuthClick;
+    wrap.appendChild(btn);
   }
 }
 
