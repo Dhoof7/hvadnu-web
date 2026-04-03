@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Min Profil · Hvad Skal Vi?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .profile-wrap {
+      max-width: 560px; margin: 0 auto; padding: 60px 24px;
+    }
+    .profile-wrap h1 {
+      font-family: 'Playfair Display', serif; font-size: 36px;
+      color: #fff; margin-bottom: 8px;
+    }
+    .profile-wrap .sub { color: rgba(255,255,255,.5); font-size: 14px; margin-bottom: 40px; }
+
+    .profile-card {
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px; padding: 36px; margin-bottom: 20px;
+    }
+    .profile-card h2 {
+      font-family: 'Playfair Display', serif; font-size: 20px;
+      color: #fff; margin-bottom: 24px;
+    }
+    .field-row { display: flex; gap: 12px; margin-bottom: 14px; }
+    .field-row.single { flex-direction: column; }
+    .field-label { color: rgba(255,255,255,.5); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+    .profile-input {
+      width: 100%; box-sizing: border-box;
+      padding: 12px 16px; border: 1.5px solid rgba(255,255,255,.15);
+      border-radius: 10px; font-size: 14px; outline: none;
+      font-family: inherit; background: rgba(255,255,255,.08);
+      color: #fff; transition: border-color .2s;
+    }
+    .profile-input::placeholder { color: rgba(255,255,255,.3); }
+    .profile-input:focus { border-color: rgba(255,255,255,.4); }
+    .field-wrap { flex: 1; }
+    .save-btn {
+      margin-top: 20px; padding: 13px 28px; background: #fff;
+      color: #1a1a28; border: none; border-radius: 50px;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      font-family: inherit; transition: background .2s;
+    }
+    .save-btn:hover { background: #f0ece8; }
+    .save-btn:disabled { opacity: .5; cursor: default; }
+    .msg { font-size: 13px; margin-top: 12px; min-height: 18px; }
+    .msg.ok { color: #4caf50; }
+    .msg.err { color: #e74c3c; }
+    .note { color: rgba(255,255,255,.4); font-size: 12px; margin-top: 8px; }
+
+    @media (max-width: 480px) {
+      .field-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/" class="logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">Hvad Skal Vi?</span>
+    </a>
+    <button class="lang-toggle" id="langToggle" style="margin-left:auto;">Min profil</button>
+  </nav>
+
+  <div class="profile-wrap">
+    <h1>Min profil</h1>
+    <p class="sub">Opdater dine oplysninger</p>
+
+    <div id="notLoggedIn" style="display:none;text-align:center;padding:60px 0;">
+      <p style="color:rgba(255,255,255,.5);margin-bottom:20px;">Du skal være logget ind for at se din profil.</p>
+      <a href="/" style="color:#d94f3a;font-weight:600;">Gå til forsiden</a>
+    </div>
+
+    <div id="profileContent" style="display:none;">
+
+      <!-- NAME -->
+      <div class="profile-card">
+        <h2>Navn</h2>
+        <div class="field-row">
+          <div class="field-wrap">
+            <div class="field-label">Fornavn</div>
+            <input class="profile-input" id="firstName" type="text" placeholder="Fornavn">
+          </div>
+          <div class="field-wrap">
+            <div class="field-label">Efternavn</div>
+            <input class="profile-input" id="lastName" type="text" placeholder="Efternavn">
+          </div>
+        </div>
+        <button class="save-btn" id="saveNameBtn" onclick="saveName()">Gem navn</button>
+        <p class="msg" id="nameMsg"></p>
+      </div>
+
+      <!-- EMAIL -->
+      <div class="profile-card">
+        <h2>Email</h2>
+        <div class="field-row single">
+          <div class="field-wrap">
+            <div class="field-label">Email-adresse</div>
+            <input class="profile-input" id="emailInput" type="email" placeholder="din@email.dk">
+          </div>
+        </div>
+        <p class="note">Hvis du ændrer din email, sender vi en bekræftelse til den nye adresse.</p>
+        <button class="save-btn" id="saveEmailBtn" onclick="saveEmail()">Gem email</button>
+        <p class="msg" id="emailMsg"></p>
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="profile-card">
+        <h2>Skift kodeord</h2>
+        <div class="field-row single">
+          <div class="field-wrap">
+            <div class="field-label">Nyt kodeord</div>
+            <div style="position:relative;">
+              <input class="profile-input" id="newPwField" type="password" placeholder="Nyt kodeord" oninput="checkPwStrength(this.value)" style="padding-right:48px;">
+              <button type="button" onclick="toggleProfilePw('newPwField', this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);padding:0;display:flex;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:4px;margin:10px 0 4px;">
+          <div id="pb1" style="flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.1);transition:background .3s;"></div>
+          <div id="pb2" style="flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.1);transition:background .3s;"></div>
+          <div id="pb3" style="flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.1);transition:background .3s;"></div>
+          <div id="pb4" style="flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,.1);transition:background .3s;"></div>
+        </div>
+        <p id="pwStrLabel" style="font-size:11px;color:rgba(255,255,255,.4);margin:0 0 16px;min-height:16px;"></p>
+        <button class="save-btn" id="savePwBtn" onclick="savePassword()">Gem nyt kodeord</button>
+        <p class="msg" id="pwMsg"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    const _sbP = supabase.createClient(
+      'https://kqpxhefvnrlsuxmiqhhy.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxcHhoZWZ2bnJsc3V4bWlxaGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMzE4NjEsImV4cCI6MjA5MDgwNzg2MX0.-fw759yENbo2UZTdgzIU4TpjUqOON4ogtpEUYvE8fqA'
+    );
+
+    async function loadProfile() {
+      const { data: { session } } = await _sbP.auth.getSession();
+      if (!session) {
+        document.getElementById('notLoggedIn').style.display = 'block';
+        return;
+      }
+      document.getElementById('profileContent').style.display = 'block';
+      const meta = session.user.user_metadata || {};
+      document.getElementById('firstName').value = meta.first_name || '';
+      document.getElementById('lastName').value = meta.last_name || '';
+      document.getElementById('emailInput').value = session.user.email || '';
+    }
+
+    async function saveName() {
+      const first = document.getElementById('firstName').value.trim();
+      const last = document.getElementById('lastName').value.trim();
+      const msg = document.getElementById('nameMsg');
+      const btn = document.getElementById('saveNameBtn');
+      if (!first || !last) { showMsg('nameMsg', 'Udfyld både for- og efternavn.', false); return; }
+      btn.disabled = true; btn.textContent = '...';
+      const { error } = await _sbP.auth.updateUser({ data: { first_name: first, last_name: last, full_name: `${first} ${last}` } });
+      btn.disabled = false; btn.textContent = 'Gem navn';
+      if (error) showMsg('nameMsg', 'Fejl: ' + error.message, false);
+      else { showMsg('nameMsg', 'Navn opdateret!', true); updateNavAuth(); }
+    }
+
+    async function saveEmail() {
+      const email = document.getElementById('emailInput').value.trim();
+      const btn = document.getElementById('saveEmailBtn');
+      if (!email) { showMsg('emailMsg', 'Indtast en email.', false); return; }
+      btn.disabled = true; btn.textContent = '...';
+      const { error } = await _sbP.auth.updateUser({ email });
+      btn.disabled = false; btn.textContent = 'Gem email';
+      if (error) showMsg('emailMsg', 'Fejl: ' + error.message, false);
+      else showMsg('emailMsg', 'Bekræftelsesmail sendt til den nye adresse.', true);
+    }
+
+    function checkPwStrength(pw) {
+      const has8 = pw.length >= 8, hasU = /[A-Z]/.test(pw), hasN = /[0-9]/.test(pw), hasS = /[^A-Za-z0-9]/.test(pw);
+      const score = [has8, hasU, hasN, hasS].filter(Boolean).length;
+      const colors = ['rgba(255,255,255,.1)','#e74c3c','#e67e22','#f1c40f','#27ae60'];
+      const labels = ['','For svag','Svag','Okay','Stærk'];
+      for (let i = 1; i <= 4; i++) document.getElementById('pb'+i).style.background = i <= score ? colors[score] : 'rgba(255,255,255,.1)';
+      document.getElementById('pwStrLabel').textContent = pw.length ? labels[score] : '';
+    }
+
+    async function savePassword() {
+      const pw = document.getElementById('newPwField').value;
+      const btn = document.getElementById('savePwBtn');
+      if (pw.length < 8 || !/[A-Z]/.test(pw) || !/[0-9]/.test(pw) || !/[^A-Za-z0-9]/.test(pw)) {
+        showMsg('pwMsg', 'Kodeordet er ikke stærkt nok.', false); return;
+      }
+      btn.disabled = true; btn.textContent = '...';
+      const { error } = await _sbP.auth.updateUser({ password: pw });
+      btn.disabled = false; btn.textContent = 'Gem nyt kodeord';
+      if (error) showMsg('pwMsg', 'Fejl: ' + error.message, false);
+      else { showMsg('pwMsg', 'Kodeord opdateret!', true); document.getElementById('newPwField').value = ''; checkPwStrength(''); }
+    }
+
+    function toggleProfilePw(id, btn) {
+      const input = document.getElementById(id);
+      const isText = input.type === 'text';
+      input.type = isText ? 'password' : 'text';
+      btn.innerHTML = isText
+        ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`
+        : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+    }
+
+    function showMsg(id, text, ok) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = 'msg ' + (ok ? 'ok' : 'err');
+      setTimeout(() => { el.textContent = ''; }, 4000);
+    }
+
+    loadProfile();
+  </script>
+</body>
+</html>

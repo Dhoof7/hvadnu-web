@@ -342,19 +342,27 @@ async function updateNavAuth() {
     const meta = session.user.user_metadata || {};
     const name = meta.first_name || (meta.full_name ? meta.full_name.split(' ')[0] : null) || session.user.email.split('@')[0];
 
+    const nameSpan = document.createElement('span');
+    nameSpan.style.cssText = 'color:rgba(255,255,255,.8);font-size:12px;font-weight:600;white-space:nowrap;';
+    nameSpan.textContent = name;
+
+    const profileBtn = document.createElement('button');
+    profileBtn.style.cssText = _navBtnStyle;
+    profileBtn.textContent = 'Min profil';
+    profileBtn.onclick = () => { window.location.href = '/profile.html'; };
+
     const plansBtn = document.createElement('button');
     plansBtn.style.cssText = _navBtnStyle;
-    plansBtn.textContent = `${name} · Mine planer`;
+    plansBtn.textContent = 'Mine planer';
     plansBtn.onclick = () => { window.location.href = '/saved.html'; };
 
     const logoutBtn = document.createElement('button');
     logoutBtn.style.cssText = 'background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;';
     logoutBtn.textContent = 'Log ud';
-    logoutBtn.onclick = async () => {
-      await _sb.auth.signOut();
-      window.location.href = '/';
-    };
+    logoutBtn.onclick = async () => { await _sb.auth.signOut(); window.location.href = '/'; };
 
+    wrap.appendChild(nameSpan);
+    wrap.appendChild(profileBtn);
     wrap.appendChild(plansBtn);
     wrap.appendChild(logoutBtn);
   } else {
