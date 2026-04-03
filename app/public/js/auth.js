@@ -71,7 +71,11 @@ document.body.insertAdjacentHTML('beforeend', `
 
       <button onclick="submitAuth()" id="authSubmitBtn" style="width:100%;padding:14px;background:#1a1a28;color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:4px;">Log ind</button>
 
-      <p style="text-align:center;margin-top:14px;font-size:13px;color:#6b6b6b;">
+      <p id="forgotWrap" style="text-align:center;margin-top:10px;font-size:13px;">
+        <a onclick="showForgotMode()" style="color:#aaa;cursor:pointer;" id="forgotLink">Glemt adgangskode?</a>
+      </p>
+
+      <p style="text-align:center;margin-top:10px;font-size:13px;color:#6b6b6b;">
         <span id="authToggleText">Har du ikke en konto?</span>
         <a onclick="toggleAuthMode()" style="color:#d94f3a;cursor:pointer;font-weight:600;margin-left:4px;" id="authToggleLink">Opret konto</a>
       </p>
@@ -96,17 +100,26 @@ function closeAuthModal() {
 
 function _applyMode() {
   const isLogin = authMode === 'login';
-  document.getElementById('authTitle').textContent = isLogin ? 'Log ind' : 'Opret konto';
-  document.getElementById('authSub').textContent = isLogin ? 'Velkommen tilbage' : 'Gem og genfind dine planer';
-  document.getElementById('authSubmitBtn').textContent = isLogin ? 'Log ind' : 'Opret konto';
-  document.getElementById('authToggleText').textContent = isLogin ? 'Har du ikke en konto?' : 'Har du allerede en konto?';
-  document.getElementById('authToggleLink').textContent = isLogin ? 'Opret konto' : 'Log ind';
-  document.getElementById('nameFields').style.display = isLogin ? 'none' : 'block';
-  document.getElementById('pwStrengthWrap').style.display = isLogin ? 'none' : 'block';
-  document.getElementById('pwHints').style.display = isLogin ? 'none' : 'block';
+  const isForgot = authMode === 'forgot';
+  document.getElementById('authTitle').textContent = isForgot ? 'Nulstil kodeord' : isLogin ? 'Log ind' : 'Opret konto';
+  document.getElementById('authSub').textContent = isForgot ? 'Vi sender dig et link på email' : isLogin ? 'Velkommen tilbage' : 'Gem og genfind dine planer';
+  document.getElementById('authSubmitBtn').textContent = isForgot ? 'Send nulstillingslink' : isLogin ? 'Log ind' : 'Opret konto';
+  document.getElementById('authToggleText').textContent = isLogin ? 'Har du ikke en konto?' : isForgot ? '' : 'Har du allerede en konto?';
+  document.getElementById('authToggleLink').textContent = isLogin ? 'Opret konto' : isForgot ? '' : 'Log ind';
+  document.getElementById('nameFields').style.display = (!isLogin && !isForgot) ? 'block' : 'none';
+  document.getElementById('pwStrengthWrap').style.display = (!isLogin && !isForgot) ? 'block' : 'none';
+  document.getElementById('pwHints').style.display = (!isLogin && !isForgot) ? 'block' : 'none';
+  document.getElementById('authPassword').style.display = isForgot ? 'none' : 'block';
+  document.getElementById('googleBtn').style.display = isForgot ? 'none' : 'flex';
+  document.getElementById('forgotWrap').style.display = isLogin ? 'block' : 'none';
   document.getElementById('authError').style.display = 'none';
   document.getElementById('authPassword').value = '';
   checkPasswordStrength('');
+}
+
+function showForgotMode() {
+  authMode = 'forgot';
+  _applyMode();
 }
 
 function toggleAuthMode() {
@@ -147,7 +160,7 @@ function isPasswordStrong(pw) {
 async function signInWithGoogle() {
   await _sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.origin }
+    options: { redirectTo: window.location.href }
   });
 }
 
@@ -158,6 +171,25 @@ async function submitAuth() {
   const btn = document.getElementById('authSubmitBtn');
   errEl.style.display = 'none';
 
+  if (authMode === 'forgot') {
+    if (!email) { _showErr('Indtast din email.'); return; }
+    btn.textContent = '...'; btn.disabled = true;
+    try {
+      const { error } = await _sb.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/reset-password.html'
+      });
+      if (error) throw error;
+      document.getElementById('authForm').style.display = 'none';
+      document.getElementById('authSuccess').style.display = 'block';
+      document.getElementById('authSuccessMsg').textContent = `Vi har sendt et nulstillingslink til ${email}. Tjek din indbakke (og spam).`;
+    } catch (e) {
+      _showErr(translateAuthError(e.message));
+    } finally {
+      btn.textContent = 'Send nulstillingslink'; btn.disabled = false;
+    }
+    return;
+  }
+
   if (authMode === 'signup') {
     const first = document.getElementById('authFirst').value.trim();
     const last = document.getElementById('authLast').value.trim();
@@ -166,11 +198,18 @@ async function submitAuth() {
 
     btn.textContent = '...'; btn.disabled = true;
     try {
-      const { error } = await _sb.auth.signUp({
+      const { data, error } = await _sb.auth.signUp({
         email, password,
-        options: { data: { full_name: `${first} ${last}`, first_name: first, last_name: last } }
+        options: {
+          data: { full_name: `${first} ${last}`, first_name: first, last_name: last },
+          emailRedirectTo: window.location.origin
+        }
       });
       if (error) throw error;
+      // If user already exists, Supabase returns identities: []
+      if (data?.user?.identities?.length === 0) {
+        throw { message: 'already registered' };
+      }
       document.getElementById('authForm').style.display = 'none';
       document.getElementById('authSuccess').style.display = 'block';
       document.getElementById('authSuccessMsg').textContent = `Vi har sendt en bekræftelsesmail til ${email}. Klik på linket i mailen for at aktivere din konto.`;
