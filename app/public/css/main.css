@@ -49,6 +49,8 @@ button { font-family: var(--sans); cursor: pointer; }
 .logo { display: flex; align-items: center; gap: 10px; color: #fff; }
 .logo-icon { font-size: 16px; color: var(--accent); }
 .logo-text { font-family: var(--serif); font-size: 15px; font-weight: 600; color: #fff; }
+.logo-img { height: 44px; width: auto; object-fit: contain; background: transparent; border-radius: 8px; }
+.logo-img-sm { height: 36px; }
 .nav-links { display: flex; gap: 28px; }
 .nav-links a { color: rgba(255,255,255,.7); font-size: 14px; transition: color .2s; }
 .nav-links a:hover { color: #fff; }
@@ -120,6 +122,12 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   color: #fff; margin-bottom: 24px;
 }
 .home-hero-content h1 em { color: var(--accent); }
+.hero-slogan {
+  font-size: clamp(48px, 6vw, 88px) !important;
+  font-weight: 700; line-height: 1.05 !important;
+  letter-spacing: -.02em; color: #fff; margin-bottom: 32px !important;
+}
+.hero-slogan em { color: var(--accent); font-style: normal; }
 .hero-sub { font-size: 16px; color: rgba(255,255,255,.75); max-width: 420px; line-height: 1.7; margin-bottom: 36px; }
 .home-hero-content .eyebrow { color: rgba(255,255,255,.6); }
 .home-hero-content .hero-quiz-link { color: rgba(255,255,255,.65); font-size: 16px; }

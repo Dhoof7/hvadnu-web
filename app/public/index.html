@@ -15,12 +15,10 @@
   <body>
     <nav class="navbar">
       <a href="/" class="logo">
-        <span class="logo-icon">✦</span>
-        <span class="logo-text" data-i18n="nav.logo">Hvad Skal Vi?</span>
+        <img src="img/logo.png" alt="hvadnu" class="logo-img">
       </a>
       <div class="nav-links">
-        <a href="#" data-i18n="nav.howItWorks">Sådan virker det</a>
-        <a href="#" data-i18n="nav.about">Om os</a>
+        <a href="#how-it-works" data-i18n="nav.howItWorks">Sådan virker det</a>
       </div>
       <button
         class="lang-toggle"
@@ -35,8 +33,8 @@
     <section class="home-hero">
       <div class="home-hero-content">
         <p class="eyebrow" data-i18n="hero.eyebrow">DIN PERSONLIGE PLANMAGER</p>
-        <h1 data-i18n="hero.h1">
-          Ingen planer i den nye by?<br /><em>VI har dem.</em>
+        <h1 class="hero-slogan">
+          Stop med<br>at tænke.<br><em>Start med<br>at opleve.</em>
         </h1>
         <p class="hero-sub" data-i18n="hero.sub">
           Beskriv din situation og få 3 personlige planer — med steder,
@@ -125,7 +123,7 @@
     </section>
 
     <!-- HOW IT WORKS -->
-    <section class="how-it-works">
+    <section class="how-it-works" id="how-it-works">
       <p class="eyebrow center" data-i18n="hiw.eyebrow">SÅDAN VIRKER DET</p>
       <h2 class="section-heading center" data-i18n="hiw.title">
         Tre trin til en god dag
@@ -223,12 +221,11 @@
     <!-- FOOTER -->
     <footer class="footer">
       <div class="footer-inner simple">
-        <div class="logo footer-logo">
-          <span class="logo-icon">✦</span>
-          <span class="logo-text" data-i18n="nav.logo">Hvad Skal Vi?</span>
-        </div>
+        <a href="/" class="logo footer-logo">
+          <img src="img/logo.png" alt="hvadnu" class="logo-img logo-img-sm">
+        </a>
         <p class="footer-note" data-i18n="footer.note">
-          © 2026 Hvad Skal Vi? · Lavet til folk der vil opleve mere.
+          © 2026 hvadnu · Lad appen beslutte. Du nyder.
         </p>
       </div>
     </footer>
