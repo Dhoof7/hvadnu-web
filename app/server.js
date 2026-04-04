@@ -292,20 +292,19 @@ app.get('/api/admin/stats', async (req, res) => {
   if (req.headers['x-admin-secret'] !== adminSecret) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-  const sbUrl = process.env.SUPABASE_URL;
-  const sbKey = process.env.SUPABASE_SERVICE_KEY;
-  if (!sbUrl || !sbKey) {
-    return res.status(500).json({ error: 'Supabase service key not configured' });
-  }
+  const sbUrl = 'https://kqpxhefvnrlsuxmiqhhy.supabase.co';
+  const sbAnon = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxcHhoZWZ2bnJsc3V4bWlxaGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMzE4NjEsImV4cCI6MjA5MDgwNzg2MX0.-fw759yENbo2UZTdgzIU4TpjUqOON4ogtpEUYvE8fqA';
   try {
-    const [usersRes, plansRes] = await Promise.all([
-      fetch(`${sbUrl}/auth/v1/admin/users?page=1&per_page=1`, {
-        headers: { apikey: sbKey, Authorization: `Bearer ${sbKey}` },
+    const [statsRes, plansRes] = await Promise.all([
+      fetch(`${sbUrl}/rest/v1/rpc/get_admin_stats`, {
+        method: 'POST',
+        headers: { apikey: sbAnon, Authorization: `Bearer ${sbAnon}`, 'Content-Type': 'application/json' },
+        body: '{}',
       }),
       fetch(`${sbUrl}/rest/v1/saved_plans?select=count`, {
         headers: {
-          apikey: sbKey,
-          Authorization: `Bearer ${sbKey}`,
+          apikey: sbAnon,
+          Authorization: `Bearer ${sbAnon}`,
           Prefer: 'count=exact',
           'Range-Unit': 'items',
           Range: '0-0',
@@ -313,24 +312,17 @@ app.get('/api/admin/stats', async (req, res) => {
       }),
     ]);
 
-    const usersData = await usersRes.json();
-    const totalUsers = usersData.total || 0;
+    const stats = await statsRes.json();
     const totalPlans = parseInt(plansRes.headers.get('content-range')?.split('/')[1] || '0', 10);
-
-    const recentRes = await fetch(
-      `${sbUrl}/auth/v1/admin/users?page=1&per_page=10`,
-      { headers: { apikey: sbKey, Authorization: `Bearer ${sbKey}` } }
-    );
-    const recentData = await recentRes.json();
-    const recentUsers = (recentData.users || []).map(u => ({
+    const recentUsers = (stats.recent_users || []).map(u => ({
       email: u.email,
-      name: u.user_metadata?.full_name || u.user_metadata?.name || '—',
-      provider: u.app_metadata?.provider || 'email',
+      name: u.name || '—',
+      provider: u.provider || 'email',
       created_at: u.created_at,
-      confirmed: !!u.email_confirmed_at,
+      confirmed: u.confirmed,
     }));
 
-    res.json({ totalUsers, totalPlans, recentUsers });
+    res.json({ totalUsers: parseInt(stats.total_users || 0), totalPlans, recentUsers });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
