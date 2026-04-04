@@ -122,8 +122,9 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   position: relative;
   min-height: calc(100vh - 72px);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
+  grid-template-columns: 1fr 480px;
+  gap: 0;
+  align-items: stretch;
 }
 .home-hero-image {
   position: absolute; inset: 0; z-index: 0;
@@ -134,27 +135,34 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .home-hero-content {
   position: relative; z-index: 1;
   display: flex; flex-direction: column; justify-content: center;
-  padding: 80px 48px 80px 80px;
+  padding: 72px 56px 72px 80px;
+  max-width: 700px;
 }
 .home-hero-content h1 {
-  font-size: clamp(44px, 5.5vw, 72px); font-weight: 700;
+  font-size: clamp(36px, 4vw, 60px); font-weight: 700;
   color: #fff; margin-bottom: 24px;
 }
 .home-hero-content h1 em { color: var(--accent); }
 .hero-slogan {
-  font-size: clamp(42px, 5vw, 76px) !important;
-  font-weight: 700; line-height: 1.05 !important;
-  letter-spacing: -.02em; color: #fff; margin-bottom: 32px !important;
+  font-size: clamp(36px, 4vw, 62px) !important;
+  font-weight: 700; line-height: 1.08 !important;
+  letter-spacing: -.02em; color: #fff; margin-bottom: 20px !important;
 }
 .hero-slogan em { color: var(--accent); font-style: normal; }
-.hero-sub { font-size: 16px; color: rgba(255,255,255,.75); max-width: 440px; line-height: 1.7; margin-bottom: 36px; }
-.home-hero-content .eyebrow { color: rgba(255,255,255,.6); }
-.home-hero-content .hero-quiz-link { color: rgba(255,255,255,.65); font-size: 16px; }
+.hero-sub { font-size: 15px; color: rgba(255,255,255,.75); max-width: 420px; line-height: 1.65; margin-bottom: 28px; }
+.home-hero-content .eyebrow { color: rgba(255,255,255,.6); margin-bottom: 14px; }
+.home-hero-content .hero-quiz-link { color: rgba(255,255,255,.65); font-size: 14px; }
 .home-hero-content .hero-quiz-link a { color: #fff; font-weight: 600; text-decoration: underline; }
 .home-hero-content .free-input { background: rgba(255,255,255,.95); }
 
 /* Hero right panel */
-.hero-right-panel { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 60px 80px 60px 40px; }
+.hero-right-panel {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 40px;
+  background: rgba(0,0,0,.15);
+  border-left: 1px solid rgba(255,255,255,.08);
+}
 .hero-sponsor-panel { background: rgba(15,15,28,.75); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.15); border-radius: 28px; padding: 28px; width: 100%; max-width: 520px; box-shadow: 0 32px 80px rgba(0,0,0,.5); }
 .hero-sponsor-panel .nearby-heading { font-size: 16px; margin: 0 0 18px; color: rgba(255,255,255,.8); }
 .hero-sponsor-panel .nearby-sponsors { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex-wrap: unset; overflow: visible; }
@@ -509,12 +517,12 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 @media (max-width: 600px) { .nearby-card { width: 120px; } .nearby-img { height: 75px; } }
 
 /* Free text input */
-.free-input-wrap { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+.free-input-wrap { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; max-width: 520px; }
 .nearby-box {
   background: rgba(15,15,28,.75); backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,.15); border-radius: 28px;
-  padding: 28px; width: 100%; max-width: 520px;
-  box-shadow: 0 32px 80px rgba(0,0,0,.5);
+  border: 1px solid rgba(255,255,255,.15); border-radius: 24px;
+  padding: 28px; width: 100%;
+  box-shadow: 0 24px 60px rgba(0,0,0,.4);
 }
 .nearby-box-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; color: #fff; }
 .nearby-box-title { font-size: 18px; font-weight: 700; margin: 0 0 2px; color: #fff; }
@@ -669,9 +677,12 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 }
 
 /* ===== RESPONSIVE ===== */
+@media (max-width: 1100px) {
+  .home-hero { grid-template-columns: 1fr 400px; }
+  .home-hero-content { padding: 60px 40px 60px 48px; }
+}
 @media (max-width: 1024px) {
   .navbar { padding: 0 32px; }
-  .home-hero-content { padding: 60px 40px; }
   .how-it-works, .examples, .home-cta, .footer { padding-left: 40px; padding-right: 40px; }
   .results-grid { grid-template-columns: 1fr 1fr; padding: 0 24px; }
   .plan-hero { padding: 56px 40px 48px; }
