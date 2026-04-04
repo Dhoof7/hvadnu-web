@@ -533,6 +533,12 @@
           if (q) showNearestForCity(selectedNearestCity, q);
         }
       });
+      document.getElementById('nearestInput').addEventListener('input', e => {
+        if (!e.target.value.trim()) {
+          if (selectedNearestCity) showNearestForCity(selectedNearestCity, '');
+          else showRandomSponsors();
+        }
+      });
 
       // Load city chips from /api/cities
       (async () => {

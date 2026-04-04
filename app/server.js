@@ -243,10 +243,10 @@ app.get('/api/admin/stats', async (req, res) => {
 app.get('/api/search', (req, res) => {
   const q = (req.query.q || '').toLowerCase().trim();
   const city = (req.query.city || '').toLowerCase().trim();
-  if (!q) return res.json([]);
+  if (!q && !city) return res.json([]);
 
   const matchesCity = (c) => !city || c === city;
-  const matchesQuery = (text) => (text || '').toLowerCase().includes(q);
+  const matchesQuery = (text) => !q || (text || '').toLowerCase().includes(q);
 
   const sponsorHits = SPONSORS.filter(s =>
     s.active && matchesCity(s.city) &&
