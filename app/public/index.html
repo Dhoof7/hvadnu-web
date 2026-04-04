@@ -49,38 +49,9 @@
           <p class="hero-quiz-link" data-i18n="hero.quizLink">
             Foretrækker du spørgsmål? <a href="quiz.html">Tag quizzen →</a>
           </p>
-          <div class="hero-cta-row">
-            <button class="btn-primary btn-large free-submit-btn" id="freeSubmitBtn">
-              Find mine planer →
-            </button>
-            <button class="btn-nearby" id="nearbyBtn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Det nærmeste
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- NEARBY SEARCH PANEL -->
-      <div class="nearby-panel" id="nearbyPanel" style="display:none;">
-        <div class="nearby-panel-inner">
-          <div class="nearby-search-row">
-            <input
-              type="text"
-              id="nearbyInput"
-              class="nearby-input"
-              placeholder="Fx restaurant, frisør, hotel, café..."
-              autocomplete="off"
-            />
-            <button class="nearby-search-btn" id="nearbySearchBtn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              Søg
-            </button>
-          </div>
-          <p class="nearby-city-hint" id="nearbyCityHint" style="display:none;">
-            Vælg en by øverst for at søge i nærheden.
-          </p>
-          <div class="nearby-results" id="nearbyResults"></div>
+          <button class="btn-primary btn-large free-submit-btn" id="freeSubmitBtn">
+            Find mine planer →
+          </button>
         </div>
       </div>
 
@@ -142,6 +113,38 @@
           src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80"
           alt="Friends having fun"
         />
+      </div>
+    </section>
+
+    <!-- FIND NÆRMESTE -->
+    <section class="nearby-section">
+      <div class="nearby-box">
+        <div class="nearby-box-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div>
+            <h2 class="nearby-box-title">Find nærmeste</h2>
+            <p class="nearby-box-sub">Søg efter steder i din by</p>
+          </div>
+        </div>
+        <div class="nearby-city-row-box">
+          <span class="nearby-city-label-box">Vælg by:</span>
+          <div class="nearby-box-chips" id="nearbyBoxCityChips"></div>
+        </div>
+        <div class="nearby-search-row">
+          <input
+            type="text"
+            id="nearbyInput"
+            class="nearby-input"
+            placeholder="Fx restaurant, frisør, hotel, café, bar..."
+            autocomplete="off"
+          />
+          <button class="nearby-search-btn" id="nearbySearchBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Søg
+          </button>
+        </div>
+        <p class="nearby-city-hint" id="nearbyCityHint" style="display:none;">Vælg en by for at søge.</p>
+        <div class="nearby-results" id="nearbyResults"></div>
       </div>
     </section>
 
@@ -447,32 +450,42 @@
         }
       });
 
-      // Nearby search
-      const nearbyBtn = document.getElementById('nearbyBtn');
-      const nearbyPanel = document.getElementById('nearbyPanel');
+      // Nearby search — standalone box with its own city selector
+      let nearbyCity = '';
       const nearbyInput = document.getElementById('nearbyInput');
       const nearbySearchBtn = document.getElementById('nearbySearchBtn');
       const nearbyResults = document.getElementById('nearbyResults');
       const nearbyCityHint = document.getElementById('nearbyCityHint');
 
-      nearbyBtn.addEventListener('click', () => {
-        const open = nearbyPanel.style.display !== 'none';
-        nearbyPanel.style.display = open ? 'none' : 'block';
-        if (!open) nearbyInput.focus();
-      });
+      (async () => {
+        try {
+          const cities = await fetch('/api/cities').then(r => r.json());
+          const wrap = document.getElementById('nearbyBoxCityChips');
+          wrap.innerHTML = cities.map(c => `
+            <button class="hero-city-chip" data-value="${c.value}">${c.label}</button>
+          `).join('');
+          wrap.querySelectorAll('.hero-city-chip').forEach(btn => {
+            btn.addEventListener('click', () => {
+              wrap.querySelectorAll('.hero-city-chip').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              nearbyCity = btn.dataset.value;
+              nearbyCityHint.style.display = 'none';
+            });
+          });
+        } catch {}
+      })();
 
       async function runNearbySearch() {
         const query = nearbyInput.value.trim();
         if (!query) return;
-        if (!selectedHeroCity) {
+        if (!nearbyCity) {
           nearbyCityHint.style.display = 'block';
-          nearbyResults.innerHTML = '';
           return;
         }
         nearbyCityHint.style.display = 'none';
         nearbyResults.innerHTML = '<p class="nearby-loading">Søger...</p>';
         try {
-          const res = await fetch(`/api/nearby?city=${encodeURIComponent(selectedHeroCity)}&query=${encodeURIComponent(query)}`);
+          const res = await fetch(`/api/nearby?city=${encodeURIComponent(nearbyCity)}&query=${encodeURIComponent(query)}`);
           const places = await res.json();
           if (!places.length) {
             nearbyResults.innerHTML = '<p class="nearby-empty">Ingen steder fundet. Prøv et andet søgeord.</p>';
@@ -502,9 +515,7 @@
       }
 
       nearbySearchBtn.addEventListener('click', runNearbySearch);
-      nearbyInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') runNearbySearch();
-      });
+      nearbyInput.addEventListener('keydown', e => { if (e.key === 'Enter') runNearbySearch(); });
     </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/auth.js"></script>
