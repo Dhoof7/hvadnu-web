@@ -3,8 +3,8 @@ const Anthropic = require('@anthropic-ai/sdk');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
-const SB_URL = 'https://kqpxhefvnrlsuxmiqhhy.supabase.co';
-const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxcHhoZWZ2bnJsc3V4bWlxaGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMzE4NjEsImV4cCI6MjA5MDgwNzg2MX0.-fw759yENbo2UZTdgzIU4TpjUqOON4ogtpEUYvE8fqA';
+const SUPABASE_URL = 'https://kqpxhefvnrlsuxmiqhhy.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxcHhoZWZ2bnJsc3V4bWlxaGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMzE4NjEsImV4cCI6MjA5MDgwNzg2MX0.-fw759yENbo2UZTdgzIU4TpjUqOON4ogtpEUYvE8fqA';
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'dhoof12349';
 
 const fs = require('fs');
@@ -12,6 +12,11 @@ let SPONSORS = [];
 try {
   SPONSORS = JSON.parse(fs.readFileSync(path.join(__dirname, 'sponsors.json'), 'utf8'));
 } catch { SPONSORS = []; }
+
+let PLACES = [];
+try {
+  PLACES = JSON.parse(fs.readFileSync(path.join(__dirname, 'places.json'), 'utf8'));
+} catch { PLACES = []; }
 
 function findSponsor(stepType, city) {
   if (!city) return null;
@@ -40,37 +45,18 @@ async function findPlace(stepType, city) {
   return findLocalPlace(stepType, city);
 }
 
-async function findLocalPlace(stepType, city) {
+function findLocalPlace(stepType, city) {
   if (!city) return null;
-  try {
-    const cityNorm = city.toLowerCase().trim();
-    const typeNorm = stepType.toLowerCase().trim();
-    const params = new URLSearchParams({
-      city: `eq.${cityNorm}`,
-      type: `ilike.*${typeNorm}*`,
-      active: 'eq.true',
-      limit: 1,
-      order: 'random()',
-    });
-    const res = await fetch(`${SB_URL}/rest/v1/places?${params}`, {
-      headers: { apikey: SB_ANON, Authorization: `Bearer ${SB_ANON}` },
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    const p = data[0];
-    if (!p) return null;
-    return {
-      name: p.name,
-      address: p.address,
-      url: p.url,
-      image: p.image,
-      phone: p.phone,
-      description: p.description,
-      sponsored: false,
-    };
-  } catch {
-    return null;
-  }
+  const cityNorm = city.toLowerCase().trim();
+  const typeNorm = stepType.toLowerCase().trim();
+  const matches = PLACES.filter(p =>
+    p.active &&
+    p.city === cityNorm &&
+    p.type.toLowerCase().includes(typeNorm) || typeNorm.includes(p.type.toLowerCase())
+  );
+  if (!matches.length) return null;
+  const p = matches[Math.floor(Math.random() * matches.length)];
+  return { name: p.name, address: p.address, url: p.url, image: p.image, phone: p.phone, description: p.description, sponsored: false };
 }
 
 const app = express();
@@ -257,18 +243,10 @@ app.get('/api/sponsors', (_req, res) => {
   res.json(SPONSORS.filter(s => s.active));
 });
 
-app.get('/api/cities', async (_req, res) => {
-  try {
-    const r = await fetch(`${SB_URL}/rest/v1/places?select=city&active=eq.true`, {
-      headers: { apikey: SB_ANON, Authorization: `Bearer ${SB_ANON}` },
-    });
-    const data = await r.json();
-    const unique = [...new Set(data.map(p => p.city))].sort();
-    const labels = { aalborg: 'Aalborg', aarhus: 'Aarhus', copenhagen: 'København', odense: 'Odense' };
-    res.json(unique.map(c => ({ value: c, label: labels[c] || c.charAt(0).toUpperCase() + c.slice(1) })));
-  } catch {
-    res.json([]);
-  }
+app.get('/api/cities', (_req, res) => {
+  const labels = { aalborg: 'Aalborg', aarhus: 'Aarhus', copenhagen: 'København', odense: 'Odense' };
+  const unique = [...new Set(PLACES.filter(p => p.active).map(p => p.city))].sort();
+  res.json(unique.map(c => ({ value: c, label: labels[c] || c.charAt(0).toUpperCase() + c.slice(1) })));
 });
 
 app.get('/api/test', async (req, res) => {
@@ -308,19 +286,17 @@ app.get('/api/admin/stats', async (req, res) => {
   if (req.headers['x-admin-secret'] !== adminSecret) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-  const sbUrl = 'https://kqpxhefvnrlsuxmiqhhy.supabase.co';
-  const sbAnon = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxcHhoZWZ2bnJsc3V4bWlxaGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMzE4NjEsImV4cCI6MjA5MDgwNzg2MX0.-fw759yENbo2UZTdgzIU4TpjUqOON4ogtpEUYvE8fqA';
   try {
     const [statsRes, plansRes] = await Promise.all([
-      fetch(`${sbUrl}/rest/v1/rpc/get_admin_stats`, {
+      fetch(`${SUPABASE_URL}/rest/v1/rpc/get_admin_stats`, {
         method: 'POST',
-        headers: { apikey: sbAnon, Authorization: `Bearer ${sbAnon}`, 'Content-Type': 'application/json' },
+        headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json' },
         body: '{}',
       }),
-      fetch(`${sbUrl}/rest/v1/saved_plans?select=count`, {
+      fetch(`${SUPABASE_URL}/rest/v1/saved_plans?select=count`, {
         headers: {
-          apikey: sbAnon,
-          Authorization: `Bearer ${sbAnon}`,
+          apikey: SUPABASE_ANON,
+          Authorization: `Bearer ${SUPABASE_ANON}`,
           Prefer: 'count=exact',
           'Range-Unit': 'items',
           Range: '0-0',

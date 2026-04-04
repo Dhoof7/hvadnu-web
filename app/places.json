@@ -1,0 +1,112 @@
+[
+  {
+    "name": "Mortens Kro",
+    "city": "aalborg",
+    "type": "Restaurant",
+    "address": "Mølleå 4-6, 9000 Aalborg",
+    "url": "https://www.mortenskro.dk",
+    "phone": "+45 98 12 48 60",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "description": "En af Aalborgs mest kendte restauranter med klassisk dansk køkken.",
+    "active": true
+  },
+  {
+    "name": "Cafe Especially",
+    "city": "aalborg",
+    "type": "Café",
+    "address": "Bispensgade 12, 9000 Aalborg",
+    "url": "https://cafeespecially.dk",
+    "phone": "+45 98 13 00 00",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "description": "Hyggelig café i hjertet af Aalborg med god kaffe og brunch.",
+    "active": true
+  },
+  {
+    "name": "Utzon Center",
+    "city": "aalborg",
+    "type": "Museum",
+    "address": "Slotspladsen 4, 9000 Aalborg",
+    "url": "https://www.utzoncenter.dk",
+    "phone": "+45 99 31 70 00",
+    "image": "https://images.unsplash.com/photo-1566127992631-137a642a90f4?w=400&q=80",
+    "description": "Arkitekturcenter ved havnefronten designet af Jørn Utzon.",
+    "active": true
+  },
+  {
+    "name": "Aalborg Zoo",
+    "city": "aalborg",
+    "type": "Park",
+    "address": "Mølleparkvej 63, 9000 Aalborg",
+    "url": "https://www.aalborgzoo.dk",
+    "phone": "+45 98 11 29 00",
+    "image": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=400&q=80",
+    "description": "En af Danmarks bedste zoologiske haver med over 1.500 dyr.",
+    "active": true
+  },
+  {
+    "name": "Escape Room Aalborg",
+    "city": "aalborg",
+    "type": "Escape Room",
+    "address": "Algade 52, 9000 Aalborg",
+    "url": "https://www.escaperoomaalborgdk",
+    "phone": "+45 50 50 12 34",
+    "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
+    "description": "Spændende escape rooms for venner, par og familier.",
+    "active": true
+  },
+  {
+    "name": "Bowlingscentret Aalborg",
+    "city": "aalborg",
+    "type": "Bowling",
+    "address": "Hobrovej 14, 9000 Aalborg",
+    "url": "",
+    "phone": "+45 98 18 00 00",
+    "image": "https://images.unsplash.com/photo-1591491653056-4e8c1c0ed746?w=400&q=80",
+    "description": "Stort bowlingcenter med baner, bar og mad.",
+    "active": true
+  },
+  {
+    "name": "Nordkraft",
+    "city": "aalborg",
+    "type": "Cinema",
+    "address": "Kjellerups Torv 5, 9000 Aalborg",
+    "url": "https://www.nordkraft.dk",
+    "phone": "+45 99 35 66 00",
+    "image": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&q=80",
+    "description": "Kulturhus med biograf, koncerter, fitness og mad.",
+    "active": true
+  },
+  {
+    "name": "Jomfru Ane Gade",
+    "city": "aalborg",
+    "type": "Bar",
+    "address": "Jomfru Ane Gade, 9000 Aalborg",
+    "url": "",
+    "phone": "",
+    "image": "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=400&q=80",
+    "description": "Aalborgs berømte gågade fyldt med barer og natteliv.",
+    "active": true
+  },
+  {
+    "name": "Aalborg Havnefront",
+    "city": "aalborg",
+    "type": "Park",
+    "address": "Aalborg Havnefront, 9000 Aalborg",
+    "url": "",
+    "phone": "",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80",
+    "description": "Flot havnepromenade langs Limfjorden — perfekt til en gåtur.",
+    "active": true
+  },
+  {
+    "name": "Aalborg Paintball",
+    "city": "aalborg",
+    "type": "Paintball",
+    "address": "Erhvervsvej 10, 9220 Aalborg",
+    "url": "",
+    "phone": "+45 40 20 30 40",
+    "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&q=80",
+    "description": "Paintball for grupper — perfekt til vennefester og teambuilding.",
+    "active": true
+  }
+]
