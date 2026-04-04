@@ -525,20 +525,12 @@
 
       document.getElementById('nearestSearchBtn').addEventListener('click', () => {
         const q = document.getElementById('nearestInput').value.trim();
-        if (!selectedNearestCity) {
-          document.getElementById('nearestResults').innerHTML = '<p class="nearest-hint">Vælg en by ovenfor</p>';
-          return;
-        }
-        showNearestForCity(selectedNearestCity, q);
+        if (q) showNearestForCity(selectedNearestCity, q);
       });
       document.getElementById('nearestInput').addEventListener('keydown', e => {
         if (e.key === 'Enter') {
           const q = e.target.value.trim();
-          if (!selectedNearestCity) {
-            document.getElementById('nearestResults').innerHTML = '<p class="nearest-hint">Vælg en by ovenfor</p>';
-            return;
-          }
-          showNearestForCity(selectedNearestCity, q);
+          if (q) showNearestForCity(selectedNearestCity, q);
         }
       });
 

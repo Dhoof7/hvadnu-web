@@ -1778,6 +1778,20 @@
     "instagram": "",
     "facebook": "",
     "active": true
+  }, 
+   {
+    "name": "FARAH.STUDIO",
+    "city": "lystrup",
+    "type": "Frisør",
+    "address": "elstedhoej, 8520 Lystrup",
+    "url": "",
+    "phone": "",
+    "image": "https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "description": "Best Barber in Town.",
+    "instagram": "https://www.instagram.com/farah._studio/",
+    "facebook": "",
+   "rating": 4.7,
+    "active": true
   }
 
 ]

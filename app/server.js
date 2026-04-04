@@ -243,18 +243,20 @@ app.get('/api/admin/stats', async (req, res) => {
 app.get('/api/search', (req, res) => {
   const q = (req.query.q || '').toLowerCase().trim();
   const city = (req.query.city || '').toLowerCase().trim();
-  if (!q || !city) return res.json([]);
+  if (!q) return res.json([]);
+
+  const matchesCity = (c) => !city || c === city;
+  const matchesQuery = (text) => (text || '').toLowerCase().includes(q);
 
   const sponsorHits = SPONSORS.filter(s =>
-    s.active && s.city === city &&
-    (!q || s.categories.some(c => c.includes(q) || q.includes(c)) || s.name.toLowerCase().includes(q))
+    s.active && matchesCity(s.city) &&
+    (s.categories.some(c => matchesQuery(c)) || matchesQuery(s.name))
   ).map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, phone: s.phone, description: null, instagram: s.instagram || null, facebook: s.facebook || null, sponsored: true }));
 
   const seen = new Set(sponsorHits.map(s => s.name.toLowerCase()));
   const placeHits = PLACES.filter(p =>
-    p.active && p.city === city &&
-    (!q || p.type.toLowerCase().includes(q) || q.includes(p.type.toLowerCase()) ||
-     p.name.toLowerCase().includes(q) || (p.description || '').toLowerCase().includes(q))
+    p.active && matchesCity(p.city) &&
+    (matchesQuery(p.type) || matchesQuery(p.name) || matchesQuery(p.description))
   ).filter(p => !seen.has(p.name.toLowerCase()))
    .map(p => ({ name: p.name, type: p.type, address: p.address, url: p.url, image: p.image, phone: p.phone, description: p.description, instagram: p.instagram || null, facebook: p.facebook || null, sponsored: false }));
 
