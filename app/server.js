@@ -281,6 +281,10 @@ app.get('/api/test', async (req, res) => {
   res.json(results);
 });
 
+app.get('/api/admin/debug', (_req, res) => {
+  res.json({ adminSecretSet: !!ADMIN_SECRET, adminSecretLength: ADMIN_SECRET ? ADMIN_SECRET.length : 0 });
+});
+
 app.get('/api/admin/stats', async (req, res) => {
   if (!ADMIN_SECRET || req.headers['x-admin-secret'] !== ADMIN_SECRET) {
     return res.status(401).json({ error: 'Unauthorized' });
