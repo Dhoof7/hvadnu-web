@@ -57,6 +57,22 @@ button { font-family: var(--sans); cursor: pointer; }
 .nav-links a:hover { color: #000; }
 .nav-back-btn { color: rgba(0,0,0,.6); font-size: 14px; font-weight: 500; transition: color .2s; margin-left: auto; }
 .nav-back-btn:hover { color: #000; }
+.nav-auth-btn {
+  background: rgba(0,0,0,.06); color: #1a1a1a;
+  border: 1px solid rgba(0,0,0,.12); border-radius: 20px;
+  padding: 8px 18px; font-size: 14px; font-weight: 600;
+  cursor: pointer; white-space: nowrap; font-family: inherit;
+  transition: background .15s, border-color .15s;
+}
+.nav-auth-btn:hover { background: #0d2247; color: #fff; border-color: #0d2247; }
+.nav-auth-logout {
+  background: transparent; color: rgba(0,0,0,.45);
+  border: none; border-radius: 20px;
+  padding: 8px 18px; font-size: 14px; font-weight: 600;
+  cursor: pointer; white-space: nowrap; font-family: inherit;
+  transition: color .15s;
+}
+.nav-auth-logout:hover { color: #c0392b; }
 .nav-exit, .nav-link-plain { color: rgba(0,0,0,.6); font-size: 14px; transition: color .2s; }
 .nav-exit:hover, .nav-link-plain:hover { color: #000; }
 .lang-toggle {

@@ -315,7 +315,7 @@ async function saveProfile() {
 }
 
 // ---- nav auth ----
-const _navBtnStyle = 'background:rgba(0,0,0,.07);color:#1a1a1a;border:1px solid rgba(0,0,0,.12);border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;transition:background .2s;';
+const _navBtnStyle = '';
 
 function injectNavAuthBtn() {
   const navbar = document.querySelector('.navbar');
@@ -354,13 +354,13 @@ async function updateNavAuth() {
 
     const mk = (label, href) => {
       const b = document.createElement('button');
-      b.style.cssText = _navBtnStyle;
+      b.className = 'nav-auth-btn';
       b.textContent = label;
       b.onclick = () => { window.location.href = href; };
       return b;
     };
     const logoutBtn = document.createElement('button');
-    logoutBtn.style.cssText = 'background:transparent;color:rgba(0,0,0,.5);border:none;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;transition:color .2s;';
+    logoutBtn.className = 'nav-auth-logout';
     logoutBtn.textContent = 'Log ud';
     logoutBtn.onclick = async () => { await _sb.auth.signOut(); window.location.href = '/'; };
 
@@ -402,7 +402,7 @@ async function updateNavAuth() {
     wrap.appendChild(mobileWrap);
   } else {
     const btn = document.createElement('button');
-    btn.style.cssText = _navBtnStyle;
+    btn.className = 'nav-auth-btn';
     btn.textContent = 'Log ind';
     btn.onclick = handleNavAuthClick;
     wrap.appendChild(btn);
