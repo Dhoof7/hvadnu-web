@@ -34,11 +34,16 @@
           aktiviteter og booking-links.
         </p>
         <div class="free-input-wrap">
+          <div class="hero-city-row" id="heroCityRow">
+            <span class="hero-city-label">By:</span>
+            <div class="hero-city-chips" id="heroCityChips">
+              <span style="font-size:13px;color:var(--muted);">Henter byer...</span>
+            </div>
+          </div>
           <textarea
             id="freeInput"
             class="free-input"
-            data-i18n="hero.placeholder"
-            placeholder="Fx vi er 5 drenge i København, vil spise først og så ud i byen bagefter..."
+            placeholder="Fx vi er 5 drenge, vil spise først og så ud i byen bagefter..."
             rows="3"
           ></textarea>
           <p class="hero-quiz-link" data-i18n="hero.quizLink">
@@ -371,15 +376,41 @@
       }
     </script>
     <script>
+      let selectedHeroCity = '';
+
+      // Load city chips from /api/cities
+      (async () => {
+        try {
+          const cities = await fetch('/api/cities').then(r => r.json());
+          const wrap = document.getElementById('heroCityChips');
+          wrap.innerHTML = cities.map(c => `
+            <button class="hero-city-chip" data-value="${c.value}">${c.label}</button>
+          `).join('');
+          wrap.querySelectorAll('.hero-city-chip').forEach(btn => {
+            btn.addEventListener('click', () => {
+              wrap.querySelectorAll('.hero-city-chip').forEach(b => b.classList.remove('active'));
+              if (selectedHeroCity === btn.dataset.value) {
+                selectedHeroCity = '';
+              } else {
+                btn.classList.add('active');
+                selectedHeroCity = btn.dataset.value;
+              }
+            });
+          });
+        } catch {}
+      })();
+
       document.getElementById("freeSubmitBtn").addEventListener("click", () => {
         const desc = document.getElementById("freeInput").value.trim();
         if (!desc) return;
+        localStorage.removeItem('plans');
         localStorage.setItem(
           "preferences",
           JSON.stringify({
             description: desc,
             freetext: true,
             lang: getCurrentLang(),
+            city: selectedHeroCity,
           }),
         );
         window.location.href = "results.html";
@@ -390,7 +421,6 @@
           document.getElementById("freeSubmitBtn").click();
         }
       });
-
     </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/auth.js"></script>

@@ -517,6 +517,17 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 
 /* Free text input */
 .free-input-wrap { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+.hero-city-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.hero-city-label { font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.hero-city-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.hero-city-chip {
+  padding: 6px 14px; border-radius: 20px;
+  border: 1.5px solid var(--border); background: #fff;
+  font-size: 13px; font-weight: 600; color: var(--text);
+  cursor: pointer; transition: all .15s;
+}
+.hero-city-chip:hover { border-color: var(--dark); }
+.hero-city-chip.active { background: var(--dark); color: #fff; border-color: var(--dark); }
 .free-input {
   width: 100%; padding: 16px 20px;
   border: 1.5px solid var(--border); border-radius: var(--radius);
