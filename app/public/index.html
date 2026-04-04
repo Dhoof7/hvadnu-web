@@ -426,24 +426,67 @@
         }
       }
 
+      // City center coords for distance calculation
+      const CITY_COORDS = { aalborg:[57.0488,9.9217], aarhus:[56.1629,10.2039], copenhagen:[55.6761,12.5683], lystrup:[56.2058,10.2175] };
+      let userCoords = null;
+      navigator.geolocation && navigator.geolocation.getCurrentPosition(p => { userCoords = [p.coords.latitude, p.coords.longitude]; }, () => {});
+
+      function haversine([lat1,lon1],[lat2,lon2]) {
+        const R = 6371, dLat = (lat2-lat1)*Math.PI/180, dLon = (lon2-lon1)*Math.PI/180;
+        const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      }
+
+      function getDistance(city) {
+        const coords = CITY_COORDS[city];
+        if (!userCoords || !coords) return null;
+        const km = haversine(userCoords, coords);
+        return km < 1 ? `${Math.round(km*1000)} m` : `${km.toFixed(1)} km`;
+      }
+
       function renderNearestResults(results, q) {
         const resultsEl = document.getElementById('nearestResults');
         if (!results.length) {
           resultsEl.innerHTML = `<p class="nearest-hint">${q ? 'Ingen resultater for "' + q + '"' : 'Ingen anbefalede steder endnu'}</p>`;
           return;
         }
-        resultsEl.innerHTML = results.slice(0, 9).map(r => `
-          <a class="nearest-result ${r.sponsored ? 'nearest-result--sponsored' : ''}" href="${r.url || '#'}" target="${r.url ? '_blank' : '_self'}" rel="noopener">
+        resultsEl.innerHTML = results.slice(0, 9).map(r => {
+          const dist = getDistance(selectedNearestCity);
+          const mapsUrl = r.address ? `https://www.google.com/maps/search/${encodeURIComponent(r.name + ' ' + r.address)}` : null;
+          return `
+          <div class="nearest-result ${r.sponsored ? 'nearest-result--sponsored' : ''}">
             ${r.image ? `<img class="nearest-result-img" src="${r.image}" alt="${r.name}" loading="lazy">` : '<div class="nearest-result-img nearest-result-img--placeholder"></div>'}
             <div class="nearest-result-info">
               <div class="nearest-result-top">
                 <span class="nearest-result-name">${r.name}</span>
                 ${r.sponsored ? '<span class="nearest-result-badge">Anbefalet</span>' : ''}
               </div>
-              <span class="nearest-result-type">${r.type || ''}${r.address ? ' · ' + r.address : ''}</span>
+              <span class="nearest-result-type">${r.type || ''}</span>
+              ${r.address ? `<a class="nearest-result-addr" href="${mapsUrl}" target="_blank" rel="noopener">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                ${r.address}${dist ? ' · ' + dist : ''}
+              </a>` : ''}
+              <div class="nearest-result-links">
+                ${r.url ? `<a href="${r.url}" target="_blank" rel="noopener" class="nearest-link nearest-link--web" title="Hjemmeside">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  Web
+                </a>` : ''}
+                ${r.instagram ? `<a href="${r.instagram}" target="_blank" rel="noopener" class="nearest-link nearest-link--ig" title="Instagram">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                  Instagram
+                </a>` : ''}
+                ${r.facebook ? `<a href="${r.facebook}" target="_blank" rel="noopener" class="nearest-link nearest-link--fb" title="Facebook">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                  Facebook
+                </a>` : ''}
+                ${r.phone ? `<a href="tel:${r.phone}" class="nearest-link nearest-link--phone" title="Ring op">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  Ring
+                </a>` : ''}
+              </div>
             </div>
-          </a>
-        `).join('');
+          </div>
+        `}).join('');
       }
 
       document.getElementById('nearestSearchBtn').addEventListener('click', () => {

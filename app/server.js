@@ -172,7 +172,7 @@ app.get('/api/sponsors', (_req, res) => {
 });
 
 app.get('/api/cities', (_req, res) => {
-  const labels = { aalborg: 'Aalborg', aarhus: 'Aarhus', copenhagen: 'København', odense: 'Odense' };
+  const labels = { aalborg: 'Aalborg', aarhus: 'Aarhus', copenhagen: 'København', odense: 'Odense', lystrup: 'Lystrup' };
   const unique = [...new Set(PLACES.filter(p => p.active).map(p => p.city))].sort();
   res.json(unique.map(c => ({ value: c, label: labels[c] || c.charAt(0).toUpperCase() + c.slice(1) })));
 });
@@ -247,16 +247,16 @@ app.get('/api/search', (req, res) => {
 
   const sponsorHits = SPONSORS.filter(s =>
     s.active && s.city === city &&
-    s.categories.some(c => c.includes(q) || q.includes(c))
-  ).map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, phone: s.phone, description: null, sponsored: true }));
+    (!q || s.categories.some(c => c.includes(q) || q.includes(c)) || s.name.toLowerCase().includes(q))
+  ).map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, phone: s.phone, description: null, instagram: s.instagram || null, facebook: s.facebook || null, sponsored: true }));
 
   const seen = new Set(sponsorHits.map(s => s.name.toLowerCase()));
   const placeHits = PLACES.filter(p =>
     p.active && p.city === city &&
-    (p.type.toLowerCase().includes(q) || q.includes(p.type.toLowerCase()) ||
+    (!q || p.type.toLowerCase().includes(q) || q.includes(p.type.toLowerCase()) ||
      p.name.toLowerCase().includes(q) || (p.description || '').toLowerCase().includes(q))
   ).filter(p => !seen.has(p.name.toLowerCase()))
-   .map(p => ({ name: p.name, type: p.type, address: p.address, url: p.url, image: p.image, phone: p.phone, description: p.description, sponsored: false }));
+   .map(p => ({ name: p.name, type: p.type, address: p.address, url: p.url, image: p.image, phone: p.phone, description: p.description, instagram: p.instagram || null, facebook: p.facebook || null, sponsored: false }));
 
   res.json([...sponsorHits, ...placeHits].slice(0, 9));
 });
