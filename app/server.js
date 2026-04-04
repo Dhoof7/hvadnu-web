@@ -282,7 +282,12 @@ app.get('/api/test', async (req, res) => {
 });
 
 app.get('/api/admin/debug', (_req, res) => {
-  res.json({ adminSecretSet: !!ADMIN_SECRET, adminSecretLength: ADMIN_SECRET ? ADMIN_SECRET.length : 0 });
+  res.json({
+    adminSecretSet: !!ADMIN_SECRET,
+    adminSecretLength: ADMIN_SECRET ? ADMIN_SECRET.length : 0,
+    fromProcessEnv: !!process.env.ADMIN_SECRET,
+    allKeys: Object.keys(process.env).filter(k => !k.includes('KEY') && !k.includes('SECRET') && !k.includes('TOKEN')),
+  });
 });
 
 app.get('/api/admin/stats', async (req, res) => {
