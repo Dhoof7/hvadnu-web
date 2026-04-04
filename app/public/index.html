@@ -76,35 +76,27 @@
           <button onclick="requestLocation()" class="btn-white" style="font-size:14px; padding:10px 20px;" data-i18n="hero.loc.btn">Tillad lokation →</button>
         </div>
 
-        <!-- Fallback feature card -->
-        <div class="hero-feature-card" id="heroFeatureCard">
-          <div class="hero-feature-item">
-            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+        <!-- Find nærmeste box -->
+        <div class="nearby-box" id="heroFeatureCard">
+          <div class="nearby-box-header">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
             <div>
-              <strong data-i18n="hero.feat1.title">Planer på sekunder</strong>
-              <p data-i18n="hero.feat1.sub">
-                AI finder de bedste steder til dig
-              </p>
+              <h2 class="nearby-box-title">Find nærmeste</h2>
+              <p class="nearby-box-sub">Søg efter steder i din by</p>
             </div>
           </div>
-          <div class="hero-feature-item">
-            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-            <div>
-              <strong data-i18n="hero.feat2.title">Lokale anbefalinger</strong>
-              <p data-i18n="hero.feat2.sub">
-                Kendte og skjulte perler i din by
-              </p>
-            </div>
+          <div class="nearby-city-row-box">
+            <span class="nearby-city-label-box">By:</span>
+            <div class="nearby-box-chips" id="nearbyBoxCityChips"></div>
           </div>
-          <div class="hero-feature-item">
-            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
-            <div>
-              <strong data-i18n="hero.feat3.title">Personlig tilpasning</strong>
-              <p data-i18n="hero.feat3.sub">
-                3 unikke planer der passer til jer
-              </p>
-            </div>
+          <div class="nearby-search-row">
+            <input type="text" id="nearbyInput" class="nearby-input" placeholder="Restaurant, frisør, hotel..." autocomplete="off" />
+            <button class="nearby-search-btn" id="nearbySearchBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
           </div>
+          <p class="nearby-city-hint" id="nearbyCityHint" style="display:none;">Vælg en by for at søge.</p>
+          <div class="nearby-results" id="nearbyResults"></div>
         </div>
       </div>
 
@@ -113,38 +105,6 @@
           src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80"
           alt="Friends having fun"
         />
-      </div>
-    </section>
-
-    <!-- FIND NÆRMESTE -->
-    <section class="nearby-section">
-      <div class="nearby-box">
-        <div class="nearby-box-header">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <div>
-            <h2 class="nearby-box-title">Find nærmeste</h2>
-            <p class="nearby-box-sub">Søg efter steder i din by</p>
-          </div>
-        </div>
-        <div class="nearby-city-row-box">
-          <span class="nearby-city-label-box">Vælg by:</span>
-          <div class="nearby-box-chips" id="nearbyBoxCityChips"></div>
-        </div>
-        <div class="nearby-search-row">
-          <input
-            type="text"
-            id="nearbyInput"
-            class="nearby-input"
-            placeholder="Fx restaurant, frisør, hotel, café, bar..."
-            autocomplete="off"
-          />
-          <button class="nearby-search-btn" id="nearbySearchBtn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            Søg
-          </button>
-        </div>
-        <p class="nearby-city-hint" id="nearbyCityHint" style="display:none;">Vælg en by for at søge.</p>
-        <div class="nearby-results" id="nearbyResults"></div>
       </div>
     </section>
 
