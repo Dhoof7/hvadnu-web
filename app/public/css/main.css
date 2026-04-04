@@ -252,16 +252,6 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .option-card.selected { border-color: var(--dark); background: var(--dark); }
 .option-card.selected .option-label,
 .option-card.selected .option-sub { color: #fff; }
-.option-card.auto-detected::after {
-  content: 'Fundet automatisk';
-  display: block;
-  font-size: 10px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.7);
-  margin-top: 4px;
-  letter-spacing: 0.03em;
-}
-
 .option-emoji { font-size: 32px; line-height: 1; }
 .option-label { font-size: 15px; font-weight: 600; color: var(--text); }
 .option-sub { font-size: 12px; color: var(--muted); line-height: 1.4; }
