@@ -399,7 +399,7 @@
       async function showRandomSponsors() {
         try {
           const sponsors = await fetch('/api/sponsors').then(r => r.json());
-          const shuffled = sponsors.filter(s => s.active).sort(() => Math.random() - 0.5).slice(0, 6);
+          const shuffled = sponsors.filter(s => s.active && s.image).sort(() => Math.random() - 0.5).slice(0, 6);
           renderNearestResults(shuffled.map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, sponsored: true })), '');
         } catch {}
       }
@@ -415,7 +415,7 @@
           let results;
           if (!q) {
             const sponsors = await fetch('/api/sponsors').then(r => r.json());
-            results = sponsors.filter(s => s.city === city && s.active)
+            results = sponsors.filter(s => s.city === city && s.active && s.image)
               .map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, sponsored: true }));
           } else {
             results = await fetch(url).then(r => r.json());
