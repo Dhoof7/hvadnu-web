@@ -1,3 +1,17 @@
+function da(str) {
+  if (!str) return '–';
+  return str
+    .replace(/\babout\b/gi, 'ca.')
+    .replace(/\baround\b/gi, 'ca.')
+    .replace(/\bapprox\.?\b/gi, 'ca.')
+    .replace(/\bfull day\b/gi, 'hel dag')
+    .replace(/\bhalf day\b/gi, 'halv dag')
+    .replace(/(\d[\d.,]*)\s*hours?\b/gi, (_, n) => `${n} ${parseFloat(n) === 1 ? 'time' : 'timer'}`)
+    .replace(/(\d[\d.,]*)\s*minutes?\b/gi, (_, n) => `${n} min`)
+    .replace(/\bfree\b/gi, 'gratis')
+    .replace(/\bper person\b/gi, 'per person');
+}
+
 const loadingScreen = document.getElementById('loadingScreen');
 const errorScreen   = document.getElementById('errorScreen');
 const resultsPage   = document.getElementById('resultsPage');
@@ -54,11 +68,11 @@ function renderCard(plan, index) {
         <div class="result-stats">
           <div class="stat-item">
             <span class="stat-label">Tid</span>
-            <span class="stat-value">${plan.totalTime || '–'}</span>
+            <span class="stat-value">${da(plan.totalTime)}</span>
           </div>
           <div class="stat-item">
             <span class="stat-label">Pris</span>
-            <span class="stat-value">${plan.totalCost || '–'}</span>
+            <span class="stat-value">${da(plan.totalCost)}</span>
           </div>
         </div>
 

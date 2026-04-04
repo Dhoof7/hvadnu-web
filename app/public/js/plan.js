@@ -1,6 +1,20 @@
 const plan = JSON.parse(localStorage.getItem('selectedPlan') || 'null');
 const preferences = JSON.parse(localStorage.getItem('preferences') || '{}');
 
+function da(str) {
+  if (!str) return '–';
+  return str
+    .replace(/\babout\b/gi, 'ca.')
+    .replace(/\baround\b/gi, 'ca.')
+    .replace(/\bapprox\.?\b/gi, 'ca.')
+    .replace(/\bfull day\b/gi, 'hel dag')
+    .replace(/\bhalf day\b/gi, 'halv dag')
+    .replace(/(\d[\d.,]*)\s*hours?\b/gi, (_, n) => `${n} ${parseFloat(n) === 1 ? 'time' : 'timer'}`)
+    .replace(/(\d[\d.,]*)\s*minutes?\b/gi, (_, n) => `${n} min`)
+    .replace(/\bfree\b/gi, 'gratis')
+    .replace(/\bper person\b/gi, 'per person');
+}
+
 if (!plan) {
   window.location.href = 'results.html';
 }
@@ -16,9 +30,9 @@ document.getElementById('planTagline').textContent = plan.tagline;
 // Stats
 const statsEl = document.getElementById('planStats');
 statsEl.innerHTML = `
-  <div class="plan-stat">${(plan.priceLevel||'kr').replace(/krkrkr/gi,'kr').replace(/krkr/gi,'kr').replace(/kr kr kr/gi,'kr').replace(/kr kr/gi,'kr')} · ${plan.totalCost}</div>
+  <div class="plan-stat">${da(plan.totalCost)}</div>
   <span class="plan-stat-sep">|</span>
-  <div class="plan-stat">${plan.totalTime}</div>
+  <div class="plan-stat">${da(plan.totalTime)}</div>
   <span class="plan-stat-sep">|</span>
   <div class="plan-stat">${plan.steps ? plan.steps.length : 0} stop</div>
 `;
@@ -71,8 +85,8 @@ if (plan.steps && plan.steps.length) {
           </div>
           <p class="step-activity">${step.activity}</p>
           <div class="step-meta">
-            <span>${step.duration}</span>
-            <span>${step.estimatedCost}</span>
+            <span>${da(step.duration)}</span>
+            <span>${da(step.estimatedCost)}</span>
           </div>
           ${step.tip ? `<div class="step-tip">${step.tip}</div>` : ''}
           <a href="${mapsUrl}" target="_blank" rel="noopener" class="step-map-link">
