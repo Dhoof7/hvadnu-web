@@ -543,16 +543,18 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .nearby-city-hint { font-size: 13px; color: #e05; margin-top: 10px; }
 .nearby-loading, .nearby-empty { font-size: 14px; color: var(--muted); margin-top: 20px; }
 .nearby-results { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
-.nearby-card {
+.nearby-results .nearby-card {
   display: flex; gap: 14px; align-items: flex-start;
   border: 1.5px solid var(--border); border-radius: 14px;
   padding: 16px; background: var(--bg-soft); overflow: hidden;
+  width: auto; cursor: default; text-align: left;
 }
-.nearby-sponsored { border-color: var(--dark); background: #f9f8ff; }
+.nearby-results .nearby-card:hover { background: var(--bg-soft); border-color: var(--border); transform: none; }
+.nearby-results .nearby-sponsored { border-color: var(--dark); background: #f9f8ff; }
 .nearby-card-img { width: 90px; height: 90px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
 .nearby-card-body { flex: 1; min-width: 0; }
 .nearby-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; flex-wrap: wrap; }
-.nearby-card-name { font-weight: 700; font-size: 15px; }
+.nearby-card-name { font-weight: 700; font-size: 15px; color: var(--text); }
 .nearby-card-type {
   font-size: 11px; font-weight: 600; color: var(--muted);
   background: var(--border); border-radius: 4px; padding: 2px 7px;
@@ -564,10 +566,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .nearby-card-address { font-size: 13px; color: var(--muted); margin-bottom: 5px; }
 .nearby-card-desc { font-size: 13px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
 .nearby-card-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-.nearby-action-link {
-  font-size: 13px; font-weight: 600; color: var(--muted);
-  text-decoration: none; transition: color .15s;
-}
+.nearby-action-link { font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: none; transition: color .15s; }
 .nearby-action-link:hover { color: var(--text); }
 .nearby-action-primary { color: var(--dark); }
 .hero-city-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
