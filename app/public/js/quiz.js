@@ -27,10 +27,17 @@ function showStep(n) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function submitQuiz() {
+async function submitQuiz() {
   preferences.lang = 'da';
   localStorage.removeItem('plans');
   localStorage.setItem('preferences', JSON.stringify(preferences));
+
+  const { data: { session } } = await _sb.auth.getSession();
+  if (!session) {
+    window._afterLogin = () => { window.location.href = 'results.html'; };
+    openAuthModal('login');
+    return;
+  }
   window.location.href = 'results.html';
 }
 

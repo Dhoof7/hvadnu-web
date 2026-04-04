@@ -562,7 +562,7 @@
         } catch {}
       })();
 
-      document.getElementById("freeSubmitBtn").addEventListener("click", () => {
+      document.getElementById("freeSubmitBtn").addEventListener("click", async () => {
         const desc = document.getElementById("freeInput").value.trim();
         if (!desc) return;
         localStorage.removeItem('plans');
@@ -575,6 +575,12 @@
             city: selectedHeroCity,
           }),
         );
+        const { data: { session } } = await _sb.auth.getSession();
+        if (!session) {
+          window._afterLogin = () => { window.location.href = 'results.html'; };
+          openAuthModal('login');
+          return;
+        }
         window.location.href = "results.html";
       });
       document.getElementById("freeInput").addEventListener("keydown", (e) => {
