@@ -24,11 +24,11 @@ button { font-family: var(--sans); cursor: pointer; }
 .navbar {
   position: sticky; top: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  background: var(--dark); padding: 0 48px; height: 60px; gap: 12px;
+  background: var(--dark); padding: 0 48px; height: 72px; gap: 16px;
   overflow: hidden;
 }
-#navAuthWrap { display: flex; align-items: center; gap: 8px; min-width: 0; flex-shrink: 1; overflow: hidden; }
-#navAuthWrap .nav-desktop { display: flex; align-items: center; gap: 8px; }
+#navAuthWrap { display: flex; align-items: center; gap: 10px; min-width: 0; flex-shrink: 1; overflow: hidden; }
+#navAuthWrap .nav-desktop { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 40px; padding: 6px 6px 6px 18px; }
 #navAuthWrap .nav-mobile-btn { display: none; position: relative; }
 .nav-dropdown {
   display: none; position: fixed; top: 60px; right: 16px;
@@ -49,8 +49,8 @@ button { font-family: var(--sans); cursor: pointer; }
 .logo { display: flex; align-items: center; gap: 10px; color: #fff; }
 .logo-icon { font-size: 16px; color: var(--accent); }
 .logo-text { font-family: var(--serif); font-size: 15px; font-weight: 600; color: #fff; }
-.logo-img { height: 44px; width: auto; object-fit: contain; background: transparent; border-radius: 8px; }
-.logo-img-sm { height: 36px; }
+.logo-wordmark { font-family: var(--serif); font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -.01em; }
+.logo-nu { color: #c4b5fd; }
 .nav-links { display: flex; gap: 28px; }
 .nav-links a { color: rgba(255,255,255,.7); font-size: 14px; transition: color .2s; }
 .nav-links a:hover { color: #fff; }
