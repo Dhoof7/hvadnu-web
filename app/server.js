@@ -29,7 +29,7 @@ function findSponsor(stepType, city) {
   ) || null;
 }
 
-async function findPlace(stepType, city) {
+function findPlace(stepType, city) {
   const sponsor = findSponsor(stepType, city);
   if (sponsor) {
     return {
