@@ -199,9 +199,9 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   display: flex; gap: 12px; align-items: center;
   background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1);
   border-radius: 12px; padding: 10px 12px; text-decoration: none;
-  transition: background .15s;
+  transition: background .15s; cursor: pointer; width: 100%; text-align: left;
 }
-.nearest-result:hover { background: rgba(255,255,255,.14); }
+.nearest-result:hover { background: rgba(255,255,255,.16); transform: translateY(-1px); }
 .nearest-result--sponsored { border-color: rgba(255,255,255,.25); background: rgba(255,255,255,.12); }
 .nearest-result-img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
 .nearest-result-img--placeholder { background: rgba(255,255,255,.1); }
@@ -538,6 +538,28 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   padding: 8px 16px; transition: border-color .2s, background .2s;
 }
 .step-map-link:hover { border-color: var(--dark); background: var(--bg-soft); }
+
+/* Place modal */
+.place-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); z-index: 1100; align-items: center; justify-content: center; padding: 20px; }
+.place-modal-overlay.open { display: flex; }
+.place-modal { background: #fff; border-radius: 20px; overflow: hidden; max-width: 460px; width: 100%; position: relative; box-shadow: 0 32px 80px rgba(0,0,0,.4); }
+.place-modal-close { position: absolute; top: 12px; right: 14px; background: rgba(0,0,0,.45); border: none; color: #fff; font-size: 22px; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; line-height: 1; z-index: 1; display: flex; align-items: center; justify-content: center; }
+.place-modal-img { width: 100%; height: 220px; object-fit: cover; display: block; }
+.place-modal-body { padding: 24px; }
+.place-modal-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.place-modal-top h3 { font-size: 20px; font-weight: 700; color: var(--dark); margin: 0; }
+.place-modal-badge { background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+.place-modal-type { font-size: 13px; color: var(--muted); font-weight: 500; display: block; margin-bottom: 12px; }
+.place-modal-desc { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 14px; }
+.place-modal-addr { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; margin-bottom: 20px; transition: color .15s; }
+.place-modal-addr:hover { color: var(--dark); }
+.place-modal-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.place-modal-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none; transition: opacity .15s; }
+.place-modal-btn:hover { opacity: .8; }
+.place-modal-btn--primary { background: var(--dark); color: #fff; }
+.place-modal-btn--ig { background: #f9f0f5; color: #e1306c; }
+.place-modal-btn--fb { background: #f0f2fa; color: #4267b2; }
+.place-modal-btn--phone { background: var(--bg-soft); color: var(--dark); }
 
 /* Nearby sponsors */
 /* Sponsor modal */
