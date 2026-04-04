@@ -101,8 +101,10 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 /* Hero */
 .home-hero {
   position: relative;
-  min-height: calc(100vh - 60px);
-  display: flex; align-items: center;
+  min-height: calc(100vh - 72px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
 }
 .home-hero-image {
   position: absolute; inset: 0; z-index: 0;
@@ -113,9 +115,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .home-hero-content {
   position: relative; z-index: 1;
   display: flex; flex-direction: column; justify-content: center;
-  padding: 80px 60px 80px 80px;
-  max-width: 680px;
-  background: transparent;
+  padding: 80px 48px 80px 80px;
 }
 .home-hero-content h1 {
   font-size: clamp(44px, 5.5vw, 72px); font-weight: 700;
@@ -123,20 +123,20 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 }
 .home-hero-content h1 em { color: var(--accent); }
 .hero-slogan {
-  font-size: clamp(48px, 6vw, 88px) !important;
+  font-size: clamp(42px, 5vw, 76px) !important;
   font-weight: 700; line-height: 1.05 !important;
   letter-spacing: -.02em; color: #fff; margin-bottom: 32px !important;
 }
 .hero-slogan em { color: var(--accent); font-style: normal; }
-.hero-sub { font-size: 16px; color: rgba(255,255,255,.75); max-width: 420px; line-height: 1.7; margin-bottom: 36px; }
+.hero-sub { font-size: 16px; color: rgba(255,255,255,.75); max-width: 440px; line-height: 1.7; margin-bottom: 36px; }
 .home-hero-content .eyebrow { color: rgba(255,255,255,.6); }
 .home-hero-content .hero-quiz-link { color: rgba(255,255,255,.65); font-size: 16px; }
 .home-hero-content .hero-quiz-link a { color: #fff; font-weight: 600; text-decoration: underline; }
 .home-hero-content .free-input { background: rgba(255,255,255,.95); }
 
 /* Hero right panel */
-.hero-right-panel { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 60px 64px; }
-.hero-sponsor-panel { background: rgba(15,15,28,.75); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.15); border-radius: 28px; padding: 28px; width: 580px; box-shadow: 0 32px 80px rgba(0,0,0,.5); }
+.hero-right-panel { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 60px 80px 60px 40px; }
+.hero-sponsor-panel { background: rgba(15,15,28,.75); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.15); border-radius: 28px; padding: 28px; width: 100%; max-width: 520px; box-shadow: 0 32px 80px rgba(0,0,0,.5); }
 .hero-sponsor-panel .nearby-heading { font-size: 16px; margin: 0 0 18px; color: rgba(255,255,255,.8); }
 .hero-sponsor-panel .nearby-sponsors { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex-wrap: unset; overflow: visible; }
 .hero-sponsor-panel .nearby-card { width: auto; border-radius: 16px; }
