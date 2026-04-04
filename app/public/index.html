@@ -378,7 +378,7 @@
             });
           });
 
-          // Auto-load from cache
+          // Auto-load from cache, else show random sponsors
           try {
             const cached = JSON.parse(localStorage.getItem('nearbyCity_v2') || 'null');
             if (cached && cached.city) {
@@ -387,11 +387,22 @@
               if (match) {
                 selectNearestCity(match.value);
                 showNearestForCity(match.value, '');
+                return;
               }
             }
           } catch {}
+          // No cache — show random sponsors across all cities
+          showRandomSponsors();
         } catch {}
       })();
+
+      async function showRandomSponsors() {
+        try {
+          const sponsors = await fetch('/api/sponsors').then(r => r.json());
+          const shuffled = sponsors.filter(s => s.active).sort(() => Math.random() - 0.5).slice(0, 6);
+          renderNearestResults(shuffled.map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, sponsored: true })), '');
+        } catch {}
+      }
 
       async function showNearestForCity(city, q) {
         const resultsEl = document.getElementById('nearestResults');
