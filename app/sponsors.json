@@ -856,7 +856,7 @@
      "id": 72,
     "name": "FARAH.STUDIO",
     "city": "lystrup",
-    "type": "Frisør",
+    "categories": ["frisør", "barber", "hair", "salon", "klip"],
     "address": "elstedhoej, 8520 Lystrup",
     "url": "",
     "phone": "",
