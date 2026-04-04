@@ -3,7 +3,8 @@ const Anthropic = require('@anthropic-ai/sdk');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
-const YELP_API_KEY = process.env.YELP_API_KEY;
+const SB_URL = 'https://kqpxhefvnrlsuxmiqhhy.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxcHhoZWZ2bnJsc3V4bWlxaGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMzE4NjEsImV4cCI6MjA5MDgwNzg2MX0.-fw759yENbo2UZTdgzIU4TpjUqOON4ogtpEUYvE8fqA';
 const ADMIN_SECRET = process.env.ADMIN_SECRET || 'dhoof12349';
 
 const fs = require('fs');
@@ -23,14 +24,12 @@ function findSponsor(stepType, city) {
   ) || null;
 }
 
-async function findPlace(stepType, mapSearch, city) {
+async function findPlace(stepType, city) {
   const sponsor = findSponsor(stepType, city);
   if (sponsor) {
     return {
       name: sponsor.name,
       rating: sponsor.rating,
-      reviewCount: null,
-      price: null,
       address: sponsor.address,
       url: sponsor.url,
       image: sponsor.image,
@@ -38,33 +37,36 @@ async function findPlace(stepType, mapSearch, city) {
       sponsored: true,
     };
   }
-  return findYelpPlace(mapSearch, city);
+  return findLocalPlace(stepType, city);
 }
 
-async function findYelpPlace(query, city) {
-  if (!YELP_API_KEY) return null;
+async function findLocalPlace(stepType, city) {
+  if (!city) return null;
   try {
+    const cityNorm = city.toLowerCase().trim();
+    const typeNorm = stepType.toLowerCase().trim();
     const params = new URLSearchParams({
-      term: query,
-      location: city || 'Copenhagen',
+      city: `eq.${cityNorm}`,
+      type: `ilike.*${typeNorm}*`,
+      active: 'eq.true',
       limit: 1,
+      order: 'random()',
     });
-    const res = await fetch(`https://api.yelp.com/v3/businesses/search?${params}`, {
-      headers: { Authorization: `Bearer ${YELP_API_KEY}` },
+    const res = await fetch(`${SB_URL}/rest/v1/places?${params}`, {
+      headers: { apikey: SB_ANON, Authorization: `Bearer ${SB_ANON}` },
     });
     if (!res.ok) return null;
     const data = await res.json();
-    const b = data.businesses?.[0];
-    if (!b) return null;
+    const p = data[0];
+    if (!p) return null;
     return {
-      name: b.name,
-      rating: b.rating,
-      reviewCount: b.review_count,
-      price: b.price || null,
-      address: b.location?.display_address?.join(', ') || null,
-      url: b.url,
-      image: b.image_url || null,
-      phone: b.display_phone || null,
+      name: p.name,
+      address: p.address,
+      url: p.url,
+      image: p.image,
+      phone: p.phone,
+      description: p.description,
+      sponsored: false,
     };
   } catch {
     return null;
@@ -168,7 +170,7 @@ async function streamPlans(res, prompt, city) {
     await Promise.all(
       plans.flatMap(plan =>
         plan.steps.map(async step => {
-          step.yelpPlace = await findPlace(step.type, step.mapSearch, city);
+          step.yelpPlace = await findPlace(step.type, city);
         })
       )
     );
@@ -253,6 +255,20 @@ app.post('/api/recommend', async (req, res) => {
 
 app.get('/api/sponsors', (_req, res) => {
   res.json(SPONSORS.filter(s => s.active));
+});
+
+app.get('/api/cities', async (_req, res) => {
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/places?select=city&active=eq.true`, {
+      headers: { apikey: SB_ANON, Authorization: `Bearer ${SB_ANON}` },
+    });
+    const data = await r.json();
+    const unique = [...new Set(data.map(p => p.city))].sort();
+    const labels = { aalborg: 'Aalborg', aarhus: 'Aarhus', copenhagen: 'København', odense: 'Odense' };
+    res.json(unique.map(c => ({ value: c, label: labels[c] || c.charAt(0).toUpperCase() + c.slice(1) })));
+  } catch {
+    res.json([]);
+  }
 });
 
 app.get('/api/test', async (req, res) => {

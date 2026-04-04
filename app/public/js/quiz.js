@@ -9,7 +9,7 @@ let currentStep = 1;
 function updateProgress() {
   const pct = ((currentStep - 1) / TOTAL_STEPS) * 100;
   progressFill.style.width = pct + '%';
-  progressLabel.textContent = `Step ${currentStep} of ${TOTAL_STEPS}`;
+  progressLabel.textContent = `Trin ${currentStep} af ${TOTAL_STEPS}`;
 }
 
 function showStep(n) {
@@ -22,7 +22,8 @@ function showStep(n) {
 }
 
 function submitQuiz() {
-  preferences.lang = getCurrentLang();
+  preferences.lang = 'da';
+  localStorage.removeItem('plans');
   localStorage.setItem('preferences', JSON.stringify(preferences));
   window.location.href = 'results.html';
 }
@@ -41,66 +42,40 @@ document.querySelectorAll('.option-card').forEach(card => {
     const step = card.closest('.quiz-step');
     const key = step.dataset.key;
     const value = card.dataset.value;
-
     step.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
-
     preferences[key] = value;
-
     setTimeout(nextStep, 380);
   });
 });
 
-// City autocomplete
-const cityInput = document.getElementById('cityInput');
-const cityDropdown = document.getElementById('cityDropdown');
-const submitBtn = document.getElementById('submitBtn');
-const skipCity = document.getElementById('skipCity');
-
-cityInput.addEventListener('input', () => {
-  const q = cityInput.value.trim().toLowerCase();
-  if (q.length < 1) { cityDropdown.innerHTML = ''; return; }
-  const normalize = s => s.toLowerCase()
-    .replace(/ø/g,'o').replace(/æ/g,'ae').replace(/å/g,'a')
-    .replace(/ö/g,'o').replace(/ä/g,'a').replace(/ü/g,'u');
-  const qNorm = normalize(q);
-  const matches = CITIES.filter(c => {
-    const cl = c.toLowerCase();
-    const cn = normalize(c);
-    return cl.startsWith(q) || cn.startsWith(qNorm) || cn.startsWith(q);
-  }).slice(0, 6);
-  if (!matches.length) { cityDropdown.innerHTML = ''; return; }
-  cityDropdown.innerHTML = matches.map(c => `<li class="city-dropdown-item">${c}</li>`).join('');
-  cityDropdown.querySelectorAll('.city-dropdown-item').forEach(li => {
-    li.addEventListener('click', () => {
-      cityInput.value = li.textContent;
-      cityDropdown.innerHTML = '';
+// Load cities from API and render as cards
+async function loadCities() {
+  const grid = document.getElementById('cityGrid');
+  try {
+    const res = await fetch('/api/cities');
+    const cities = await res.json();
+    if (!cities.length) {
+      grid.innerHTML = '<p style="color:var(--muted);font-size:14px;">Ingen byer tilgængelige endnu.</p>';
+      return;
+    }
+    grid.innerHTML = cities.map(c => `
+      <button class="option-card city-card" data-value="${c.value}">
+        <span class="option-label">${c.label}</span>
+      </button>
+    `).join('');
+    grid.querySelectorAll('.city-card').forEach(card => {
+      card.addEventListener('click', () => {
+        grid.querySelectorAll('.city-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        preferences.city = card.dataset.value;
+        setTimeout(nextStep, 380);
+      });
     });
-  });
-});
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.city-input-wrap')) cityDropdown.innerHTML = '';
-});
-
-submitBtn.addEventListener('click', () => {
-  preferences.city = cityInput.value.trim();
-  nextStep();
-});
-
-cityInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    cityDropdown.innerHTML = '';
-    preferences.city = cityInput.value.trim();
-    nextStep();
+  } catch {
+    grid.innerHTML = '<p style="color:var(--muted);font-size:14px;">Kunne ikke hente byer.</p>';
   }
-});
+}
 
-skipCity.addEventListener('click', e => {
-  e.preventDefault();
-  preferences.city = '';
-  nextStep();
-});
-
-// Init
+loadCities();
 updateProgress();

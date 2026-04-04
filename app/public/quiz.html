@@ -34,15 +34,12 @@
 
       <!-- STEP 1: City -->
       <div class="quiz-step active" data-step="1" data-key="city">
-        <p class="quiz-eyebrow" data-i18n="quiz.city.eyebrow">KOM I GANG</p>
-        <h2 class="quiz-question" data-i18n="quiz.city.question">Hvilken by er I i?</h2>
-        <p class="quiz-hint" data-i18n="quiz.city.hint">Valgfrit — hjælper os med at tilpasse planen til dit område.</p>
-        <div class="city-input-wrap">
-          <input type="text" id="cityInput" class="city-input" data-i18n="quiz.city.placeholder" placeholder="Fx København, Aarhus, London..." autocomplete="off">
-          <ul class="city-dropdown" id="cityDropdown"></ul>
+        <p class="quiz-eyebrow">KOM I GANG</p>
+        <h2 class="quiz-question">Hvilken by er I i?</h2>
+        <p class="quiz-hint">Vælg din by nedenfor</p>
+        <div class="option-grid cols-3" id="cityGrid">
+          <p style="color:var(--muted);font-size:14px;">Henter byer...</p>
         </div>
-        <button class="btn-primary btn-large" id="submitBtn" style="margin-top: 32px;" data-i18n="quiz.city.cta">Fortsæt →</button>
-        <p class="skip-link"><a href="#" id="skipCity" data-i18n="quiz.city.skip">Spring dette trin over</a></p>
       </div>
 
       <!-- STEP 2: Who -->
@@ -153,7 +150,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/i18n.js"></script>
-  <script src="js/cities.js"></script>
   <script src="js/quiz.js"></script>
   <script src="js/auth.js"></script>
 </body>
