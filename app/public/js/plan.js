@@ -6,21 +6,21 @@ if (!plan) {
 }
 
 // Set page title
-document.title = `${plan.title} · What Should We Do Today?`;
+document.title = `${plan.title} · hvadnu`;
 
 // Populate hero
-document.getElementById('planEmoji').textContent = plan.emoji || '✨';
+document.getElementById('planEmoji').textContent = '';
 document.getElementById('planTitle').textContent = plan.title;
 document.getElementById('planTagline').textContent = plan.tagline;
 
 // Stats
 const statsEl = document.getElementById('planStats');
 statsEl.innerHTML = `
-  <div class="plan-stat"><span class="plan-stat-icon">💰</span> ${(plan.priceLevel||'kr').replace(/krkrkr/gi,'kr').replace(/krkr/gi,'kr').replace(/kr kr kr/gi,'kr').replace(/kr kr/gi,'kr')} · ${plan.totalCost}</div>
+  <div class="plan-stat">${(plan.priceLevel||'kr').replace(/krkrkr/gi,'kr').replace(/krkr/gi,'kr').replace(/kr kr kr/gi,'kr').replace(/kr kr/gi,'kr')} · ${plan.totalCost}</div>
   <span class="plan-stat-sep">|</span>
-  <div class="plan-stat"><span class="plan-stat-icon">⏱</span> ${plan.totalTime}</div>
+  <div class="plan-stat">${plan.totalTime}</div>
   <span class="plan-stat-sep">|</span>
-  <div class="plan-stat"><span class="plan-stat-icon">📍</span> ${plan.steps ? plan.steps.length : 0} stops</div>
+  <div class="plan-stat">${plan.steps ? plan.steps.length : 0} stop</div>
 `;
 
 // Why section
@@ -34,13 +34,12 @@ if (plan.goodFor && plan.goodFor.length) {
 
 function renderYelpCard(y) {
   if (!y) return '';
-  const stars = '★'.repeat(Math.round(y.rating)) + '☆'.repeat(5 - Math.round(y.rating));
   const badge = y.sponsored
     ? `<span class="yelp-badge sponsored-badge">Anbefalet</span>`
     : `<span class="yelp-badge">Yelp</span>`;
   const meta = y.sponsored
-    ? `<span class="yelp-stars">${stars}</span><span class="yelp-rating-num">${y.rating}</span>`
-    : `<span class="yelp-stars">${stars}</span><span class="yelp-rating-num">${y.rating}</span><span class="yelp-dot">·</span><span>${y.reviewCount} reviews</span>${y.price ? `<span class="yelp-dot">·</span><span>${y.price}</span>` : ''}`;
+    ? `<span class="yelp-rating-num">${y.rating} / 5</span>`
+    : `<span class="yelp-rating-num">${y.rating} / 5</span><span class="yelp-dot">·</span><span>${y.reviewCount} anmeldelser</span>${y.price ? `<span class="yelp-dot">·</span><span>${y.price}</span>` : ''}`;
   return `
     <div class="yelp-card ${y.sponsored ? 'sponsored-card' : ''}">
       ${y.image ? `<img class="yelp-image" src="${y.image}" alt="${y.name}" loading="lazy">` : ''}
@@ -50,7 +49,7 @@ function renderYelpCard(y) {
           ${badge}
         </div>
         <div class="yelp-meta">${meta}</div>
-        ${y.address ? `<div class="yelp-address">📍 ${y.address}</div>` : ''}
+        ${y.address ? `<div class="yelp-address">${y.address}</div>` : ''}
         <a href="${y.url}" target="_blank" rel="noopener" class="yelp-link">${y.sponsored ? 'Besøg hjemmeside ↗' : 'View on Yelp ↗'}</a>
       </div>
     </div>
@@ -72,8 +71,8 @@ if (plan.steps && plan.steps.length) {
           </div>
           <p class="step-activity">${step.activity}</p>
           <div class="step-meta">
-            <span>⏱ ${step.duration}</span>
-            <span>💰 ${step.estimatedCost}</span>
+            <span>${step.duration}</span>
+            <span>${step.estimatedCost}</span>
           </div>
           ${step.tip ? `<div class="step-tip">${step.tip}</div>` : ''}
           <a href="${mapsUrl}" target="_blank" rel="noopener" class="step-map-link">

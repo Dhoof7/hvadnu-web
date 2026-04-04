@@ -45,7 +45,6 @@ function renderCard(plan, index) {
   return `
     <div class="result-card" data-plan-index="${index}">
       <div class="result-card-top">
-        <span class="result-card-emoji">${plan.emoji || '✨'}</span>
         <h3>${plan.title}</h3>
         <p class="result-card-tagline">${plan.tagline}</p>
 
