@@ -380,6 +380,7 @@
             description: desc,
             freetext: true,
             lang: getCurrentLang(),
+            detectedCity: localStorage.getItem('detectedCity') || '',
           }),
         );
         window.location.href = "results.html";
@@ -390,6 +391,18 @@
           document.getElementById("freeSubmitBtn").click();
         }
       });
+
+      // Detect city via IP in background and cache it
+      (async () => {
+        if (localStorage.getItem('detectedCity')) return;
+        try {
+          const r = await fetch('https://ipapi.co/json/');
+          const d = await r.json();
+          const map = { aalborg: 'aalborg', aarhus: 'aarhus', århus: 'aarhus', copenhagen: 'copenhagen', københavn: 'copenhagen' };
+          const city = map[d.city?.toLowerCase()?.trim()];
+          if (city) localStorage.setItem('detectedCity', city);
+        } catch {}
+      })();
     </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/auth.js"></script>

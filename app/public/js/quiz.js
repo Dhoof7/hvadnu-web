@@ -108,6 +108,7 @@ async function loadCities() {
 
     // Auto-select detected city if it exists in our list
     if (detectedCity) {
+      localStorage.setItem('detectedCity', detectedCity);
       const match = grid.querySelector(`.city-card[data-value="${detectedCity}"]`);
       if (match) {
         match.classList.add('selected', 'auto-detected');

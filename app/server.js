@@ -169,7 +169,7 @@ async function streamPlans(res, prompt, city) {
 }
 
 app.post('/api/recommend-free', async (req, res) => {
-  const { description, lang } = req.body;
+  const { description, lang, detectedCity } = req.body;
   if (!description) return res.status(400).json({ error: 'Missing description' });
   const langNote = lang === 'da' ? 'IMPORTANT: Write ALL content in Danish.' : 'Write all content in English.';
 
@@ -225,7 +225,7 @@ Set "bookable": true only for Restaurant and Bar steps where a reservation makes
     description.match(/(?:^|\s)i\s+([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)/) ||
     description.match(/\bin\s+([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)\b/i) ||
     description.match(/\b([A-ZÆØÅ][a-zæøå]{3,}(?:\s[A-ZÆØÅ][a-zæøå]+)?)\b/);
-  const city = cityMatch ? cityMatch[1] : '';
+  const city = cityMatch ? cityMatch[1] : (detectedCity || '');
 
   await streamPlans(res, prompt, city);
 });
