@@ -354,7 +354,7 @@
       let selectedHeroCity = '';
       let selectedNearestCity = '';
 
-      // Load nearest city chips
+      // Load nearest city chips + auto-show sponsors for cached/detected city
       (async () => {
         try {
           const cities = await fetch('/api/cities').then(r => r.json());
@@ -362,57 +362,95 @@
           wrap.innerHTML = cities.map(c => `
             <button class="nearest-city-chip" data-value="${c.value}">${c.label}</button>
           `).join('');
+
+          function selectNearestCity(value) {
+            wrap.querySelectorAll('.nearest-city-chip').forEach(b => b.classList.remove('active'));
+            const btn = wrap.querySelector(`.nearest-city-chip[data-value="${value}"]`);
+            if (btn) btn.classList.add('active');
+            selectedNearestCity = value;
+          }
+
           wrap.querySelectorAll('.nearest-city-chip').forEach(btn => {
             btn.addEventListener('click', () => {
-              wrap.querySelectorAll('.nearest-city-chip').forEach(b => b.classList.remove('active'));
-              btn.classList.add('active');
-              selectedNearestCity = btn.dataset.value;
-              // Re-run search if there's already a query
+              selectNearestCity(btn.dataset.value);
               const q = document.getElementById('nearestInput').value.trim();
-              if (q) runNearestSearch(q, selectedNearestCity);
+              showNearestForCity(selectedNearestCity, q);
             });
           });
+
+          // Auto-load from cache
+          try {
+            const cached = JSON.parse(localStorage.getItem('nearbyCity_v2') || 'null');
+            if (cached && cached.city) {
+              const nc = cached.city.toLowerCase();
+              const match = cities.find(c => nc.includes(c.value) || c.value.includes(nc));
+              if (match) {
+                selectNearestCity(match.value);
+                showNearestForCity(match.value, '');
+              }
+            }
+          } catch {}
         } catch {}
       })();
 
-      async function runNearestSearch(q, city) {
+      async function showNearestForCity(city, q) {
         const resultsEl = document.getElementById('nearestResults');
-        if (!city) {
-          resultsEl.innerHTML = '<p class="nearest-hint">Vælg en by ovenfor</p>';
+        resultsEl.innerHTML = '<p class="nearest-hint">Henter steder...</p>';
+        try {
+          const url = q
+            ? `/api/search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(city)}`
+            : `/api/search?q=&city=${encodeURIComponent(city)}`;
+          // If no query, fetch all sponsors for city
+          let results;
+          if (!q) {
+            const sponsors = await fetch('/api/sponsors').then(r => r.json());
+            results = sponsors.filter(s => s.city === city && s.active)
+              .map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, sponsored: true }));
+          } else {
+            results = await fetch(url).then(r => r.json());
+          }
+          renderNearestResults(results, q);
+        } catch {
+          resultsEl.innerHTML = '<p class="nearest-hint">Noget gik galt.</p>';
+        }
+      }
+
+      function renderNearestResults(results, q) {
+        const resultsEl = document.getElementById('nearestResults');
+        if (!results.length) {
+          resultsEl.innerHTML = `<p class="nearest-hint">${q ? 'Ingen resultater for "' + q + '"' : 'Ingen anbefalede steder endnu'}</p>`;
           return;
         }
-        resultsEl.innerHTML = '<p class="nearest-hint">Søger...</p>';
-        try {
-          const results = await fetch(`/api/search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(city)}`).then(r => r.json());
-          if (!results.length) {
-            resultsEl.innerHTML = '<p class="nearest-hint">Ingen resultater fundet</p>';
-            return;
-          }
-          resultsEl.innerHTML = results.map(r => `
-            <a class="nearest-result ${r.sponsored ? 'nearest-result--sponsored' : ''}" href="${r.url || '#'}" target="${r.url ? '_blank' : '_self'}" rel="noopener">
-              ${r.image ? `<img class="nearest-result-img" src="${r.image}" alt="${r.name}" loading="lazy">` : '<div class="nearest-result-img nearest-result-img--placeholder"></div>'}
-              <div class="nearest-result-info">
-                <div class="nearest-result-top">
-                  <span class="nearest-result-name">${r.name}</span>
-                  ${r.sponsored ? '<span class="nearest-result-badge">Anbefalet</span>' : ''}
-                </div>
-                <span class="nearest-result-type">${r.type}${r.address ? ' · ' + r.address : ''}</span>
+        resultsEl.innerHTML = results.slice(0, 9).map(r => `
+          <a class="nearest-result ${r.sponsored ? 'nearest-result--sponsored' : ''}" href="${r.url || '#'}" target="${r.url ? '_blank' : '_self'}" rel="noopener">
+            ${r.image ? `<img class="nearest-result-img" src="${r.image}" alt="${r.name}" loading="lazy">` : '<div class="nearest-result-img nearest-result-img--placeholder"></div>'}
+            <div class="nearest-result-info">
+              <div class="nearest-result-top">
+                <span class="nearest-result-name">${r.name}</span>
+                ${r.sponsored ? '<span class="nearest-result-badge">Anbefalet</span>' : ''}
               </div>
-            </a>
-          `).join('');
-        } catch {
-          resultsEl.innerHTML = '<p class="nearest-hint">Noget gik galt. Prøv igen.</p>';
-        }
+              <span class="nearest-result-type">${r.type || ''}${r.address ? ' · ' + r.address : ''}</span>
+            </div>
+          </a>
+        `).join('');
       }
 
       document.getElementById('nearestSearchBtn').addEventListener('click', () => {
         const q = document.getElementById('nearestInput').value.trim();
-        if (q) runNearestSearch(q, selectedNearestCity);
+        if (!selectedNearestCity) {
+          document.getElementById('nearestResults').innerHTML = '<p class="nearest-hint">Vælg en by ovenfor</p>';
+          return;
+        }
+        showNearestForCity(selectedNearestCity, q);
       });
       document.getElementById('nearestInput').addEventListener('keydown', e => {
         if (e.key === 'Enter') {
           const q = e.target.value.trim();
-          if (q) runNearestSearch(q, selectedNearestCity);
+          if (!selectedNearestCity) {
+            document.getElementById('nearestResults').innerHTML = '<p class="nearest-hint">Vælg en by ovenfor</p>';
+            return;
+          }
+          showNearestForCity(selectedNearestCity, q);
         }
       });
 
