@@ -434,6 +434,13 @@ _sb.auth.onAuthStateChange(async (event, session) => {
   }
 });
 
+// ---- save city ----
+async function saveUserCity(city) {
+  const { data: { session } } = await _sb.auth.getSession();
+  if (!session) return;
+  await _sb.auth.updateUser({ data: { city } });
+}
+
 // ---- save plan ----
 async function savePlan(plan) {
   if (!plan) return;

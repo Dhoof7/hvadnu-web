@@ -317,6 +317,7 @@ app.get('/api/admin/stats', async (req, res) => {
     const recentUsers = (stats.recent_users || []).map(u => ({
       email: u.email,
       name: u.name || '—',
+      city: u.city || null,
       provider: u.provider || 'email',
       created_at: u.created_at,
       confirmed: u.confirmed,

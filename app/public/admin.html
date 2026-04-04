@@ -157,6 +157,7 @@
           return `<tr>
             <td>${u.name}</td>
             <td style="color:rgba(255,255,255,.6)">${u.email}</td>
+            <td style="color:rgba(255,255,255,.5)">${u.city || '—'}</td>
             <td><span class="provider-badge ${u.provider}">${u.provider}</span></td>
             <td><span class="confirmed-dot ${u.confirmed ? 'yes' : 'no'}" title="${u.confirmed ? 'Bekræftet' : 'Ikke bekræftet'}"></span></td>
             <td style="color:rgba(255,255,255,.4)">${date}</td>
@@ -170,6 +171,7 @@
               <tr>
                 <th>Navn</th>
                 <th>Email</th>
+                <th>By</th>
                 <th>Metode</th>
                 <th>Bekræftet</th>
                 <th>Oprettet</th>
