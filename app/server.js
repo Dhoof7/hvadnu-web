@@ -6,7 +6,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 const YELP_API_KEY = process.env.YELP_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
-const ADMIN_SECRET = process.env.ADMIN_SECRET;
+const ADMIN_SECRET = process.env.ADMIN_SECRET || 'dhoof12349';
 
 const fs = require('fs');
 let SPONSORS = [];
