@@ -61,54 +61,22 @@
 
       <!-- HERO RIGHT PANEL -->
       <div class="hero-right-panel">
-        <!-- Nearby sponsors (shown when geolocation available) -->
-        <div
-          id="nearbySponsorWrap"
-          class="hero-sponsor-panel"
-          style="display: none"
-        >
-          <h3 class="nearby-heading" id="nearbyLabel">
-            Anbefalede steder i din by
-          </h3>
-          <div class="nearby-sponsors" id="nearbySponsors"></div>
-        </div>
-        <!-- Location prompt (shown when no cache) -->
-        <div id="locationPrompt" class="hero-sponsor-panel" style="display:none; text-align:center; padding: 32px 24px;">
-          <div style="margin-bottom:16px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <h3 style="color:#fff; font-size:17px; margin-bottom:8px;" data-i18n="hero.loc.title">Anbefalede steder nær dig</h3>
-          <p style="color:rgba(255,255,255,.6); font-size:13px; margin-bottom:20px;" data-i18n="hero.loc.sub">Tillad lokation og se de bedste steder i din by</p>
-          <button onclick="requestLocation()" class="btn-white" style="font-size:14px; padding:10px 20px;" data-i18n="hero.loc.btn">Tillad lokation →</button>
-        </div>
-
-        <!-- Fallback feature card -->
-        <div class="hero-feature-card" id="heroFeatureCard">
-          <div class="hero-feature-item">
-            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
-            <div>
-              <strong data-i18n="hero.feat1.title">Planer på sekunder</strong>
-              <p data-i18n="hero.feat1.sub">
-                AI finder de bedste steder til dig
-              </p>
-            </div>
+        <div class="nearest-widget">
+          <div class="nearest-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Det nærmeste
           </div>
-          <div class="hero-feature-item">
-            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-            <div>
-              <strong data-i18n="hero.feat2.title">Lokale anbefalinger</strong>
-              <p data-i18n="hero.feat2.sub">
-                Kendte og skjulte perler i din by
-              </p>
-            </div>
+          <p class="nearest-sub">Vælg by og søg efter steder nær dig</p>
+          <div class="nearest-city-chips" id="nearestCityChips">
+            <span style="font-size:12px;color:rgba(255,255,255,.4);">Henter byer...</span>
           </div>
-          <div class="hero-feature-item">
-            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
-            <div>
-              <strong data-i18n="hero.feat3.title">Personlig tilpasning</strong>
-              <p data-i18n="hero.feat3.sub">
-                3 unikke planer der passer til jer
-              </p>
-            </div>
+          <div class="nearest-search-row">
+            <input type="text" id="nearestInput" class="nearest-input" placeholder="Restaurant, frisør, hotel, bowling...">
+            <button id="nearestSearchBtn" class="nearest-btn" aria-label="Søg">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
           </div>
+          <div id="nearestResults" class="nearest-results"></div>
         </div>
       </div>
 
@@ -384,6 +352,69 @@
     </script>
     <script>
       let selectedHeroCity = '';
+      let selectedNearestCity = '';
+
+      // Load nearest city chips
+      (async () => {
+        try {
+          const cities = await fetch('/api/cities').then(r => r.json());
+          const wrap = document.getElementById('nearestCityChips');
+          wrap.innerHTML = cities.map(c => `
+            <button class="nearest-city-chip" data-value="${c.value}">${c.label}</button>
+          `).join('');
+          wrap.querySelectorAll('.nearest-city-chip').forEach(btn => {
+            btn.addEventListener('click', () => {
+              wrap.querySelectorAll('.nearest-city-chip').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              selectedNearestCity = btn.dataset.value;
+              // Re-run search if there's already a query
+              const q = document.getElementById('nearestInput').value.trim();
+              if (q) runNearestSearch(q, selectedNearestCity);
+            });
+          });
+        } catch {}
+      })();
+
+      async function runNearestSearch(q, city) {
+        const resultsEl = document.getElementById('nearestResults');
+        if (!city) {
+          resultsEl.innerHTML = '<p class="nearest-hint">Vælg en by ovenfor</p>';
+          return;
+        }
+        resultsEl.innerHTML = '<p class="nearest-hint">Søger...</p>';
+        try {
+          const results = await fetch(`/api/search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(city)}`).then(r => r.json());
+          if (!results.length) {
+            resultsEl.innerHTML = '<p class="nearest-hint">Ingen resultater fundet</p>';
+            return;
+          }
+          resultsEl.innerHTML = results.map(r => `
+            <a class="nearest-result ${r.sponsored ? 'nearest-result--sponsored' : ''}" href="${r.url || '#'}" target="${r.url ? '_blank' : '_self'}" rel="noopener">
+              ${r.image ? `<img class="nearest-result-img" src="${r.image}" alt="${r.name}" loading="lazy">` : '<div class="nearest-result-img nearest-result-img--placeholder"></div>'}
+              <div class="nearest-result-info">
+                <div class="nearest-result-top">
+                  <span class="nearest-result-name">${r.name}</span>
+                  ${r.sponsored ? '<span class="nearest-result-badge">Anbefalet</span>' : ''}
+                </div>
+                <span class="nearest-result-type">${r.type}${r.address ? ' · ' + r.address : ''}</span>
+              </div>
+            </a>
+          `).join('');
+        } catch {
+          resultsEl.innerHTML = '<p class="nearest-hint">Noget gik galt. Prøv igen.</p>';
+        }
+      }
+
+      document.getElementById('nearestSearchBtn').addEventListener('click', () => {
+        const q = document.getElementById('nearestInput').value.trim();
+        if (q) runNearestSearch(q, selectedNearestCity);
+      });
+      document.getElementById('nearestInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          const q = e.target.value.trim();
+          if (q) runNearestSearch(q, selectedNearestCity);
+        }
+      });
 
       // Load city chips from /api/cities
       (async () => {
