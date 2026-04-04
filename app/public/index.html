@@ -435,7 +435,7 @@
         try {
           const sponsors = await fetch('/api/sponsors').then(r => r.json());
           const shuffled = sponsors.filter(s => s.active && s.image).sort(() => Math.random() - 0.5).slice(0, 6);
-          renderNearestResults(shuffled.map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, sponsored: true })), '');
+          renderNearestResults(shuffled.map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, description: null, instagram: s.instagram || null, facebook: s.facebook || null, phone: s.phone || null, sponsored: true })), '');
         } catch {}
       }
 
@@ -443,21 +443,10 @@
         const resultsEl = document.getElementById('nearestResults');
         resultsEl.innerHTML = '<p class="nearest-hint">Henter steder...</p>';
         try {
-          const url = q
-            ? `/api/search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(city)}`
-            : `/api/search?q=&city=${encodeURIComponent(city)}`;
-          // If no query, fetch all sponsors for city
-          let results;
-          if (!q) {
-            const sponsors = await fetch('/api/sponsors').then(r => r.json());
-            results = sponsors.filter(s => s.city === city && s.active && s.image)
-              .map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, sponsored: true }));
-          } else {
-            results = await fetch(url).then(r => r.json());
-          }
+          const results = await fetch(`/api/search?q=${encodeURIComponent(q || '')}&city=${encodeURIComponent(city)}`).then(r => r.json());
           renderNearestResults(results, q);
         } catch {
-          resultsEl.innerHTML = '<p class="nearest-hint">Noget gik galt.</p>';
+          resultsEl.innerHTML = '<p class="nearest-hint">Noget gik galt. Prøv igen.</p>';
         }
       }
 
