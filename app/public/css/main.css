@@ -191,10 +191,10 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .home-cta p { font-size: 16px; color: rgba(255,255,255,.6); margin-bottom: 36px; }
 
 /* Footer */
-.footer { background: #0d2247; border-top: 1px solid rgba(255,255,255,.1); padding: 40px 80px; }
+.footer { background: #fff; border-top: 1px solid rgba(0,0,0,.08); padding: 40px 80px; }
 .footer-inner.simple { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.footer-logo .logo-text { color: #fff !important; }
-.footer-note { font-size: 13px; color: rgba(255,255,255,.4); }
+.footer-logo .logo-text { color: #1a1a1a !important; }
+.footer-note { font-size: 13px; color: rgba(0,0,0,.4); }
 
 /* ===== QUIZ PAGE ===== */
 .quiz-page { background: var(--bg-soft); min-height: 100vh; }
