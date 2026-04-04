@@ -86,7 +86,7 @@ if (plan.steps && plan.steps.length) {
           <a href="${mapsUrl}" target="_blank" rel="noopener" class="step-map-link">
             ${t('plan.mapsLink')}
           </a>
-          ${step.bookable ? `<a href="https://www.thefork.com/search#query=${encodeURIComponent(step.name + ' ' + (preferences.city || ''))}" target="_blank" rel="noopener" class="step-book-link">${t('plan.bookTable')}</a>` : ''}
+
           ${renderPlaceCard(step.yelpPlace)}
         </div>
       </div>
