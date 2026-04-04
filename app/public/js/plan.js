@@ -103,7 +103,7 @@ if (plan.steps && plan.steps.length) {
       <a href="${mapsUrl}" target="_blank" rel="noopener" class="map-link-btn">
         <div>
           <strong>${step.name}</strong>
-          <span style="display:block; font-size:12px; color:var(--muted); margin-top:2px;">${step.type} · ${step.duration}</span>
+          <span style="display:block; font-size:12px; color:var(--muted); margin-top:2px;">${step.type}${step.duration ? ' · ' + da(step.duration) : ''}</span>
         </div>
         <span class="map-link-icon">↗</span>
       </a>
