@@ -46,25 +46,19 @@ if (plan.goodFor && plan.goodFor.length) {
   goodForEl.innerHTML = plan.goodFor.map(g => `<span class="good-for-tag">${g}</span>`).join('');
 }
 
-function renderYelpCard(y) {
+function renderPlaceCard(y) {
   if (!y) return '';
-  const badge = y.sponsored
-    ? `<span class="yelp-badge sponsored-badge">Anbefalet</span>`
-    : `<span class="yelp-badge">Yelp</span>`;
-  const meta = y.sponsored
-    ? `<span class="yelp-rating-num">${y.rating} / 5</span>`
-    : `<span class="yelp-rating-num">${y.rating} / 5</span><span class="yelp-dot">·</span><span>${y.reviewCount} anmeldelser</span>${y.price ? `<span class="yelp-dot">·</span><span>${y.price}</span>` : ''}`;
   return `
-    <div class="yelp-card ${y.sponsored ? 'sponsored-card' : ''}">
-      ${y.image ? `<img class="yelp-image" src="${y.image}" alt="${y.name}" loading="lazy">` : ''}
-      <div class="yelp-info">
-        <div class="yelp-top">
-          <span class="yelp-name">${y.name}</span>
-          ${badge}
+    <div class="place-card ${y.sponsored ? 'sponsored-card' : ''}">
+      ${y.image ? `<img class="place-image" src="${y.image}" alt="${y.name}" loading="lazy">` : ''}
+      <div class="place-info">
+        <div class="place-top">
+          <span class="place-name">${y.name}</span>
+          ${y.sponsored ? `<span class="place-badge sponsored-badge">Anbefalet</span>` : ''}
         </div>
-        <div class="yelp-meta">${meta}</div>
-        ${y.address ? `<div class="yelp-address">${y.address}</div>` : ''}
-        <a href="${y.url}" target="_blank" rel="noopener" class="yelp-link">${y.sponsored ? 'Besøg hjemmeside ↗' : 'Se på Yelp ↗'}</a>
+        ${y.address ? `<div class="place-address">${y.address}</div>` : ''}
+        ${y.description ? `<div class="place-desc">${y.description}</div>` : ''}
+        ${y.url ? `<a href="${y.url}" target="_blank" rel="noopener" class="place-link">Besøg hjemmeside ↗</a>` : ''}
       </div>
     </div>
   `;
@@ -93,7 +87,7 @@ if (plan.steps && plan.steps.length) {
             ${t('plan.mapsLink')}
           </a>
           ${step.bookable ? `<a href="https://www.thefork.com/search#query=${encodeURIComponent(step.name + ' ' + (preferences.city || ''))}" target="_blank" rel="noopener" class="step-book-link">${t('plan.bookTable')}</a>` : ''}
-          ${renderYelpCard(step.yelpPlace)}
+          ${renderPlaceCard(step.yelpPlace)}
         </div>
       </div>
     `;

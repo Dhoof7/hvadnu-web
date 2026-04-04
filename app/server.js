@@ -178,7 +178,7 @@ app.get('/api/cities', (_req, res) => {
 });
 
 app.get('/api/test', async (req, res) => {
-  const results = { anthropic: false, yelp: false, errors: [] };
+  const results = { anthropic: false, errors: [] };
   try {
     await getAnthropic().messages.create({
       model: 'claude-haiku-4-5-20251001',
@@ -188,15 +188,6 @@ app.get('/api/test', async (req, res) => {
     results.anthropic = true;
   } catch (e) {
     results.errors.push('Anthropic: ' + e.message);
-  }
-  try {
-    const r = await fetch('https://api.yelp.com/v3/businesses/search?term=cafe&location=Copenhagen&limit=1', {
-      headers: { Authorization: `Bearer ${YELP_API_KEY}` },
-    });
-    results.yelp = r.ok;
-    if (!r.ok) results.errors.push('Yelp: ' + r.status + ' ' + r.statusText);
-  } catch (e) {
-    results.errors.push('Yelp: ' + e.message);
   }
   res.json(results);
 });
