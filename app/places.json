@@ -1778,11 +1778,11 @@
     "instagram": "",
     "facebook": "",
     "active": true
-  }, 
+  },
   {
     "name": "FARAH.STUDIO",
     "city": "lystrup",
-    "type": "hairdresser, barber",
+    "type": "Frisør",
     "address": "elstedhoej, 8520 Lystrup",
     "url": "",
     "phone": "",
@@ -1792,11 +1792,4 @@
     "facebook": "",
     "active": true
   }
-
-
-
-
-
-
-
 ]
