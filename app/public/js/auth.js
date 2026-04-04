@@ -176,7 +176,7 @@ function checkPasswordStrength(pw) {
 }
 function _hint(id, ok, text) {
   const el = document.getElementById(id);
-  el.textContent = (ok ? '✓ ' : '✗ ') + text;
+  el.textContent = text;
   el.style.color = ok ? '#27ae60' : '#aaa';
 }
 function isPasswordStrong(pw) {

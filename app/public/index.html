@@ -63,13 +63,13 @@
           style="display: none"
         >
           <h3 class="nearby-heading" id="nearbyLabel">
-            📍 Anbefalede steder i din by
+            Anbefalede steder i din by
           </h3>
           <div class="nearby-sponsors" id="nearbySponsors"></div>
         </div>
         <!-- Location prompt (shown when no cache) -->
         <div id="locationPrompt" class="hero-sponsor-panel" style="display:none; text-align:center; padding: 32px 24px;">
-          <div style="font-size:40px; margin-bottom:16px;">📍</div>
+          <div style="margin-bottom:16px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
           <h3 style="color:#fff; font-size:17px; margin-bottom:8px;" data-i18n="hero.loc.title">Anbefalede steder nær dig</h3>
           <p style="color:rgba(255,255,255,.6); font-size:13px; margin-bottom:20px;" data-i18n="hero.loc.sub">Tillad lokation og se de bedste steder i din by</p>
           <button onclick="requestLocation()" class="btn-white" style="font-size:14px; padding:10px 20px;" data-i18n="hero.loc.btn">Tillad lokation →</button>
@@ -78,7 +78,7 @@
         <!-- Fallback feature card -->
         <div class="hero-feature-card" id="heroFeatureCard">
           <div class="hero-feature-item">
-            <span class="hero-feature-icon">⚡</span>
+            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
             <div>
               <strong data-i18n="hero.feat1.title">Planer på sekunder</strong>
               <p data-i18n="hero.feat1.sub">
@@ -87,7 +87,7 @@
             </div>
           </div>
           <div class="hero-feature-item">
-            <span class="hero-feature-icon">📍</span>
+            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
             <div>
               <strong data-i18n="hero.feat2.title">Lokale anbefalinger</strong>
               <p data-i18n="hero.feat2.sub">
@@ -96,7 +96,7 @@
             </div>
           </div>
           <div class="hero-feature-item">
-            <span class="hero-feature-icon">🎯</span>
+            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
             <div>
               <strong data-i18n="hero.feat3.title">Personlig tilpasning</strong>
               <p data-i18n="hero.feat3.sub">
@@ -163,19 +163,16 @@
       </h2>
       <div class="example-cards">
         <div class="example-card">
-          <span class="example-emoji">🌿</span>
           <h3>Søndags-reset</h3>
           <p class="example-tag">Par · Hyggeligt · 2–3 timer</p>
           <p>Bondesmarked → specialty kaffe → boghandel → gåtur langs åen</p>
         </div>
         <div class="example-card">
-          <span class="example-emoji">🎉</span>
           <h3>Aften med gutter/piger</h3>
           <p class="example-tag">Venner · Sjovt · Hel dag</p>
           <p>Street food frokost → escape room → rooftop bar → live musik</p>
         </div>
         <div class="example-card">
-          <span class="example-emoji">🏞️</span>
           <h3>Familiedag på eventyr</h3>
           <p class="example-tag">Familie · Aktivt · Hel dag</p>
           <p>Natursti → picnic i parken → interaktivt museum → is</p>
@@ -248,7 +245,7 @@
         const wrap = document.getElementById("nearbySponsorWrap");
         const container = document.getElementById("nearbySponsors");
         const label = document.getElementById("nearbyLabel");
-        label.textContent = `📍 Anbefalede steder i ${cityDisplay}`;
+        label.textContent = `Anbefalede steder i ${cityDisplay}`;
         // Hide fallback feature card
         const fc = document.getElementById("heroFeatureCard");
         if (fc) fc.style.display = "none";
@@ -345,22 +342,17 @@
       function openSponsorModal(i) {
         const s = window._nearbySponsors[i];
         if (!s) return;
-        const stars =
-          "★".repeat(Math.round(s.rating)) +
-          "☆".repeat(5 - Math.round(s.rating));
         document.getElementById("modalImg").src = s.image;
         document.getElementById("modalImg").alt = s.name;
         document.getElementById("modalName").textContent = s.name;
         document.getElementById("modalRating").innerHTML =
-          `<span class="modal-stars">${stars}</span> <span class="modal-rating-num">${s.rating}</span>`;
+          `<span class="modal-rating-num">${s.rating} / 5</span>`;
         document.getElementById("modalCats").innerHTML = s.categories
           .map((c) => `<span class="modal-cat-tag">${c}</span>`)
           .join("");
-        document.getElementById("modalAddress").innerHTML = s.address
-          ? `📍 ${s.address}`
-          : "";
+        document.getElementById("modalAddress").innerHTML = s.address ? s.address : "";
         document.getElementById("modalPhone").innerHTML = s.phone
-          ? `📞 <a href="tel:${s.phone}">${s.phone}</a>`
+          ? `<a href="tel:${s.phone}">${s.phone}</a>`
           : "";
         document.getElementById("modalUrl").href = s.url;
         document.getElementById("sponsorModal").classList.add("open");
