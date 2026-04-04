@@ -97,6 +97,19 @@ async function fetchPlans() {
   const sub = document.getElementById('resultsSub');
   if (sub) sub.textContent = buildPreferencesSummary(preferences);
 
+  // Show cached plans instantly if available
+  const cached = localStorage.getItem('plans');
+  if (cached) {
+    const plans = JSON.parse(cached);
+    if (plans && plans.length) {
+      clearInterval(hintInterval);
+      loadingScreen.style.display = 'none';
+      resultsPage.style.display = 'block';
+      resultsGrid.innerHTML = plans.map((plan, i) => renderCard(plan, i)).join('');
+      return;
+    }
+  }
+
   try {
     const endpoint = preferences.freetext ? '/api/recommend-free' : '/api/recommend';
     const res = await fetch(endpoint, {
