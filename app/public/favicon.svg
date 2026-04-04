@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="8" fill="#0d2247"/>
+  <rect width="32" height="32" rx="8" fill="#ffffff"/>
   <text
     x="16"
-    y="22"
+    y="16"
     font-family="Georgia, 'Times New Roman', serif"
-    font-size="11"
+    font-size="10"
     font-weight="700"
     text-anchor="middle"
-    letter-spacing="-0.3"
+    dominant-baseline="central"
+    letter-spacing="-0.2"
   >
-    <tspan fill="#ffffff">hvad</tspan><tspan fill="#5e17eb">nu</tspan>
+    <tspan fill="#0d2247">hvad</tspan><tspan fill="#5e17eb">nu</tspan>
   </text>
 </svg>
