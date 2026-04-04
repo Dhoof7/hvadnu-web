@@ -281,10 +281,9 @@ app.get('/api/test', async (req, res) => {
 
 app.get('/api/admin/debug', (_req, res) => {
   res.json({
-    adminSecretSet: !!ADMIN_SECRET,
-    adminSecretLength: ADMIN_SECRET ? ADMIN_SECRET.length : 0,
-    fromProcessEnv: !!process.env.ADMIN_SECRET,
-    allKeys: Object.keys(process.env).filter(k => !k.includes('KEY') && !k.includes('SECRET') && !k.includes('TOKEN')),
+    supabaseUrlSet: !!process.env.SUPABASE_URL,
+    supabaseServiceKeySet: !!process.env.SUPABASE_SERVICE_KEY,
+    supabaseServiceKeyLength: process.env.SUPABASE_SERVICE_KEY ? process.env.SUPABASE_SERVICE_KEY.length : 0,
   });
 });
 
