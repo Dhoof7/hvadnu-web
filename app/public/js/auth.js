@@ -374,19 +374,19 @@ async function updateNavAuth() {
     mobileWrap.className = 'nav-mobile-btn';
 
     const avatar = document.createElement('button');
-    avatar.style.cssText = 'width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;';
+    avatar.style.cssText = 'width:38px;height:38px;border-radius:50%;background:#5e17eb;color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
     avatar.textContent = initial;
 
     const dropdown = document.createElement('div');
     dropdown.className = 'nav-dropdown';
     dropdown.id = 'navDropdown';
     dropdown.innerHTML = `
-      <span style="display:block;padding:8px 16px 4px;color:rgba(255,255,255,.4);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">${name}</span>
+      <span style="display:block;padding:10px 16px 6px;color:rgba(255,255,255,.5);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;">${name}</span>
       <div class="nav-dd-divider"></div>
-      <a href="/profile.html">Min profil</a>
-      <a href="/saved.html">Mine planer</a>
+      <a href="/profile.html" style="font-size:15px;padding:12px 18px;">Min profil</a>
+      <a href="/saved.html" style="font-size:15px;padding:12px 18px;">Mine planer</a>
       <div class="nav-dd-divider"></div>
-      <button onclick="(async()=>{await _sb.auth.signOut();window.location.href='/'})()">Log ud</button>
+      <button style="font-size:15px;padding:12px 18px;color:rgba(255,255,255,.5);" onclick="(async()=>{await _sb.auth.signOut();window.location.href='/'})()">Log ud</button>
     `;
 
     avatar.onclick = (e) => {
