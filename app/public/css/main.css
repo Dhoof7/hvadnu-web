@@ -358,7 +358,8 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .btn-view-plan:hover { background: #2d2d3f; }
 
 .results-footer { text-align: center; margin-top: 56px; }
-.results-footer p { font-size: 15px; color: var(--muted); margin-bottom: 16px; }
+.results-footer p { font-size: 15px; color: rgba(255,255,255,.6); margin-bottom: 16px; }
+.results-footer a { color: #fff; }
 
 /* ===== PLAN DETAIL PAGE ===== */
 .plan-page { }
