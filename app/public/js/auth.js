@@ -315,7 +315,7 @@ async function saveProfile() {
 }
 
 // ---- nav auth ----
-const _navBtnStyle = 'background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;transition:background .2s;';
+const _navBtnStyle = 'background:rgba(0,0,0,.07);color:#1a1a1a;border:1px solid rgba(0,0,0,.12);border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;transition:background .2s;';
 
 function injectNavAuthBtn() {
   const navbar = document.querySelector('.navbar');
@@ -349,7 +349,7 @@ async function updateNavAuth() {
     desktop.className = 'nav-desktop';
 
     const nameSpan = document.createElement('span');
-    nameSpan.style.cssText = 'color:rgba(255,255,255,.9);font-size:14px;font-weight:600;white-space:nowrap;';
+    nameSpan.style.cssText = 'color:#1a1a1a;font-size:14px;font-weight:600;white-space:nowrap;';
     nameSpan.textContent = name;
 
     const mk = (label, href) => {
@@ -360,7 +360,7 @@ async function updateNavAuth() {
       return b;
     };
     const logoutBtn = document.createElement('button');
-    logoutBtn.style.cssText = 'background:transparent;color:rgba(255,255,255,.6);border:none;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;transition:color .2s;';
+    logoutBtn.style.cssText = 'background:transparent;color:rgba(0,0,0,.5);border:none;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;transition:color .2s;';
     logoutBtn.textContent = 'Log ud';
     logoutBtn.onclick = async () => { await _sb.auth.signOut(); window.location.href = '/'; };
 

@@ -24,11 +24,12 @@ button { font-family: var(--sans); cursor: pointer; }
 .navbar {
   position: sticky; top: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  background: var(--dark); padding: 0 48px; height: 72px; gap: 16px;
+  background: #fff; border-bottom: 1px solid rgba(0,0,0,.08);
+  padding: 0 48px; height: 72px; gap: 16px;
   overflow: hidden;
 }
 #navAuthWrap { display: flex; align-items: center; gap: 10px; min-width: 0; flex-shrink: 1; overflow: hidden; }
-#navAuthWrap .nav-desktop { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 40px; padding: 6px 6px 6px 18px; }
+#navAuthWrap .nav-desktop { display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,.04); border: 1px solid rgba(0,0,0,.1); border-radius: 40px; padding: 6px 6px 6px 18px; }
 #navAuthWrap .nav-mobile-btn { display: none; position: relative; }
 .nav-dropdown {
   display: none; position: fixed; top: 60px; right: 16px;
@@ -52,16 +53,16 @@ button { font-family: var(--sans); cursor: pointer; }
 .logo-wordmark { font-family: var(--serif); font-size: 30px; font-weight: 700; color: #1800ad; letter-spacing: -.02em; }
 .logo-nu { color: #5e17eb; }
 .nav-links { display: flex; gap: 28px; }
-.nav-links a { color: rgba(255,255,255,.7); font-size: 14px; transition: color .2s; }
-.nav-links a:hover { color: #fff; }
-.nav-exit, .nav-link-plain { color: rgba(255,255,255,.7); font-size: 14px; transition: color .2s; }
-.nav-exit:hover, .nav-link-plain:hover { color: #fff; }
+.nav-links a { color: rgba(0,0,0,.6); font-size: 14px; transition: color .2s; }
+.nav-links a:hover { color: #000; }
+.nav-exit, .nav-link-plain { color: rgba(0,0,0,.6); font-size: 14px; transition: color .2s; }
+.nav-exit:hover, .nav-link-plain:hover { color: #000; }
 .lang-toggle {
-  background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.2);
+  background: rgba(0,0,0,.06); color: #1a1a1a; border: 1px solid rgba(0,0,0,.12);
   border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 600;
   cursor: pointer; transition: background .2s; white-space: nowrap; margin-left: auto;
 }
-.lang-toggle:hover { background: rgba(255,255,255,.22); }
+.lang-toggle:hover { background: rgba(0,0,0,.12); }
 
 /* ===== TYPOGRAPHY HELPERS ===== */
 .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
