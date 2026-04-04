@@ -27,14 +27,13 @@ function showError(msg) {
 }
 
 function buildPreferencesSummary(p) {
-  const who = { couple: 'a date', friends: 'friends', family: 'family' };
-  const budget = { low: 'low budget', medium: 'medium budget', high: 'generous budget' };
-  const time = { '1h': '1 hour', '2-3h': '2–3 hours', 'fullday': 'a full day' };
+  const who = { couple: 'date', friends: 'venner', family: 'familie' };
+  const time = { '1h': '1 time', '2-3h': '2–3 timer', 'fullday': 'hel dag' };
   const parts = [];
   if (p.who) parts.push(who[p.who] || p.who);
-  if (p.mood) parts.push(p.mood + ' vibe');
+  if (p.mood) parts.push(p.mood);
   if (p.time) parts.push(time[p.time] || p.time);
-  if (p.city) parts.push('in ' + p.city);
+  if (p.city) parts.push(p.city);
   return parts.join(' · ');
 }
 
@@ -54,15 +53,11 @@ function renderCard(plan, index) {
 
         <div class="result-stats">
           <div class="stat-item">
-            <span class="stat-label">Price</span>
-            <span class="stat-value">${(plan.priceLevel || 'kr').replace(/krkrkr/gi,'kr').replace(/krkr/gi,'kr').replace(/kr kr kr/gi,'kr').replace(/kr kr/gi,'kr')}</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Time</span>
+            <span class="stat-label">Tid</span>
             <span class="stat-value">${plan.totalTime || '–'}</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Cost</span>
+            <span class="stat-label">Pris</span>
             <span class="stat-value">${plan.totalCost || '–'}</span>
           </div>
         </div>
@@ -131,7 +126,7 @@ async function fetchPlans() {
 
       if (data.status === 'enriching') {
         clearInterval(hintInterval);
-        if (loadingHint) loadingHint.textContent = 'Finding real places near you...';
+        if (loadingHint) loadingHint.textContent = 'Finder rigtige steder nær dig...';
       }
 
       if (data.plans) {
@@ -159,7 +154,7 @@ async function fetchPlans() {
       }
     }
   } catch (err) {
-    showError('Network error. Make sure the server is running and your API key is set.');
+    showError('Netværksfejl. Prøv igen.');
   }
 }
 

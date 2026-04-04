@@ -50,7 +50,7 @@ function renderYelpCard(y) {
         </div>
         <div class="yelp-meta">${meta}</div>
         ${y.address ? `<div class="yelp-address">${y.address}</div>` : ''}
-        <a href="${y.url}" target="_blank" rel="noopener" class="yelp-link">${y.sponsored ? 'Besøg hjemmeside ↗' : 'View on Yelp ↗'}</a>
+        <a href="${y.url}" target="_blank" rel="noopener" class="yelp-link">${y.sponsored ? 'Besøg hjemmeside ↗' : 'Se på Yelp ↗'}</a>
       </div>
     </div>
   `;
@@ -127,7 +127,7 @@ function initMap() {
           // Instead, add a single city marker with plan info
           const marker = L.marker([parseFloat(lat), parseFloat(lon)])
             .addTo(map)
-            .bindPopup(`<strong>${plan.title}</strong><br>${plan.steps.length} stops planned in ${city}`)
+            .bindPopup(`<strong>${plan.title}</strong><br>${plan.steps.length} stop i ${city}`)
             .openPopup();
         }
       })
