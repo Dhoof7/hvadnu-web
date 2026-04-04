@@ -49,7 +49,11 @@
           <p class="hero-quiz-link" data-i18n="hero.quizLink">
             Foretrækker du spørgsmål? <a href="quiz.html">Tag quizzen →</a>
           </p>
-          <button class="btn-primary btn-large free-submit-btn" id="freeSubmitBtn">
+          <button
+            class="btn-primary btn-large free-submit-btn"
+            id="freeSubmitBtn"
+            data-i18n="hero.cta"
+          >
             Find mine planer →
           </button>
         </div>
@@ -57,26 +61,54 @@
 
       <!-- HERO RIGHT PANEL -->
       <div class="hero-right-panel">
-        <div class="nearby-box">
-          <div class="nearby-box-header">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <!-- Nearby sponsors (shown when geolocation available) -->
+        <div
+          id="nearbySponsorWrap"
+          class="hero-sponsor-panel"
+          style="display: none"
+        >
+          <h3 class="nearby-heading" id="nearbyLabel">
+            Anbefalede steder i din by
+          </h3>
+          <div class="nearby-sponsors" id="nearbySponsors"></div>
+        </div>
+        <!-- Location prompt (shown when no cache) -->
+        <div id="locationPrompt" class="hero-sponsor-panel" style="display:none; text-align:center; padding: 32px 24px;">
+          <div style="margin-bottom:16px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <h3 style="color:#fff; font-size:17px; margin-bottom:8px;" data-i18n="hero.loc.title">Anbefalede steder nær dig</h3>
+          <p style="color:rgba(255,255,255,.6); font-size:13px; margin-bottom:20px;" data-i18n="hero.loc.sub">Tillad lokation og se de bedste steder i din by</p>
+          <button onclick="requestLocation()" class="btn-white" style="font-size:14px; padding:10px 20px;" data-i18n="hero.loc.btn">Tillad lokation →</button>
+        </div>
+
+        <!-- Fallback feature card -->
+        <div class="hero-feature-card" id="heroFeatureCard">
+          <div class="hero-feature-item">
+            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
             <div>
-              <h2 class="nearby-box-title">Find nærmeste</h2>
-              <p class="nearby-box-sub">Søg efter steder i din by</p>
+              <strong data-i18n="hero.feat1.title">Planer på sekunder</strong>
+              <p data-i18n="hero.feat1.sub">
+                AI finder de bedste steder til dig
+              </p>
             </div>
           </div>
-          <div class="nearby-city-row-box">
-            <span class="nearby-city-label-box">By:</span>
-            <div class="nearby-box-chips" id="nearbyBoxCityChips"></div>
+          <div class="hero-feature-item">
+            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <div>
+              <strong data-i18n="hero.feat2.title">Lokale anbefalinger</strong>
+              <p data-i18n="hero.feat2.sub">
+                Kendte og skjulte perler i din by
+              </p>
+            </div>
           </div>
-          <div class="nearby-search-row">
-            <input type="text" id="nearbyInput" class="nearby-input" placeholder="Restaurant, frisør, hotel..." autocomplete="off" />
-            <button class="nearby-search-btn" id="nearbySearchBtn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            </button>
+          <div class="hero-feature-item">
+            <span class="hero-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+            <div>
+              <strong data-i18n="hero.feat3.title">Personlig tilpasning</strong>
+              <p data-i18n="hero.feat3.sub">
+                3 unikke planer der passer til jer
+              </p>
+            </div>
           </div>
-          <p class="nearby-city-hint" id="nearbyCityHint" style="display:none;">Vælg en by for at søge.</p>
-          <div class="nearby-results" id="nearbyResults"></div>
         </div>
       </div>
 
@@ -181,8 +213,175 @@
       </div>
     </footer>
 
+    <!-- SPONSOR MODAL -->
+    <div
+      id="sponsorModal"
+      class="sponsor-modal-overlay"
+      onclick="closeSponsorModal(event)"
+    >
+      <div class="sponsor-modal">
+        <button class="sponsor-modal-close" onclick="closeSponsorModal()">
+          &times;
+        </button>
+        <img id="modalImg" class="sponsor-modal-img" src="" alt="" />
+        <div class="sponsor-modal-body">
+          <h3 id="modalName"></h3>
+          <div id="modalRating" class="sponsor-modal-rating"></div>
+          <div id="modalCats" class="sponsor-modal-cats"></div>
+          <div id="modalAddress" class="sponsor-modal-row"></div>
+          <div id="modalPhone" class="sponsor-modal-row"></div>
+          <a
+            id="modalUrl"
+            class="sponsor-modal-btn"
+            href="#"
+            target="_blank"
+            rel="noopener"
+            >Besøg hjemmeside ↗</a
+          >
+        </div>
+      </div>
+    </div>
 
     <script src="js/i18n.js"></script>
+    <script>
+      // Geolocation → nearby sponsors
+      function renderNearbySponsors(nearby, cityDisplay) {
+        if (!nearby.length) return;
+        const wrap = document.getElementById("nearbySponsorWrap");
+        const container = document.getElementById("nearbySponsors");
+        const label = document.getElementById("nearbyLabel");
+        label.textContent = `Anbefalede steder i ${cityDisplay}`;
+        // Hide fallback feature card
+        const fc = document.getElementById("heroFeatureCard");
+        if (fc) fc.style.display = "none";
+        const lp = document.getElementById("locationPrompt");
+        if (lp) lp.style.display = "none";
+        window._nearbySponsors = nearby;
+        container.innerHTML = nearby
+          .slice(0, 6)
+          .map(
+            (s, i) => `
+          <button class="nearby-card" onclick="openSponsorModal(${i})">
+            <img class="nearby-img" src="${s.image}" alt="${s.name}" loading="lazy">
+            <div class="nearby-info">
+              <span class="nearby-name">${s.name}</span>
+              <span class="nearby-cats">${s.categories.slice(0, 3).join(" · ")}</span>
+            </div>
+          </button>
+        `,
+          )
+          .join("");
+        wrap.style.display = "block";
+      }
+
+      const CACHE_KEY = "nearbyCity_v2";
+      const CACHE_TTL = 60 * 60 * 1000;
+
+      function showFallback() {
+        document.getElementById('locationPrompt').style.display = 'none';
+        document.getElementById('heroFeatureCard').style.display = '';
+      }
+
+      const CITY_ALIASES = { copenhagen: 'københavn', kobenhavn: 'københavn', 'kbh': 'københavn' };
+      function normalizeCity(name) {
+        const n = name.toLowerCase().replace(/\s*kommune\s*/i, '').trim();
+        return CITY_ALIASES[n] || n;
+      }
+
+      async function resolveLocation(lat, lon) {
+        try {
+          const geo = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+          ).then(r => r.json());
+          const addr = geo.address || {};
+          // Collect all location name candidates (suburb/village may be "Lystrup" even if city is "Aarhus")
+          const candidates = [
+            addr.suburb, addr.village, addr.town, addr.city,
+            addr.municipality, addr.county
+          ].filter(Boolean).map(v => normalizeCity(v));
+          if (!candidates.length) { showFallback(); return; }
+          const sponsors = await fetch('/api/sponsors').then(r => r.json());
+          // Find first candidate that matches a sponsor city
+          let nearby = [];
+          let matchedCity = '';
+          for (const c of candidates) {
+            const found = sponsors.filter(s => c.includes(s.city) || s.city.includes(c));
+            if (found.length) { nearby = found; matchedCity = c; break; }
+          }
+          const city = matchedCity || candidates[0];
+          const rawCity = addr.suburb || addr.village || addr.town || addr.city || addr.municipality || addr.county || '';
+          const cityDisplay = rawCity.replace(/\s*Kommune\s*/i, '').trim();
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ city, cityDisplay, ts: Date.now() }));
+          if (typeof saveUserCity === 'function') saveUserCity(cityDisplay);
+          if (!nearby.length) { showFallback(); return; }
+          renderNearbySponsors(nearby, cityDisplay);
+        } catch { showFallback(); }
+      }
+
+      function requestLocation() {
+        if (!navigator.geolocation) return;
+        // Show loading state
+        const btn = document.querySelector('#locationPrompt button');
+        if (btn) btn.textContent = 'Henter lokation...';
+        navigator.geolocation.getCurrentPosition(
+          pos => resolveLocation(pos.coords.latitude, pos.coords.longitude),
+          () => showFallback(),
+          { timeout: 10000 }
+        );
+      }
+
+      (async function () {
+        // Try cache first — show instantly
+        try {
+          const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+          if (cached && Date.now() - cached.ts < CACHE_TTL) {
+            const sponsors = await fetch('/api/sponsors').then(r => r.json());
+            // cached.city may be suburb (e.g. "lystrup") — direct match
+            const nc = normalizeCity(cached.city);
+          const nearby = sponsors.filter(s => nc.includes(s.city) || s.city.includes(nc));
+            if (nearby.length) { renderNearbySponsors(nearby, cached.cityDisplay); return; }
+            // If no match, fall through to re-detect
+          }
+        } catch {}
+
+        // No cache — show location prompt button
+        if (navigator.geolocation) {
+          document.getElementById('locationPrompt').style.display = 'block';
+          document.getElementById('heroFeatureCard').style.display = 'none';
+        }
+      })();
+
+      function openSponsorModal(i) {
+        const s = window._nearbySponsors[i];
+        if (!s) return;
+        document.getElementById("modalImg").src = s.image;
+        document.getElementById("modalImg").alt = s.name;
+        document.getElementById("modalName").textContent = s.name;
+        document.getElementById("modalRating").innerHTML =
+          `<span class="modal-rating-num">${s.rating} / 5</span>`;
+        document.getElementById("modalCats").innerHTML = s.categories
+          .map((c) => `<span class="modal-cat-tag">${c}</span>`)
+          .join("");
+        document.getElementById("modalAddress").innerHTML = s.address ? s.address : "";
+        document.getElementById("modalPhone").innerHTML = s.phone
+          ? `<a href="tel:${s.phone}">${s.phone}</a>`
+          : "";
+        document.getElementById("modalUrl").href = s.url;
+        document.getElementById("sponsorModal").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeSponsorModal(e) {
+        if (
+          e &&
+          e.target !== document.getElementById("sponsorModal") &&
+          !e.target.classList.contains("sponsor-modal-close")
+        )
+          return;
+        document.getElementById("sponsorModal").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+    </script>
     <script>
       let selectedHeroCity = '';
 
@@ -229,73 +428,6 @@
           document.getElementById("freeSubmitBtn").click();
         }
       });
-
-      // Nearby search — standalone box with its own city selector
-      let nearbyCity = '';
-      const nearbyInput = document.getElementById('nearbyInput');
-      const nearbySearchBtn = document.getElementById('nearbySearchBtn');
-      const nearbyResults = document.getElementById('nearbyResults');
-      const nearbyCityHint = document.getElementById('nearbyCityHint');
-
-      (async () => {
-        try {
-          const cities = await fetch('/api/cities').then(r => r.json());
-          const wrap = document.getElementById('nearbyBoxCityChips');
-          wrap.innerHTML = cities.map(c => `
-            <button class="hero-city-chip" data-value="${c.value}">${c.label}</button>
-          `).join('');
-          wrap.querySelectorAll('.hero-city-chip').forEach(btn => {
-            btn.addEventListener('click', () => {
-              wrap.querySelectorAll('.hero-city-chip').forEach(b => b.classList.remove('active'));
-              btn.classList.add('active');
-              nearbyCity = btn.dataset.value;
-              nearbyCityHint.style.display = 'none';
-            });
-          });
-        } catch {}
-      })();
-
-      async function runNearbySearch() {
-        const query = nearbyInput.value.trim();
-        if (!query) return;
-        if (!nearbyCity) {
-          nearbyCityHint.style.display = 'block';
-          return;
-        }
-        nearbyCityHint.style.display = 'none';
-        nearbyResults.innerHTML = '<p class="nearby-loading">Søger...</p>';
-        try {
-          const res = await fetch(`/api/nearby?city=${encodeURIComponent(nearbyCity)}&query=${encodeURIComponent(query)}`);
-          const places = await res.json();
-          if (!places.length) {
-            nearbyResults.innerHTML = '<p class="nearby-empty">Ingen steder fundet. Prøv et andet søgeord.</p>';
-            return;
-          }
-          nearbyResults.innerHTML = places.map(p => `
-            <div class="nearby-card ${p.sponsored ? 'nearby-sponsored' : ''}">
-              ${p.image ? `<img class="nearby-card-img" src="${p.image}" alt="${p.name}" loading="lazy">` : ''}
-              <div class="nearby-card-body">
-                <div class="nearby-card-top">
-                  <span class="nearby-card-name">${p.name}</span>
-                  <span class="nearby-card-type">${p.type}</span>
-                  ${p.sponsored ? '<span class="nearby-sponsored-badge">Anbefalet</span>' : ''}
-                </div>
-                ${p.address ? `<div class="nearby-card-address">${p.address}</div>` : ''}
-                ${p.description ? `<div class="nearby-card-desc">${p.description}</div>` : ''}
-                <div class="nearby-card-actions">
-                  ${p.phone ? `<a href="tel:${p.phone}" class="nearby-action-link">${p.phone}</a>` : ''}
-                  ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener" class="nearby-action-link nearby-action-primary">Besøg ↗</a>` : ''}
-                </div>
-              </div>
-            </div>
-          `).join('');
-        } catch {
-          nearbyResults.innerHTML = '<p class="nearby-empty">Noget gik galt. Prøv igen.</p>';
-        }
-      }
-
-      nearbySearchBtn.addEventListener('click', runNearbySearch);
-      nearbyInput.addEventListener('keydown', e => { if (e.key === 'Enter') runNearbySearch(); });
     </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/auth.js"></script>
