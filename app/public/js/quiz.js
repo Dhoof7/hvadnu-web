@@ -10,6 +10,12 @@ function updateProgress() {
   const pct = ((currentStep - 1) / TOTAL_STEPS) * 100;
   progressFill.style.width = pct + '%';
   progressLabel.textContent = `Trin ${currentStep} af ${TOTAL_STEPS}`;
+  const backBtn = document.getElementById('quizBackBtn');
+  if (backBtn) backBtn.style.visibility = currentStep > 1 ? 'visible' : 'hidden';
+}
+
+function prevStep() {
+  if (currentStep > 1) showStep(currentStep - 1);
 }
 
 function showStep(n) {

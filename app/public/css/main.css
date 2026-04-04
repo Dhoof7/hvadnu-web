@@ -219,6 +219,14 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .quiz-container { max-width: 820px; margin: 0 auto; padding: 48px 24px 80px; }
 
 .quiz-progress { margin-bottom: 48px; }
+.quiz-back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: none; padding: 0; margin-bottom: 20px;
+  font-size: 13px; font-weight: 600; color: var(--muted);
+  cursor: pointer; visibility: hidden;
+  transition: color .15s;
+}
+.quiz-back-btn:hover { color: var(--text); }
 .progress-bar { height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 12px; }
 .progress-fill { height: 100%; background: var(--dark); border-radius: 4px; transition: width .4s ease; width: 0%; }
 .progress-label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
