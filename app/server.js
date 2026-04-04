@@ -240,6 +240,44 @@ app.get('/api/admin/stats', async (req, res) => {
   }
 });
 
+app.get('/api/nearby', (req, res) => {
+  const { city, query } = req.query;
+  if (!city || !query) return res.json([]);
+
+  const q = query.toLowerCase().trim();
+  const cityNorm = city.toLowerCase().trim();
+
+  const matchScore = (p) => {
+    let score = 0;
+    if (p.type.toLowerCase().includes(q)) score += 3;
+    if (p.name.toLowerCase().includes(q)) score += 2;
+    if ((p.description || '').toLowerCase().includes(q)) score += 1;
+    return score;
+  };
+
+  // Sponsors first (paid placements)
+  const sponsorResults = SPONSORS
+    .filter(s => s.active && s.city === cityNorm && s.categories.some(c => c.includes(q) || q.includes(c)))
+    .map(s => ({
+      name: s.name, type: s.categories[0] || '', address: s.address,
+      url: s.url, image: s.image, phone: s.phone, rating: s.rating,
+      sponsored: true,
+    }));
+
+  // Then places from places.json
+  const placeResults = PLACES
+    .filter(p => p.active && p.city === cityNorm && matchScore(p) > 0)
+    .sort((a, b) => matchScore(b) - matchScore(a))
+    .slice(0, 8)
+    .map(p => ({
+      name: p.name, type: p.type, address: p.address,
+      url: p.url, image: p.image, phone: p.phone,
+      description: p.description, sponsored: false,
+    }));
+
+  res.json([...sponsorResults, ...placeResults]);
+});
+
 app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });

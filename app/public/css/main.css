@@ -510,6 +510,66 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 
 /* Free text input */
 .free-input-wrap { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+.hero-cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.btn-nearby {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 22px; border-radius: var(--radius);
+  border: 1.5px solid var(--border); background: #fff;
+  font-size: 15px; font-weight: 600; color: var(--text);
+  cursor: pointer; transition: border-color .15s, background .15s;
+  white-space: nowrap;
+}
+.btn-nearby:hover { border-color: var(--dark); background: var(--bg-soft); }
+
+/* Nearby panel */
+.nearby-panel { background: #fff; border-top: 1px solid var(--border); padding: 32px 0; margin-top: 8px; }
+.nearby-panel-inner { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+.nearby-search-row { display: flex; gap: 10px; }
+.nearby-input {
+  flex: 1; padding: 13px 18px;
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  font-family: var(--sans); font-size: 15px; color: var(--text);
+  outline: none; transition: border-color .2s;
+}
+.nearby-input:focus { border-color: var(--dark); }
+.nearby-search-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 22px; background: var(--dark); color: #fff;
+  border: none; border-radius: var(--radius);
+  font-size: 15px; font-weight: 600; cursor: pointer;
+  transition: opacity .15s; white-space: nowrap;
+}
+.nearby-search-btn:hover { opacity: .85; }
+.nearby-city-hint { font-size: 13px; color: #e05; margin-top: 10px; }
+.nearby-loading, .nearby-empty { font-size: 14px; color: var(--muted); margin-top: 20px; }
+.nearby-results { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+.nearby-card {
+  display: flex; gap: 14px; align-items: flex-start;
+  border: 1.5px solid var(--border); border-radius: 14px;
+  padding: 16px; background: var(--bg-soft); overflow: hidden;
+}
+.nearby-sponsored { border-color: var(--dark); background: #f9f8ff; }
+.nearby-card-img { width: 90px; height: 90px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+.nearby-card-body { flex: 1; min-width: 0; }
+.nearby-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; flex-wrap: wrap; }
+.nearby-card-name { font-weight: 700; font-size: 15px; }
+.nearby-card-type {
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  background: var(--border); border-radius: 4px; padding: 2px 7px;
+}
+.nearby-sponsored-badge {
+  font-size: 11px; font-weight: 700; color: #fff;
+  background: var(--dark); border-radius: 4px; padding: 2px 7px;
+}
+.nearby-card-address { font-size: 13px; color: var(--muted); margin-bottom: 5px; }
+.nearby-card-desc { font-size: 13px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+.nearby-card-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.nearby-action-link {
+  font-size: 13px; font-weight: 600; color: var(--muted);
+  text-decoration: none; transition: color .15s;
+}
+.nearby-action-link:hover { color: var(--text); }
+.nearby-action-primary { color: var(--dark); }
 .hero-city-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .hero-city-label { font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
 .hero-city-chips { display: flex; gap: 8px; flex-wrap: wrap; }
