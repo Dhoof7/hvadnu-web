@@ -121,11 +121,15 @@ async function fetchPlans() {
 
   try {
     const endpoint = preferences.freetext ? '/api/recommend-free' : '/api/recommend';
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
     const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(preferences),
+      signal: controller.signal,
     });
+    clearTimeout(timeout);
 
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
@@ -168,7 +172,11 @@ async function fetchPlans() {
       }
     }
   } catch (err) {
-    showError('Netværksfejl. Prøv igen.');
+    if (err.name === 'AbortError') {
+      showError('Det tog for lang tid. Prøv igen.');
+    } else {
+      showError('Netværksfejl. Prøv igen.');
+    }
   }
 }
 

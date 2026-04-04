@@ -84,55 +84,10 @@ const TIME_LABELS = {
 };
 
 function buildPrompt(who, budget, time, setting, mood, city, lang = 'da') {
-  const location = city ? `in or around ${city}` : 'in their city';
-  const langNote = lang === 'da' ? 'IMPORTANT: Write ALL content in Danish.' : 'Write all content in English.';
-  return `You are a creative local activity planner. A user wants personalized plans for what to do today. ${langNote}
-
-User preferences:
-- Who: ${WHO_LABELS[who] || who}
-- Budget: ${BUDGET_LABELS[budget] || budget}
-- Time available: ${TIME_LABELS[time] || time}
-- Setting preference: ${setting} (indoor, outdoor, or a mix)
-- Mood / vibe: ${mood}
-- Location: ${location}
-
-Your task: Generate exactly 3 complete activity plans. Each plan is a sequence of 2–4 stops or activities that flow naturally together. The 3 plans should each have a distinct personality — don't just vary one detail.
-
-Rules:
-- Match the time: a 1-hour plan has 2 quick stops; a full-day plan has 4 stops with meals
-- Match the budget strictly: low budget = mostly free or very cheap activities
-- Match the mood: cozy = coffee shops, bookstores, calm parks; active = sports, hiking, markets; romantic = scenic walks, nice dinners, art
-- Match who they are: date ideas feel different from family or friends plans
-- Make the "why" field genuinely explain the match — don't be generic
-
-Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exactly 3 plans:
-
-[
-  {
-    "id": 1,
-    "title": "Short creative plan title (3–5 words)",
-    "tagline": "One catchy sentence that sells the vibe",
-    "emoji": "one relevant emoji",
-    "why": "2–3 sentences explaining specifically why this plan fits this user — mention their mood, who they're with, and budget",
-    "priceLevel": "use: kr / kr kr / kr kr kr (one symbol = cheap, three = expensive)",
-    "totalTime": "e.g. 2.5 hours",
-    "totalCost": "e.g. 0–80kr per person",
-    "highlights": ["short highlight 1", "short highlight 2", "short highlight 3"],
-    "goodFor": ["label 1", "label 2"],
-    "steps": [
-      {
-        "order": 1,
-        "name": "Name of place or activity",
-        "type": "ALWAYS in English: Park / Café / Restaurant / Museum / Bar / Market / Beach / Bowling / Cinema / Escape Room / Paintball / etc.",
-        "activity": "What exactly to do here — one specific sentence",
-        "duration": "e.g. 45 minutes",
-        "estimatedCost": "Free or e.g. 40–65kr per person",
-        "tip": "One practical tip to make this stop better",
-        "mapSearch": "search query for Google Maps e.g. 'cozy café near Nørreport Copenhagen'"
-      }
-    ]
-  }
-]`;
+  const location = city ? `in ${city}, Denmark` : 'in their city';
+  const langNote = lang === 'da' ? 'Reply in Danish.' : 'Reply in English.';
+  return `Activity planner. ${langNote} Generate exactly 3 JSON plans for: ${WHO_LABELS[who] || who}, ${BUDGET_LABELS[budget] || budget}, ${TIME_LABELS[time] || time}, ${setting}, mood: ${mood}, ${location}. 3 distinct plans, each 2–4 steps. Return ONLY a raw JSON array:
+[{"id":1,"title":"3-5 word title","tagline":"one sentence","emoji":"emoji","why":"2 sentences why this fits","priceLevel":"kr/kr kr/kr kr kr","totalTime":"X hours","totalCost":"X-Xkr per person","highlights":["h1","h2","h3"],"goodFor":["l1","l2"],"steps":[{"order":1,"name":"place name","type":"English type: Café/Restaurant/Bar/Museum/Park/Bowling/Cinema/Escape Room/Paintball/Karting/Outdoor Activity/Market/Swimming/etc","activity":"one sentence","duration":"X min","estimatedCost":"Xkr","tip":"one tip","mapSearch":"query","bookable":false}]}]`;
 }
 
 async function streamPlans(res, prompt, city) {
@@ -140,9 +95,15 @@ async function streamPlans(res, prompt, city) {
   try {
     const stream = getAnthropic().messages.stream({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 4000,
+      max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
     });
+
+    // Abort if AI takes more than 25 seconds
+    const timeout = setTimeout(() => {
+      stream.abort();
+    }, 25000);
+
     let raw = '';
     for await (const chunk of stream) {
       if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
@@ -150,20 +111,30 @@ async function streamPlans(res, prompt, city) {
         send({ chunk: chunk.delta.text });
       }
     }
-    raw = raw.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
+    clearTimeout(timeout);
+
+    // Strip markdown fences if present
+    raw = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+
+    // Find the JSON array even if there's garbage around it
+    const start = raw.indexOf('[');
+    const end = raw.lastIndexOf(']');
+    if (start !== -1 && end !== -1) raw = raw.slice(start, end + 1);
+
     const plans = JSON.parse(raw);
     send({ status: 'enriching' });
-    await Promise.all(
-      plans.flatMap(plan =>
-        plan.steps.map(async step => {
-          step.yelpPlace = await findPlace(step.type, city);
-        })
-      )
+
+    // Place lookup is synchronous (reads from memory) — no async needed
+    plans.forEach(plan =>
+      plan.steps.forEach(step => {
+        step.yelpPlace = findPlace(step.type, city);
+      })
     );
+
     send({ plans });
   } catch (err) {
     console.error('Error generating plans:', err);
-    send({ error: err.message || 'Could not generate plans.' });
+    send({ error: 'Kunne ikke generere planer. Prøv igen.' });
   }
   res.end();
 }
@@ -175,51 +146,8 @@ app.post('/api/recommend-free', async (req, res) => {
 
   res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive' });
 
-  const prompt = `You are a creative local activity planner. ${langNote} A user described their situation in their own words:
-
-"${description}"
-
-Read their description carefully and extract: who they are, what city, budget hints, time of day, and what kind of experience they want.
-
-Generate exactly 3 complete activity plans that fit their description. Each plan is a sequence of 2–4 stops that flow naturally together.
-
-Rules:
-- If they mention food/dinner, include a restaurant step with a real booking option
-- Match the energy: party night = bars/clubs; relaxed = cafés/parks; family = kid-friendly
-- Each plan should have a distinct personality
-- Use the city they mention for all mapSearch queries
-
-Return ONLY a valid JSON array, no markdown, no explanation, no code fences. Exactly 3 plans:
-
-[
-  {
-    "id": 1,
-    "title": "Short creative plan title (3–5 words)",
-    "tagline": "One catchy sentence that sells the vibe",
-    "emoji": "one relevant emoji",
-    "why": "2–3 sentences explaining why this fits their specific situation",
-    "priceLevel": "use: kr / kr kr / kr kr kr (one symbol = cheap, three = expensive)",
-    "totalTime": "e.g. 4 hours",
-    "totalCost": "e.g. 200–350kr per person",
-    "highlights": ["short highlight 1", "short highlight 2", "short highlight 3"],
-    "goodFor": ["label 1", "label 2"],
-    "steps": [
-      {
-        "order": 1,
-        "name": "Name of place or activity",
-        "type": "ALWAYS in English: Park / Café / Restaurant / Bar / Club / Museum / Bowling / Cinema / Escape Room / etc.",
-        "activity": "What exactly to do here — one specific sentence",
-        "duration": "e.g. 1.5 hours",
-        "estimatedCost": "Free or e.g. 150–200kr per person",
-        "tip": "One practical tip",
-        "mapSearch": "search query e.g. 'best steakhouse Copenhagen city center'",
-        "bookable": true
-      }
-    ]
-  }
-]
-
-Set "bookable": true only for Restaurant and Bar steps where a reservation makes sense.`;
+  const prompt = `Activity planner. ${langNote} User request: "${description}". Extract city, who, budget, time, vibe. Generate exactly 3 distinct JSON plans (2–4 steps each). Return ONLY raw JSON array:
+[{"id":1,"title":"3-5 word title","tagline":"one sentence","emoji":"emoji","why":"2 sentences","priceLevel":"kr/kr kr/kr kr kr","totalTime":"X hours","totalCost":"X-Xkr","highlights":["h1","h2","h3"],"goodFor":["l1","l2"],"steps":[{"order":1,"name":"place","type":"English: Café/Restaurant/Bar/Museum/Park/Bowling/Cinema/Escape Room/etc","activity":"one sentence","duration":"X min","estimatedCost":"Xkr","tip":"one tip","mapSearch":"query","bookable":false}]}]`;
 
   const cityMatch =
     description.match(/(?:^|\s)i\s+([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)/) ||
