@@ -89,7 +89,7 @@ function renderCard(plan, index) {
 function selectPlan(index) {
   const plans = JSON.parse(localStorage.getItem('plans') || '[]');
   localStorage.setItem('selectedPlan', JSON.stringify(plans[index]));
-  window.location.href = 'plan.html';
+  window.location.href = '/plan';
 }
 
 window.selectPlan = selectPlan;
@@ -97,7 +97,7 @@ window.selectPlan = selectPlan;
 async function fetchPlans() {
   const raw = localStorage.getItem('preferences');
   if (!raw) {
-    window.location.href = 'quiz.html';
+    window.location.href = '/quiz';
     return;
   }
 

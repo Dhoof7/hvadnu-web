@@ -365,8 +365,8 @@ async function updateNavAuth() {
     logoutBtn.onclick = async () => { await _sb.auth.signOut(); window.location.href = '/'; };
 
     desktop.appendChild(nameSpan);
-    desktop.appendChild(mk('Min profil', '/profile.html'));
-    desktop.appendChild(mk('Mine planer', '/saved.html'));
+    desktop.appendChild(mk('Min profil', '/profile'));
+    desktop.appendChild(mk('Mine planer', '/saved'));
     desktop.appendChild(logoutBtn);
 
     // ---- Mobile: avatar button + dropdown ----

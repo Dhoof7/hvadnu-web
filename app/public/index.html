@@ -48,7 +48,7 @@
             rows="3"
           ></textarea>
           <p class="hero-quiz-link" data-i18n="hero.quizLink">
-            Foretrækker du spørgsmål? <a href="quiz.html">Tag quizzen →</a>
+            Foretrækker du spørgsmål? <a href="/quiz">Tag quizzen →</a>
           </p>
           <button
             class="btn-primary btn-large free-submit-btn"
@@ -123,7 +123,7 @@
         </div>
       </div>
       <div class="center" style="margin-top: 48px">
-        <a href="quiz.html" class="btn-primary" data-i18n="hiw.cta"
+        <a href="/quiz" class="btn-primary" data-i18n="hiw.cta"
           >Kom i gang →</a
         >
       </div>
@@ -164,7 +164,7 @@
         <p data-i18n="cta.sub">
           Tager under et minut. Du har 3 planer på sekunder.
         </p>
-        <a href="quiz.html" class="btn-white" data-i18n="cta.btn"
+        <a href="/quiz" class="btn-white" data-i18n="cta.btn"
           >Find min plan →</a
         >
       </div>
@@ -578,11 +578,11 @@
         );
         const { data: { session } } = await _sb.auth.getSession();
         if (!session) {
-          window._afterLogin = () => { window.location.href = 'results.html'; };
+          window._afterLogin = () => { window.location.href = '/results'; };
           openAuthModal('login');
           return;
         }
-        window.location.href = "results.html";
+        window.location.href = "/results";
       });
       document.getElementById("freeInput").addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {

@@ -65,7 +65,16 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Redirect /page.html -> /page
+app.use((req, res, next) => {
+  if (req.path.endsWith('.html') && req.path !== '/') {
+    return res.redirect(301, req.path.slice(0, -5));
+  }
+  next();
+});
+
+app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
 const aiLimiter = rateLimit({ windowMs: 60_000, max: 10, standardHeaders: true, legacyHeaders: false, message: { error: 'For mange forsøg. Prøv igen om et minut.' } });
 const trackLimiter = rateLimit({ windowMs: 60_000, max: 60, standardHeaders: true, legacyHeaders: false });

@@ -34,11 +34,11 @@ async function submitQuiz() {
 
   const { data: { session } } = await _sb.auth.getSession();
   if (!session) {
-    window._afterLogin = () => { window.location.href = 'results.html'; };
+    window._afterLogin = () => { window.location.href = '/results'; };
     openAuthModal('login');
     return;
   }
-  window.location.href = 'results.html';
+  window.location.href = '/results';
 }
 
 function nextStep() {

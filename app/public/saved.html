@@ -110,7 +110,7 @@
       try {
         const plan = typeof contentJson === 'string' ? JSON.parse(contentJson) : contentJson;
         localStorage.setItem('selectedPlan', JSON.stringify(plan));
-        window.location.href = 'plan.html';
+        window.location.href = '/plan';
       } catch { alert('Kunne ikke åbne planen.'); }
     }
 

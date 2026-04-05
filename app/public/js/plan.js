@@ -16,7 +16,7 @@ function da(str) {
 }
 
 if (!plan) {
-  window.location.href = 'results.html';
+  window.location.href = '/results';
 }
 
 // Set page title

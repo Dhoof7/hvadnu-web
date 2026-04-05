@@ -11,7 +11,7 @@ const TRANSLATIONS = {
     'hero.sub': 'Beskriv din situation og få 3 personlige planer — med steder, aktiviteter og booking-links.',
     'hero.placeholder': 'Fx vi er 5 drenge i København, vil spise først og så ud i byen bagefter...',
     'hero.cta': 'Find mine planer →',
-    'hero.quizLink': 'Foretrækker du spørgsmål? <a href="quiz.html">Tag quizzen →</a>',
+    'hero.quizLink': 'Foretrækker du spørgsmål? <a href="/quiz">Tag quizzen →</a>',
     'hero.loc.title': 'Anbefalede steder nær dig',
     'hero.loc.sub': 'Tillad lokation og se de bedste steder i din by',
     'hero.loc.btn': 'Tillad lokation →',
