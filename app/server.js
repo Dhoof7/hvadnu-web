@@ -1,11 +1,13 @@
 const express = require('express');
 const Anthropic = require('@anthropic-ai/sdk');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const SUPABASE_URL = 'https://kqpxhefvnrlsuxmiqhhy.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxcHhoZWZ2bnJsc3V4bWlxaGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMzE4NjEsImV4cCI6MjA5MDgwNzg2MX0.-fw759yENbo2UZTdgzIU4TpjUqOON4ogtpEUYvE8fqA';
-const ADMIN_SECRET = process.env.ADMIN_SECRET || 'dhoof12349';
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
+if (!ADMIN_SECRET) console.warn('[WARN] ADMIN_SECRET is not set in environment variables');
 
 const fs = require('fs');
 let SPONSORS = [];
@@ -64,6 +66,9 @@ const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const aiLimiter = rateLimit({ windowMs: 60_000, max: 10, standardHeaders: true, legacyHeaders: false, message: { error: 'For mange forsøg. Prøv igen om et minut.' } });
+const trackLimiter = rateLimit({ windowMs: 60_000, max: 60, standardHeaders: true, legacyHeaders: false });
 
 const getAnthropic = () => new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -139,26 +144,28 @@ async function streamPlans(res, prompt, city) {
   res.end();
 }
 
-app.post('/api/recommend-free', async (req, res) => {
+app.post('/api/recommend-free', aiLimiter, async (req, res) => {
   const { description, lang, city: bodyCity } = req.body;
   if (!description) return res.status(400).json({ error: 'Missing description' });
+  if (typeof description !== 'string') return res.status(400).json({ error: 'Invalid input' });
+  const safeDesc = description.slice(0, 500).replace(/[<>]/g, '');
   const langNote = lang === 'da' ? 'IMPORTANT: Write ALL content in Danish.' : 'Write all content in English.';
 
   res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive' });
 
-  const prompt = `Activity planner. ${langNote} User request: "${description}". Extract city, who, budget, time, vibe. Generate exactly 3 distinct JSON plans (2–4 steps each). Return ONLY raw JSON array:
+  const prompt = `Activity planner. ${langNote} User request: "${safeDesc}". Extract city, who, budget, time, vibe. Generate exactly 3 distinct JSON plans (2–4 steps each). Return ONLY raw JSON array:
 [{"id":1,"title":"3-5 word title","tagline":"one sentence","emoji":"emoji","why":"2 sentences","priceLevel":"kr/kr kr/kr kr kr","totalTime":"X hours","totalCost":"X-Xkr","highlights":["h1","h2","h3"],"goodFor":["l1","l2"],"steps":[{"order":1,"name":"place","type":"English: Café/Restaurant/Bar/Museum/Park/Bowling/Cinema/Escape Room/etc","activity":"one sentence","duration":"X min","estimatedCost":"Xkr","tip":"one tip","mapSearch":"query"}]}]`;
 
   const cityMatch =
-    description.match(/(?:^|\s)i\s+([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)/) ||
-    description.match(/\bin\s+([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)\b/i) ||
-    description.match(/\b([A-ZÆØÅ][a-zæøå]{3,}(?:\s[A-ZÆØÅ][a-zæøå]+)?)\b/);
+    safeDesc.match(/(?:^|\s)i\s+([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)/) ||
+    safeDesc.match(/\bin\s+([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)\b/i) ||
+    safeDesc.match(/\b([A-ZÆØÅ][a-zæøå]{3,}(?:\s[A-ZÆØÅ][a-zæøå]+)?)\b/);
   const city = bodyCity || (cityMatch ? cityMatch[1] : '');
 
   await streamPlans(res, prompt, city);
 });
 
-app.post('/api/recommend', async (req, res) => {
+app.post('/api/recommend', aiLimiter, async (req, res) => {
   const { who, budget, time, setting, mood, city, lang } = req.body;
   if (!who || !budget || !time || !setting || !mood) {
     return res.status(400).json({ error: 'Missing preferences' });
@@ -192,7 +199,8 @@ app.get('/api/test', async (req, res) => {
   res.json(results);
 });
 
-app.get('/api/admin/debug', (_req, res) => {
+app.get('/api/admin/debug', (req, res) => {
+  if (req.headers['x-admin-secret'] !== ADMIN_SECRET) return res.status(401).json({ error: 'Unauthorized' });
   res.json({
     supabaseUrlSet: !!process.env.SUPABASE_URL,
     supabaseServiceKeySet: !!process.env.SUPABASE_SERVICE_KEY,
@@ -201,8 +209,7 @@ app.get('/api/admin/debug', (_req, res) => {
 });
 
 app.get('/api/admin/stats', async (req, res) => {
-  const adminSecret = process.env.ADMIN_SECRET || 'dhoof12349';
-  if (req.headers['x-admin-secret'] !== adminSecret) {
+  if (req.headers['x-admin-secret'] !== ADMIN_SECRET) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
   try {
@@ -264,9 +271,11 @@ app.get('/api/search', (req, res) => {
 });
 
 // Track page view (anonymous, called from all pages)
-app.post('/api/track', async (req, res) => {
+app.post('/api/track', trackLimiter, async (req, res) => {
   const { page, referrer } = req.body || {};
-  if (!page) return res.json({ ok: false });
+  if (!page || typeof page !== 'string') return res.json({ ok: false });
+  const safePage = page.slice(0, 200).replace(/[<>]/g, '');
+  const safeRef  = referrer ? String(referrer).slice(0, 500).replace(/[<>]/g, '') : null;
   try {
     await fetch(`${SUPABASE_URL}/rest/v1/page_views`, {
       method: 'POST',
@@ -276,7 +285,7 @@ app.post('/api/track', async (req, res) => {
         'Content-Type': 'application/json',
         Prefer: 'return=minimal',
       },
-      body: JSON.stringify({ page, referrer: referrer || null }),
+      body: JSON.stringify({ page: safePage, referrer: safeRef }),
     });
     res.json({ ok: true });
   } catch {
