@@ -100,8 +100,8 @@ const TIME_LABELS = {
 function buildPrompt(who, budget, time, setting, mood, city, lang = 'da') {
   const location = city ? `in ${city}, Denmark` : 'in their city';
   const langNote = lang === 'da' ? 'Reply in Danish.' : 'Reply in English.';
-  return `Activity planner. ${langNote} Generate exactly 3 JSON plans for: ${WHO_LABELS[who] || who}, ${BUDGET_LABELS[budget] || budget}, ${TIME_LABELS[time] || time}, ${setting}, mood: ${mood}, ${location}. 3 distinct plans, each 2–4 steps. Return ONLY a raw JSON array:
-[{"id":1,"title":"3-5 word title","tagline":"one sentence","emoji":"emoji","why":"2 sentences why this fits","priceLevel":"kr/kr kr/kr kr kr","totalTime":"X hours","totalCost":"X-Xkr per person","highlights":["h1","h2","h3"],"goodFor":["l1","l2"],"steps":[{"order":1,"name":"place name","type":"English type: Café/Restaurant/Bar/Museum/Park/Bowling/Cinema/Escape Room/Paintball/Karting/Outdoor Activity/Market/Swimming/etc","activity":"one sentence","duration":"X min","estimatedCost":"Xkr","tip":"one tip","mapSearch":"query"}]}]`;
+  return `Activity planner. ${langNote} Generate exactly 3 JSON plans for: ${WHO_LABELS[who] || who}, ${BUDGET_LABELS[budget] || budget}, ${TIME_LABELS[time] || time}, ${setting}, mood: ${mood}, ${location}. 3 distinct plans, each exactly 2 steps. Return ONLY a raw JSON array:
+[{"id":1,"title":"short title","tagline":"one sentence","emoji":"emoji","why":"one sentence","totalTime":"X hours","totalCost":"X-Xkr","goodFor":["l1","l2"],"steps":[{"order":1,"name":"place","type":"Café/Restaurant/Bar/Museum/Park/Bowling/Cinema/Escape Room/etc","activity":"one sentence","duration":"X min","estimatedCost":"Xkr","mapSearch":"query"}]}]`;
 }
 
 async function streamPlans(res, prompt, city) {
@@ -109,7 +109,7 @@ async function streamPlans(res, prompt, city) {
   try {
     const stream = getAnthropic().messages.stream({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 2000,
+      max_tokens: 1200,
       messages: [{ role: 'user', content: prompt }],
     });
 
@@ -162,8 +162,8 @@ app.post('/api/recommend-free', aiLimiter, async (req, res) => {
 
   res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive' });
 
-  const prompt = `Activity planner. ${langNote} User request: "${safeDesc}". Extract city, who, budget, time, vibe. Generate exactly 3 distinct JSON plans (2–4 steps each). Return ONLY raw JSON array:
-[{"id":1,"title":"3-5 word title","tagline":"one sentence","emoji":"emoji","why":"2 sentences","priceLevel":"kr/kr kr/kr kr kr","totalTime":"X hours","totalCost":"X-Xkr","highlights":["h1","h2","h3"],"goodFor":["l1","l2"],"steps":[{"order":1,"name":"place","type":"English: Café/Restaurant/Bar/Museum/Park/Bowling/Cinema/Escape Room/etc","activity":"one sentence","duration":"X min","estimatedCost":"Xkr","tip":"one tip","mapSearch":"query"}]}]`;
+  const prompt = `Activity planner. ${langNote} User request: "${safeDesc}". Extract city, who, budget, time, vibe. Generate exactly 3 distinct JSON plans, each exactly 2 steps. Return ONLY raw JSON array:
+[{"id":1,"title":"short title","tagline":"one sentence","emoji":"emoji","why":"one sentence","totalTime":"X hours","totalCost":"X-Xkr","goodFor":["l1","l2"],"steps":[{"order":1,"name":"place","type":"Café/Restaurant/Bar/Museum/Park/Bowling/Cinema/Escape Room/etc","activity":"one sentence","duration":"X min","estimatedCost":"Xkr","mapSearch":"query"}]}]`;
 
   const cityMatch =
     safeDesc.match(/(?:^|\s)i\s+([A-ZÆØÅ][a-zæøå]+(?:\s[A-ZÆØÅ][a-zæøå]+)?)/) ||

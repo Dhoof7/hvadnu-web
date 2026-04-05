@@ -135,12 +135,41 @@ async function fetchPlans() {
     const decoder = new TextDecoder();
     let buffer = '';
 
+    let streamBuffer = '';
+    let renderedCount = 0;
+
+    function tryRenderStreamedPlans(text) {
+      // Find complete plan objects in the stream and render them progressively
+      const matches = [...text.matchAll(/\{[^{}]*"steps"\s*:\s*\[[^\]]*\][^{}]*\}/gs)];
+      if (matches.length > renderedCount) {
+        for (let i = renderedCount; i < matches.length; i++) {
+          try {
+            const plan = JSON.parse(matches[i][0]);
+            plan.id = i + 1;
+            if (renderedCount === 0) {
+              clearInterval(hintInterval);
+              loadingScreen.style.display = 'none';
+              resultsPage.style.display = 'block';
+              resultsGrid.innerHTML = '';
+            }
+            resultsGrid.innerHTML += renderCard(plan, i);
+            renderedCount++;
+          } catch {}
+        }
+      }
+    }
+
     const handleEvent = (raw) => {
       if (!raw.startsWith('data: ')) return;
       let data;
       try { data = JSON.parse(raw.slice(6)); } catch { return; }
 
       if (data.error) { showError(data.error); return; }
+
+      if (data.chunk) {
+        streamBuffer += data.chunk;
+        tryRenderStreamedPlans(streamBuffer);
+      }
 
       if (data.status === 'enriching') {
         clearInterval(hintInterval);
