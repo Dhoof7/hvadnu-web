@@ -344,5 +344,6 @@ app.get('*', (_req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`\n  What Should We Do Today?\n  Running at http://localhost:${PORT}\n`);
+  console.log(`\n  hvadnu — running at http://localhost:${PORT}`);
+  console.log(`  ADMIN_SECRET set: ${!!ADMIN_SECRET}\n`);
 });
