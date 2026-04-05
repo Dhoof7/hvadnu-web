@@ -6,7 +6,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const SUPABASE_URL = 'https://kqpxhefvnrlsuxmiqhhy.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxcHhoZWZ2bnJsc3V4bWlxaGh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMzE4NjEsImV4cCI6MjA5MDgwNzg2MX0.-fw759yENbo2UZTdgzIU4TpjUqOON4ogtpEUYvE8fqA';
-const ADMIN_SECRET = process.env.ADMIN_SECRET;
+const ADMIN_SECRET = process.env.HVADNU_ADMIN_SECRET || process.env.ADMIN_SECRET;
 if (!ADMIN_SECRET) console.warn('[WARN] ADMIN_SECRET is not set in environment variables');
 
 const fs = require('fs');
@@ -200,11 +200,13 @@ app.get('/api/test', async (req, res) => {
 });
 
 app.get('/api/admin/secret-check', (_req, res) => {
+  const liveSecret = process.env.ADMIN_SECRET;
   res.json({
     secretSet: !!ADMIN_SECRET,
     secretLength: ADMIN_SECRET ? ADMIN_SECRET.length : 0,
+    liveSecretSet: !!liveSecret,
+    liveSecretLength: liveSecret ? liveSecret.length : 0,
     vercelEnv: process.env.VERCEL_ENV || 'not set',
-    nodeEnv: process.env.NODE_ENV || 'not set',
     anthropicSet: !!process.env.ANTHROPIC_API_KEY,
   });
 });
