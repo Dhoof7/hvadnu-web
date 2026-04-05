@@ -200,7 +200,13 @@ app.get('/api/test', async (req, res) => {
 });
 
 app.get('/api/admin/secret-check', (_req, res) => {
-  res.json({ secretSet: !!ADMIN_SECRET, secretLength: ADMIN_SECRET ? ADMIN_SECRET.length : 0 });
+  res.json({
+    secretSet: !!ADMIN_SECRET,
+    secretLength: ADMIN_SECRET ? ADMIN_SECRET.length : 0,
+    vercelEnv: process.env.VERCEL_ENV || 'not set',
+    nodeEnv: process.env.NODE_ENV || 'not set',
+    anthropicSet: !!process.env.ANTHROPIC_API_KEY,
+  });
 });
 
 app.get('/api/admin/debug', (req, res) => {
