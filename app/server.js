@@ -263,6 +263,69 @@ app.get('/api/search', (req, res) => {
   res.json([...sponsorHits, ...placeHits].slice(0, 9));
 });
 
+// Track page view (anonymous, called from all pages)
+app.post('/api/track', async (req, res) => {
+  const { page, referrer } = req.body || {};
+  if (!page) return res.json({ ok: false });
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/page_views`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON,
+        Authorization: `Bearer ${SUPABASE_ANON}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal',
+      },
+      body: JSON.stringify({ page, referrer: referrer || null }),
+    });
+    res.json({ ok: true });
+  } catch {
+    res.json({ ok: false });
+  }
+});
+
+// Admin traffic stats
+app.get('/api/admin/traffic', async (req, res) => {
+  if (req.headers['x-admin-secret'] !== ADMIN_SECRET) return res.status(401).json({ error: 'Unauthorized' });
+  try {
+    const now = new Date();
+    const dayAgo   = new Date(now - 86400000).toISOString();
+    const weekAgo  = new Date(now - 7 * 86400000).toISOString();
+    const monthAgo = new Date(now - 30 * 86400000).toISOString();
+
+    const [todayRes, weekRes, monthRes, pagesRes] = await Promise.all([
+      fetch(`${SUPABASE_URL}/rest/v1/page_views?select=count&created_at=gte.${dayAgo}`, {
+        headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, Prefer: 'count=exact', 'Range-Unit': 'items', Range: '0-0' },
+      }),
+      fetch(`${SUPABASE_URL}/rest/v1/page_views?select=count&created_at=gte.${weekAgo}`, {
+        headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, Prefer: 'count=exact', 'Range-Unit': 'items', Range: '0-0' },
+      }),
+      fetch(`${SUPABASE_URL}/rest/v1/page_views?select=count&created_at=gte.${monthAgo}`, {
+        headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, Prefer: 'count=exact', 'Range-Unit': 'items', Range: '0-0' },
+      }),
+      fetch(`${SUPABASE_URL}/rest/v1/page_views?select=page&created_at=gte.${monthAgo}&order=created_at.desc&limit=500`, {
+        headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
+      }),
+    ]);
+
+    const today  = parseInt(todayRes.headers.get('content-range')?.split('/')[1] || '0');
+    const week   = parseInt(weekRes.headers.get('content-range')?.split('/')[1] || '0');
+    const month  = parseInt(monthRes.headers.get('content-range')?.split('/')[1] || '0');
+
+    const pagesData = await pagesRes.json();
+    const pageCounts = {};
+    (pagesData || []).forEach(({ page }) => { pageCounts[page] = (pageCounts[page] || 0) + 1; });
+    const topPages = Object.entries(pageCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([page, views]) => ({ page, views }));
+
+    res.json({ today, week, month, topPages });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });

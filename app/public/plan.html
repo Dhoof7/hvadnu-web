@@ -74,5 +74,6 @@
   <script src="js/i18n.js"></script>
   <script src="js/plan.js"></script>
   <script src="js/auth.js"></script>
+<script>fetch("/api/track",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:location.pathname,referrer:document.referrer||null})});</script>
 </body>
 </html>

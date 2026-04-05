@@ -593,5 +593,6 @@
     </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/auth.js"></script>
-  </body>
+  <script>fetch("/api/track",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:location.pathname,referrer:document.referrer||null})});</script>
+</body>
 </html>

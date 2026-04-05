@@ -45,8 +45,23 @@
     }
     .stat-value { font-size: 42px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
     .stat-label { color: rgba(255,255,255,.4); font-size: 13px; }
-    .stat-card.users .stat-value { color: #58a6ff; }
-    .stat-card.plans .stat-value { color: #3fb950; }
+    .stat-card.users  .stat-value { color: #58a6ff; }
+    .stat-card.plans  .stat-value { color: #3fb950; }
+    .stat-card.today  .stat-value { color: #e3b341; }
+    .stat-card.week   .stat-value { color: #f78166; }
+    .stat-card.month  .stat-value { color: #bc8cff; }
+
+    .traffic-section { margin-top: 40px; }
+    .pages-list { list-style: none; }
+    .pages-list li {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 0; border-bottom: 1px solid #21262d; font-size: 13px;
+    }
+    .pages-list li:last-child { border-bottom: none; }
+    .page-bar-wrap { flex: 1; background: #21262d; border-radius: 4px; height: 6px; overflow: hidden; }
+    .page-bar { height: 6px; background: #bc8cff; border-radius: 4px; transition: width .4s; }
+    .page-name { width: 140px; color: rgba(255,255,255,.7); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .page-count { width: 36px; text-align: right; color: rgba(255,255,255,.4); font-size: 12px; }
 
     /* Table */
     .section-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: rgba(255,255,255,.7); }
@@ -107,13 +122,30 @@
           <div class="stat-value" id="statPlans">—</div>
           <div class="stat-label">Gemte planer</div>
         </div>
+        <div class="stat-card today">
+          <div class="stat-value" id="statToday">—</div>
+          <div class="stat-label">Sidevisninger i dag</div>
+        </div>
+        <div class="stat-card week">
+          <div class="stat-value" id="statWeek">—</div>
+          <div class="stat-label">Sidevisninger denne uge</div>
+        </div>
+        <div class="stat-card month">
+          <div class="stat-value" id="statMonth">—</div>
+          <div class="stat-label">Sidevisninger denne måned</div>
+        </div>
       </div>
 
       <div id="content">
         <p class="loading">Henter data...</p>
       </div>
 
-      <button class="refresh-btn" onclick="loadStats()">Opdater</button>
+      <div class="traffic-section" id="trafficSection" style="display:none;">
+        <p class="section-title">Top sider — seneste 30 dage</p>
+        <ul class="pages-list" id="pagesList"></ul>
+      </div>
+
+      <button class="refresh-btn" onclick="loadStats();loadTraffic()">Opdater</button>
     </div>
   </div>
 
@@ -127,6 +159,29 @@
       document.getElementById('loginSection').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
       loadStats();
+      loadTraffic();
+    }
+
+    async function loadTraffic() {
+      try {
+        const res = await fetch('/api/admin/traffic', { headers: { 'x-admin-secret': _secret } });
+        if (!res.ok) return;
+        const data = await res.json();
+        document.getElementById('statToday').textContent = data.today ?? '—';
+        document.getElementById('statWeek').textContent  = data.week  ?? '—';
+        document.getElementById('statMonth').textContent = data.month ?? '—';
+        if (data.topPages && data.topPages.length) {
+          const max = data.topPages[0].views;
+          const labels = { '/': 'Forside', '/quiz.html': 'Quiz', '/results.html': 'Resultater', '/plan.html': 'Plan', '/saved.html': 'Gemte planer', '/profile.html': 'Profil' };
+          document.getElementById('pagesList').innerHTML = data.topPages.map(p => `
+            <li>
+              <span class="page-name">${labels[p.page] || p.page}</span>
+              <div class="page-bar-wrap"><div class="page-bar" style="width:${Math.round(p.views/max*100)}%"></div></div>
+              <span class="page-count">${p.views}</span>
+            </li>`).join('');
+          document.getElementById('trafficSection').style.display = 'block';
+        }
+      } catch {}
     }
 
     async function loadStats() {
@@ -186,5 +241,6 @@
       }
     }
   </script>
+<script>fetch("/api/track",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:location.pathname,referrer:document.referrer||null})});</script>
 </body>
 </html>
