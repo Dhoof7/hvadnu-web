@@ -230,19 +230,15 @@ app.get('/api/admin/stats', async (req, res) => {
         headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json' },
         body: '{}',
       }),
-      fetch(`${SUPABASE_URL}/rest/v1/saved_plans?select=count`, {
-        headers: {
-          apikey: SUPABASE_ANON,
-          Authorization: `Bearer ${SUPABASE_ANON}`,
-          Prefer: 'count=exact',
-          'Range-Unit': 'items',
-          Range: '0-0',
-        },
+      fetch(`${SUPABASE_URL}/rest/v1/rpc/get_plans_count`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json' },
+        body: '{}',
       }),
     ]);
 
     const stats = await statsRes.json();
-    const totalPlans = parseInt(plansRes.headers.get('content-range')?.split('/')[1] || '0', 10);
+    const totalPlans = parseInt(await plansRes.json() || 0, 10);
     const recentUsers = (stats.recent_users || []).map(u => ({
       email: u.email,
       name: u.name || '—',
