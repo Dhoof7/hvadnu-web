@@ -15,7 +15,7 @@
 }
 
 html { scroll-behavior: smooth; }
-body { font-family: var(--sans); color: var(--text); background: #0d2247; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--sans); color: var(--text); background: #0d2247; line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
 img { display: block; max-width: 100%; }
 a { text-decoration: none; color: inherit; }
 button { font-family: var(--sans); cursor: pointer; }
@@ -158,9 +158,11 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 
 /* Nearest widget */
 .nearest-widget {
-  background: rgba(255,255,255,.07); backdrop-filter: blur(20px);
+  background: rgba(255,255,255,.1); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,.15); border-radius: 24px;
   padding: 28px; width: 100%; max-width: 400px;
+  transform: translateZ(0);
   box-shadow: 0 24px 60px rgba(0,0,0,.4);
 }
 .nearest-header {
