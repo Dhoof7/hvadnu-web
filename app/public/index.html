@@ -36,10 +36,9 @@
         </p>
         <div class="free-input-wrap">
           <div class="hero-city-row" id="heroCityRow">
-            <span class="hero-city-label">By:</span>
-            <div class="hero-city-chips" id="heroCityChips">
-              <span style="font-size:13px;color:var(--muted);">Henter byer...</span>
-            </div>
+            <select class="hero-city-select" id="heroCitySelect">
+              <option value="">Vælg by (valgfri)</option>
+            </select>
           </div>
           <textarea
             id="freeInput"
@@ -68,9 +67,9 @@
             Det nærmeste
           </div>
           <p class="nearest-sub">Vælg by og søg efter steder nær dig</p>
-          <div class="nearest-city-chips" id="nearestCityChips">
-            <span style="font-size:12px;color:rgba(255,255,255,.4);">Henter byer...</span>
-          </div>
+          <select class="nearest-city-select" id="nearestCityChips">
+            <option value="">Alle byer</option>
+          </select>
           <div class="nearest-search-row">
             <input type="text" id="nearestInput" class="nearest-input" placeholder="Restaurant, frisør, hotel, bowling...">
             <button id="nearestSearchBtn" class="nearest-btn" aria-label="Søg">
@@ -390,28 +389,26 @@
       let selectedHeroCity = '';
       let selectedNearestCity = '';
 
-      // Load nearest city chips + auto-show sponsors for cached/detected city
+      // Load nearest city dropdown
       (async () => {
         try {
           const cities = await fetch('/api/cities').then(r => r.json());
-          const wrap = document.getElementById('nearestCityChips');
-          wrap.innerHTML = cities.map(c => `
-            <button class="nearest-city-chip" data-value="${c.value}">${c.label}</button>
-          `).join('');
+          const sel = document.getElementById('nearestCityChips');
+          cities.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.value; opt.textContent = c.label;
+            sel.appendChild(opt);
+          });
 
           function selectNearestCity(value) {
-            wrap.querySelectorAll('.nearest-city-chip').forEach(b => b.classList.remove('active'));
-            const btn = wrap.querySelector(`.nearest-city-chip[data-value="${value}"]`);
-            if (btn) btn.classList.add('active');
             selectedNearestCity = value;
+            sel.value = value;
           }
 
-          wrap.querySelectorAll('.nearest-city-chip').forEach(btn => {
-            btn.addEventListener('click', () => {
-              selectNearestCity(btn.dataset.value);
-              const q = document.getElementById('nearestInput').value.trim();
-              showNearestForCity(selectedNearestCity, q);
-            });
+          sel.addEventListener('change', () => {
+            selectedNearestCity = sel.value;
+            const q = document.getElementById('nearestInput').value.trim();
+            showNearestForCity(selectedNearestCity, q);
           });
 
           // Auto-load from cache, else show random sponsors
@@ -427,7 +424,6 @@
               }
             }
           } catch {}
-          // No cache — show random sponsors across all cities
           showRandomSponsors();
         } catch {}
       })();
@@ -541,25 +537,18 @@
         }
       });
 
-      // Load city chips from /api/cities
+      // Load cities into dropdown
       (async () => {
         try {
           const cities = await fetch('/api/cities').then(r => r.json());
-          const wrap = document.getElementById('heroCityChips');
-          wrap.innerHTML = cities.map(c => `
-            <button class="hero-city-chip" data-value="${c.value}">${c.label}</button>
-          `).join('');
-          wrap.querySelectorAll('.hero-city-chip').forEach(btn => {
-            btn.addEventListener('click', () => {
-              wrap.querySelectorAll('.hero-city-chip').forEach(b => b.classList.remove('active'));
-              if (selectedHeroCity === btn.dataset.value) {
-                selectedHeroCity = '';
-              } else {
-                btn.classList.add('active');
-                selectedHeroCity = btn.dataset.value;
-              }
-            });
+          const sel = document.getElementById('heroCitySelect');
+          cities.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.value;
+            opt.textContent = c.label;
+            sel.appendChild(opt);
           });
+          sel.addEventListener('change', () => { selectedHeroCity = sel.value; });
         } catch {}
       })();
 

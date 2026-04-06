@@ -168,15 +168,17 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px;
 }
 .nearest-sub { font-size: 13px; color: rgba(255,255,255,.5); margin-bottom: 16px; }
-.nearest-city-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
-.nearest-city-chip {
-  padding: 5px 14px; border-radius: 20px;
-  border: 1.5px solid rgba(255,255,255,.2); background: rgba(255,255,255,.07);
-  font-size: 12px; font-weight: 600; color: rgba(255,255,255,.7);
-  cursor: pointer; transition: all .15s;
+.nearest-city-select {
+  width: 100%; padding: 9px 14px; margin-bottom: 14px;
+  background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.2);
+  border-radius: 10px; color: #fff; font-size: 13px; font-family: inherit;
+  cursor: pointer; outline: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  padding-right: 32px;
 }
-.nearest-city-chip:hover { border-color: rgba(255,255,255,.5); color: #fff; }
-.nearest-city-chip.active { background: #fff; color: var(--dark); border-color: #fff; }
+.nearest-city-select:focus { border-color: rgba(255,255,255,.5); }
+.nearest-city-select option { background: #1a1a28; color: #fff; }
 .nearest-search-row { display: flex; gap: 8px; margin-bottom: 16px; }
 .nearest-input {
   flex: 1; padding: 10px 14px; border-radius: 10px;
@@ -592,17 +594,18 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 
 /* Free text input */
 .free-input-wrap { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-.hero-city-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.hero-city-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.5); white-space: nowrap; letter-spacing: .05em; text-transform: uppercase; }
-.hero-city-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-.hero-city-chip {
-  padding: 6px 16px; border-radius: 20px;
-  border: 1.5px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08);
-  font-size: 13px; font-weight: 600; color: rgba(255,255,255,.8);
-  cursor: pointer; transition: all .15s;
+.hero-city-row { margin-bottom: 10px; }
+.hero-city-select {
+  width: 100%; padding: 10px 14px;
+  background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.2);
+  border-radius: 10px; color: #fff; font-size: 14px; font-family: inherit;
+  cursor: pointer; outline: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+  padding-right: 36px;
 }
-.hero-city-chip:hover { border-color: rgba(255,255,255,.6); color: #fff; background: rgba(255,255,255,.15); }
-.hero-city-chip.active { background: #fff; color: var(--dark); border-color: #fff; }
+.hero-city-select:focus { border-color: rgba(255,255,255,.5); }
+.hero-city-select option { background: #1a1a28; color: #fff; }
 .free-input {
   width: 100%; padding: 16px 20px;
   border: 1.5px solid var(--border); border-radius: var(--radius);
