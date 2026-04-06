@@ -252,16 +252,19 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .nearest-link--phone { background: rgba(255,255,255,.12); color: rgba(255,255,255,.8); }
 
 /* How it works */
-.how-it-works { background: #0d2247; padding: 100px 80px; position: relative; overflow: hidden; }
-.hiw-bg-img {
+.how-it-works { background: #0d2247; padding: 100px 80px; }
+
+/* Examples + CTA shared background */
+.examples-cta-wrap { position: relative; overflow: hidden; }
+.examples-bg-img {
   position: absolute;
-  inset: -16px;
+  inset: 0;
   z-index: 0;
   opacity: .12;
   pointer-events: none;
 }
-.hiw-bg-img img { width: 100%; height: 100%; object-fit: cover; }
-.how-it-works > *:not(.hiw-bg-img) { position: relative; z-index: 1; }
+.examples-bg-img img { width: 100%; height: 100%; object-fit: cover; }
+.examples-cta-wrap > *:not(.examples-bg-img) { position: relative; z-index: 1; }
 .how-it-works .eyebrow { color: rgba(255,255,255,.5); }
 .section-heading { font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; margin-bottom: 56px; color: #fff; }
 .steps-row { display: flex; align-items: center; gap: 0; max-width: 900px; margin: 0 auto; }
