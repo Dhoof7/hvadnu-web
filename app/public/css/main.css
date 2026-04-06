@@ -135,7 +135,6 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   position: relative; z-index: 1;
   display: flex; flex-direction: column; justify-content: center;
   padding: 80px 48px 80px 80px;
-  overflow: hidden;
 }
 .home-hero-content h1 {
   font-size: clamp(44px, 5.5vw, 72px); font-weight: 700;
@@ -155,13 +154,16 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .home-hero-content .hero-quiz-link a { color: #fff; font-weight: 600; text-decoration: underline; }
 .home-hero-content .free-input { background: rgba(255,255,255,.95); }
 
+/* Hero text wrapper — contains eyebrow → city select */
+.hero-text-wrap {
+  position: relative;
+  margin-bottom: 24px;
+}
+
 /* Hero background image (square) */
 .hero-bg-img {
   position: absolute;
-  top: 30%; left: 50%;
-  transform: translate(-50%, -30%);
-  width: min(480px, 90%);
-  aspect-ratio: 1 / 1;
+  inset: -16px;
   border-radius: 20px;
   overflow: hidden;
   z-index: 0;
