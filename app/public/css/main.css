@@ -135,6 +135,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   position: relative; z-index: 1;
   display: flex; flex-direction: column; justify-content: center;
   padding: 80px 48px 80px 80px;
+  overflow: hidden;
 }
 .home-hero-content h1 {
   font-size: clamp(44px, 5.5vw, 72px); font-weight: 700;
@@ -146,12 +147,28 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   font-weight: 700; line-height: 1.05 !important;
   letter-spacing: -.02em; color: #fff; margin-bottom: 32px !important;
 }
+.hero-slogan { position: relative; z-index: 1; }
 .hero-slogan em { color: var(--accent); font-style: normal; }
 .hero-sub { font-size: 16px; color: rgba(255,255,255,.75); max-width: 440px; line-height: 1.7; margin-bottom: 36px; }
-.home-hero-content .eyebrow { color: rgba(255,255,255,.6); }
+.home-hero-content .eyebrow { color: rgba(255,255,255,.6); position: relative; z-index: 1; }
 .home-hero-content .hero-quiz-link { color: rgba(255,255,255,.65); font-size: 16px; }
 .home-hero-content .hero-quiz-link a { color: #fff; font-weight: 600; text-decoration: underline; }
 .home-hero-content .free-input { background: rgba(255,255,255,.95); }
+
+/* Hero background image (square) */
+.hero-bg-img {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(480px, 90%);
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  overflow: hidden;
+  z-index: 0;
+  opacity: .18;
+  pointer-events: none;
+}
+.hero-bg-img img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Hero right panel */
 .hero-right-panel { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 60px 60px 60px 40px; }
