@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Mine Planer · Hvad Skal Vi?</title>
@@ -21,7 +21,6 @@
       transition: background .2s;
     }
     .saved-card:hover { background: rgba(255,255,255,.12); }
-    .saved-emoji { font-size: 36px; flex-shrink: 0; }
     .saved-info { flex: 1; }
     .saved-title { color: #fff; font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 4px; }
     .saved-tagline { color: rgba(255,255,255,.6); font-size: 13px; }
@@ -92,7 +91,6 @@
       grid.style.display = 'flex';
       grid.innerHTML = data.map(p => `
         <div class="saved-card" id="card-${p.id}">
-          <div class="saved-emoji">${p.emoji || '✨'}</div>
           <div class="saved-info">
             <div class="saved-title">${p.title}</div>
             <div class="saved-tagline">${p.tagline || ''}</div>
