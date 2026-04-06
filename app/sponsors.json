@@ -3,7 +3,13 @@
     "id": 1,
     "name": "Mortens Kro",
     "city": "aalborg",
-    "categories": ["restaurant", "dining", "dinner", "food", "eat"],
+    "categories": [
+      "restaurant",
+      "dining",
+      "dinner",
+      "food",
+      "eat"
+    ],
     "address": "Mølleå 4-6, 9000 Aalborg",
     "url": "https://www.mortenskro.dk",
     "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
@@ -15,7 +21,13 @@
     "id": 2,
     "name": "Cafe Especially",
     "city": "aalborg",
-    "categories": ["café", "coffee", "cozy", "brunch", "breakfast"],
+    "categories": [
+      "café",
+      "coffee",
+      "cozy",
+      "brunch",
+      "breakfast"
+    ],
     "address": "Bispensgade 12, 9000 Aalborg",
     "url": "https://cafeespecially.dk",
     "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
@@ -27,7 +39,13 @@
     "id": 3,
     "name": "The Rooftop Bar",
     "city": "aalborg",
-    "categories": ["bar", "cocktails", "drinks", "nightlife", "party"],
+    "categories": [
+      "bar",
+      "cocktails",
+      "drinks",
+      "nightlife",
+      "party"
+    ],
     "address": "Kennedy Arkaden, 9000 Aalborg",
     "url": "https://therooftopbar.dk",
     "image": "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=400&q=80",
@@ -39,7 +57,14 @@
     "id": 4,
     "name": "Pingvin",
     "city": "aalborg",
-    "categories": ["tapas", "wine", "bar", "drinks", "romantic", "date"],
+    "categories": [
+      "tapas",
+      "wine",
+      "bar",
+      "drinks",
+      "romantic",
+      "date"
+    ],
     "address": "Gravensgade 1, 9000 Aalborg",
     "url": "https://www.pingvin.dk",
     "image": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80",
@@ -51,7 +76,15 @@
     "id": 5,
     "name": "Bones",
     "city": "aalborg",
-    "categories": ["restaurant", "american", "ribs", "bbq", "food", "dinner", "friends"],
+    "categories": [
+      "restaurant",
+      "american",
+      "ribs",
+      "bbq",
+      "food",
+      "dinner",
+      "friends"
+    ],
     "address": "Boulevarden 13, 9000 Aalborg",
     "url": "https://www.bonesrestaurant.dk",
     "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80",
@@ -63,7 +96,14 @@
     "id": 6,
     "name": "LETZ Sushi",
     "city": "aalborg",
-    "categories": ["sushi", "japanese", "restaurant", "food", "dinner", "lunch"],
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "food",
+      "dinner",
+      "lunch"
+    ],
     "address": "Algade 58, 9000 Aalborg",
     "url": "https://www.letzsushi.dk",
     "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
@@ -75,7 +115,14 @@
     "id": 7,
     "name": "Fusion Aalborg",
     "city": "aalborg",
-    "categories": ["asian", "fusion", "restaurant", "food", "dinner", "wok"],
+    "categories": [
+      "asian",
+      "fusion",
+      "restaurant",
+      "food",
+      "dinner",
+      "wok"
+    ],
     "address": "Nørregade 7, 9000 Aalborg",
     "url": "https://www.fusionaalborg.dk",
     "image": "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&q=80",
@@ -87,7 +134,14 @@
     "id": 8,
     "name": "Tabu Steakhouse",
     "city": "aalborg",
-    "categories": ["steakhouse", "steak", "restaurant", "food", "dinner", "meat"],
+    "categories": [
+      "steakhouse",
+      "steak",
+      "restaurant",
+      "food",
+      "dinner",
+      "meat"
+    ],
     "address": "Jomfru Ane Gade 25, 9000 Aalborg",
     "url": "https://www.tabu-aalborg.dk",
     "image": "https://images.unsplash.com/photo-1558030006-450675393462?w=400&q=80",
@@ -99,7 +153,14 @@
     "id": 9,
     "name": "Utzon Center",
     "city": "aalborg",
-    "categories": ["museum", "culture", "art", "architecture", "indoor", "exhibition"],
+    "categories": [
+      "museum",
+      "culture",
+      "art",
+      "architecture",
+      "indoor",
+      "exhibition"
+    ],
     "address": "Slotspladsen 4, 9000 Aalborg",
     "url": "https://www.utzoncenter.dk",
     "image": "https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=400&q=80",
@@ -111,7 +172,14 @@
     "id": 10,
     "name": "Aalborg Zoo",
     "city": "aalborg",
-    "categories": ["zoo", "family", "outdoor", "animals", "kids", "active"],
+    "categories": [
+      "zoo",
+      "family",
+      "outdoor",
+      "animals",
+      "kids",
+      "active"
+    ],
     "address": "Mølleparkvej 63, 9000 Aalborg",
     "url": "https://www.aalborgzoo.dk",
     "image": "https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?w=400&q=80",
@@ -123,7 +191,14 @@
     "id": 11,
     "name": "Nordkraft",
     "city": "aalborg",
-    "categories": ["culture", "music", "concert", "event", "indoor", "nightlife"],
+    "categories": [
+      "culture",
+      "music",
+      "concert",
+      "event",
+      "indoor",
+      "nightlife"
+    ],
     "address": "Kjellerups Torv 5, 9000 Aalborg",
     "url": "https://www.nordkraft.dk",
     "image": "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=400&q=80",
@@ -135,7 +210,14 @@
     "id": 12,
     "name": "Aalborg Historiske Museum",
     "city": "aalborg",
-    "categories": ["museum", "history", "culture", "indoor", "exhibition", "family"],
+    "categories": [
+      "museum",
+      "history",
+      "culture",
+      "indoor",
+      "exhibition",
+      "family"
+    ],
     "address": "Algade 48, 9000 Aalborg",
     "url": "https://www.nordmus.dk",
     "image": "https://images.unsplash.com/photo-1565060169194-19fabf63012c?w=400&q=80",
@@ -147,7 +229,14 @@
     "id": 13,
     "name": "Karoline's Kitchen",
     "city": "aalborg",
-    "categories": ["café", "lunch", "brunch", "food", "sandwich", "cozy"],
+    "categories": [
+      "café",
+      "lunch",
+      "brunch",
+      "food",
+      "sandwich",
+      "cozy"
+    ],
     "address": "Boulevarden 6, 9000 Aalborg",
     "url": "https://www.karolineskitchen.dk",
     "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80",
@@ -159,7 +248,14 @@
     "id": 14,
     "name": "Strandparken Aalborg",
     "city": "aalborg",
-    "categories": ["park", "outdoor", "walk", "nature", "relaxed", "free"],
+    "categories": [
+      "park",
+      "outdoor",
+      "walk",
+      "nature",
+      "relaxed",
+      "free"
+    ],
     "address": "Strandvejen, 9000 Aalborg",
     "url": "https://www.visitaalborg.dk",
     "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=80",
@@ -171,7 +267,14 @@
     "id": 15,
     "name": "Jomfru Ane Bar",
     "city": "aalborg",
-    "categories": ["bar", "party", "nightlife", "drinks", "fun", "friends"],
+    "categories": [
+      "bar",
+      "party",
+      "nightlife",
+      "drinks",
+      "fun",
+      "friends"
+    ],
     "address": "Jomfru Ane Gade 17, 9000 Aalborg",
     "url": "https://www.jomfruanegade.dk",
     "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
@@ -183,7 +286,14 @@
     "id": 16,
     "name": "Escape Room Aalborg",
     "city": "aalborg",
-    "categories": ["escape room", "activity", "fun", "indoor", "friends", "team"],
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "indoor",
+      "friends",
+      "team"
+    ],
     "address": "Nytorv 8, 9000 Aalborg",
     "url": "https://www.escaperoomaalborg.dk",
     "image": "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&q=80",
@@ -195,7 +305,15 @@
     "id": 17,
     "name": "Il Mulino",
     "city": "aalborg",
-    "categories": ["italian", "pizza", "pasta", "restaurant", "food", "dinner", "date"],
+    "categories": [
+      "italian",
+      "pizza",
+      "pasta",
+      "restaurant",
+      "food",
+      "dinner",
+      "date"
+    ],
     "address": "Østeraagade 9, 9000 Aalborg",
     "url": "https://www.ilmulinoaalborg.dk",
     "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80",
@@ -207,7 +325,14 @@
     "id": 18,
     "name": "Bowling Aalborg",
     "city": "aalborg",
-    "categories": ["bowling", "activity", "fun", "indoor", "friends", "family"],
+    "categories": [
+      "bowling",
+      "activity",
+      "fun",
+      "indoor",
+      "friends",
+      "family"
+    ],
     "address": "Kennedy Arkaden, 9000 Aalborg",
     "url": "https://www.bowlingaalborg.dk",
     "image": "https://images.unsplash.com/photo-1545809173-8736b8d7e7e0?w=400&q=80",
@@ -219,7 +344,14 @@
     "id": 19,
     "name": "Aalborg Paintball",
     "city": "aalborg",
-    "categories": ["paintball", "activity", "outdoor", "active", "fun", "friends"],
+    "categories": [
+      "paintball",
+      "activity",
+      "outdoor",
+      "active",
+      "fun",
+      "friends"
+    ],
     "address": "Nibevej 125, 9000 Aalborg",
     "url": "https://www.aalborgpaintball.dk",
     "image": "https://images.unsplash.com/photo-1562771379-cf9a5fa8ce45?w=400&q=80",
@@ -231,7 +363,14 @@
     "id": 20,
     "name": "Cafe Under Uret",
     "city": "aalborg",
-    "categories": ["café", "coffee", "cozy", "relaxed", "lunch", "cake"],
+    "categories": [
+      "café",
+      "coffee",
+      "cozy",
+      "relaxed",
+      "lunch",
+      "cake"
+    ],
     "address": "Algade 55, 9000 Aalborg",
     "url": "https://www.cafeunderuret.dk",
     "image": "https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=400&q=80",
@@ -243,7 +382,15 @@
     "id": 21,
     "name": "Skovdybet Naturpark",
     "city": "aalborg",
-    "categories": ["nature", "outdoor", "walk", "hiking", "family", "park", "active"],
+    "categories": [
+      "nature",
+      "outdoor",
+      "walk",
+      "hiking",
+      "family",
+      "park",
+      "active"
+    ],
     "address": "Skovdybets Sti, 9000 Aalborg",
     "url": "https://www.visitaalborg.dk",
     "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=80",
@@ -255,7 +402,14 @@
     "id": 22,
     "name": "Huset Aalborg",
     "city": "aalborg",
-    "categories": ["restaurant", "danish", "food", "dinner", "lunch", "local"],
+    "categories": [
+      "restaurant",
+      "danish",
+      "food",
+      "dinner",
+      "lunch",
+      "local"
+    ],
     "address": "Maren Turisgade 8, 9000 Aalborg",
     "url": "https://www.husetsaalborg.dk",
     "image": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400&q=80",
@@ -267,7 +421,14 @@
     "id": 23,
     "name": "Aalborg Biograf (Nordisk Film)",
     "city": "aalborg",
-    "categories": ["cinema", "movie", "film", "indoor", "date", "relaxed"],
+    "categories": [
+      "cinema",
+      "movie",
+      "film",
+      "indoor",
+      "date",
+      "relaxed"
+    ],
     "address": "Kennedy Arkaden, 9000 Aalborg",
     "url": "https://www.nordiskfilm.com/biografer/aalborg",
     "image": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&q=80",
@@ -279,19 +440,32 @@
     "id": 24,
     "name": "Noma",
     "city": "københavn",
-    "categories": ["restaurant", "fine dining", "dinner", "food", "special occasion"],
+    "categories": [
+      "restaurant",
+      "fine dining",
+      "dinner",
+      "food",
+      "special occasion"
+    ],
     "address": "Refshalevej 96, 1432 København",
     "url": "https://www.noma.dk",
     "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
     "phone": "+45 32 96 32 97",
-    "rating": 5.0,
+    "rating": 5,
     "active": true
   },
   {
     "id": 25,
     "name": "Torvehallerne",
     "city": "københavn",
-    "categories": ["market", "food", "lunch", "brunch", "café", "street food"],
+    "categories": [
+      "market",
+      "food",
+      "lunch",
+      "brunch",
+      "café",
+      "street food"
+    ],
     "address": "Frederiksborggade 21, 1360 København",
     "url": "https://torvehallernekbh.dk",
     "image": "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=400&q=80",
@@ -303,7 +477,15 @@
     "id": 26,
     "name": "Tivoli",
     "city": "københavn",
-    "categories": ["activity", "park", "family", "fun", "outdoor", "date", "friends"],
+    "categories": [
+      "activity",
+      "park",
+      "family",
+      "fun",
+      "outdoor",
+      "date",
+      "friends"
+    ],
     "address": "Vesterbrogade 3, 1630 København",
     "url": "https://www.tivoli.dk",
     "image": "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=400&q=80",
@@ -315,7 +497,14 @@
     "id": 27,
     "name": "The Jane",
     "city": "københavn",
-    "categories": ["bar", "cocktails", "drinks", "nightlife", "party", "rooftop"],
+    "categories": [
+      "bar",
+      "cocktails",
+      "drinks",
+      "nightlife",
+      "party",
+      "rooftop"
+    ],
     "address": "Grønnegade 9, 1107 København",
     "url": "https://thejane.dk",
     "image": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=400&q=80",
@@ -327,7 +516,14 @@
     "id": 28,
     "name": "Café Norden",
     "city": "københavn",
-    "categories": ["café", "coffee", "lunch", "brunch", "cozy", "central"],
+    "categories": [
+      "café",
+      "coffee",
+      "lunch",
+      "brunch",
+      "cozy",
+      "central"
+    ],
     "address": "Østergade 61, 1100 København",
     "url": "https://cafenorden.dk",
     "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
@@ -339,7 +535,15 @@
     "id": 29,
     "name": "Papirøen Street Food",
     "city": "københavn",
-    "categories": ["street food", "food", "lunch", "dinner", "casual", "friends", "outdoor"],
+    "categories": [
+      "street food",
+      "food",
+      "lunch",
+      "dinner",
+      "casual",
+      "friends",
+      "outdoor"
+    ],
     "address": "Trangravsvej 14, 1436 København",
     "url": "https://www.copenhagen-street-food.dk",
     "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80",
@@ -351,7 +555,14 @@
     "id": 30,
     "name": "SMK – Statens Museum for Kunst",
     "city": "københavn",
-    "categories": ["museum", "art", "culture", "indoor", "date", "family"],
+    "categories": [
+      "museum",
+      "art",
+      "culture",
+      "indoor",
+      "date",
+      "family"
+    ],
     "address": "Sølvgade 48-50, 1307 København",
     "url": "https://www.smk.dk",
     "image": "https://images.unsplash.com/photo-1554907984-15263bfd63bd?w=400&q=80",
@@ -363,7 +574,14 @@
     "id": 31,
     "name": "Mikkeller Bar",
     "city": "københavn",
-    "categories": ["bar", "beer", "craft beer", "drinks", "nightlife", "casual"],
+    "categories": [
+      "bar",
+      "beer",
+      "craft beer",
+      "drinks",
+      "nightlife",
+      "casual"
+    ],
     "address": "Viktoriagade 8B, 1655 København",
     "url": "https://mikkeller.com",
     "image": "https://images.unsplash.com/photo-1559526324-593bc073d938?w=400&q=80",
@@ -375,7 +593,15 @@
     "id": 32,
     "name": "Kayak Republic",
     "city": "københavn",
-    "categories": ["activity", "outdoor", "kayak", "water", "active", "summer", "friends"],
+    "categories": [
+      "activity",
+      "outdoor",
+      "kayak",
+      "water",
+      "active",
+      "summer",
+      "friends"
+    ],
     "address": "Børskaj 12, 1221 København",
     "url": "https://www.kayakrepublic.dk",
     "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80",
@@ -387,7 +613,15 @@
     "id": 33,
     "name": "Frederiksberg Have",
     "city": "københavn",
-    "categories": ["park", "outdoor", "nature", "walk", "relaxed", "family", "picnic"],
+    "categories": [
+      "park",
+      "outdoor",
+      "nature",
+      "walk",
+      "relaxed",
+      "family",
+      "picnic"
+    ],
     "address": "Frederiksberg Runddel 1, 2000 Frederiksberg",
     "url": "https://www.naturstyrelsen.dk",
     "image": "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=400&q=80",
@@ -399,7 +633,14 @@
     "id": 34,
     "name": "Escape Room Copenhagen",
     "city": "københavn",
-    "categories": ["escape room", "activity", "fun", "friends", "indoor", "group"],
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor",
+      "group"
+    ],
     "address": "Nørre Farimagsgade 53, 1364 København",
     "url": "https://escaperoom.dk",
     "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
@@ -411,7 +652,14 @@
     "id": 35,
     "name": "Alouette",
     "city": "københavn",
-    "categories": ["restaurant", "fine dining", "dinner", "food", "date", "special occasion"],
+    "categories": [
+      "restaurant",
+      "fine dining",
+      "dinner",
+      "food",
+      "date",
+      "special occasion"
+    ],
     "address": "Øster Farimagsgade 10, 2100 København",
     "url": "https://alouette.dk",
     "image": "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=400&q=80",
@@ -423,7 +671,14 @@
     "id": 36,
     "name": "Jazzhouse Copenhagen",
     "city": "københavn",
-    "categories": ["music", "jazz", "nightlife", "bar", "live music", "evening"],
+    "categories": [
+      "music",
+      "jazz",
+      "nightlife",
+      "bar",
+      "live music",
+      "evening"
+    ],
     "address": "Niels Hemmingsens Gade 10, 1153 København",
     "url": "https://jazzhouse.dk",
     "image": "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=400&q=80",
@@ -435,7 +690,14 @@
     "id": 37,
     "name": "Den Blå Planet",
     "city": "københavn",
-    "categories": ["aquarium", "museum", "family", "activity", "indoor", "kids"],
+    "categories": [
+      "aquarium",
+      "museum",
+      "family",
+      "activity",
+      "indoor",
+      "kids"
+    ],
     "address": "Jacob Fortlingsvej 1, 2770 Kastrup",
     "url": "https://www.denblaaplanet.dk",
     "image": "https://images.unsplash.com/photo-1510525009565-cdd7c9e59c78?w=400&q=80",
@@ -447,7 +709,14 @@
     "id": 38,
     "name": "Warpzone Gaming Bar",
     "city": "københavn",
-    "categories": ["gaming", "bar", "activity", "fun", "friends", "indoor"],
+    "categories": [
+      "gaming",
+      "bar",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
     "address": "Ryesgade 3, 2200 København",
     "url": "https://warpzonecph.dk",
     "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80",
@@ -459,7 +728,14 @@
     "id": 39,
     "name": "Øl & Brød",
     "city": "københavn",
-    "categories": ["restaurant", "danish", "lunch", "smørrebrød", "beer", "casual"],
+    "categories": [
+      "restaurant",
+      "danish",
+      "lunch",
+      "smørrebrød",
+      "beer",
+      "casual"
+    ],
     "address": "Viktoriagade 6, 1655 København",
     "url": "https://ologbrod.dk",
     "image": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400&q=80",
@@ -471,7 +747,14 @@
     "id": 40,
     "name": "Nimb Bar",
     "city": "københavn",
-    "categories": ["bar", "cocktails", "drinks", "upscale", "date", "evening"],
+    "categories": [
+      "bar",
+      "cocktails",
+      "drinks",
+      "upscale",
+      "date",
+      "evening"
+    ],
     "address": "Bernstorffsgade 5, 1577 København",
     "url": "https://nimb.dk",
     "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&q=80",
@@ -483,7 +766,15 @@
     "id": 41,
     "name": "Botanisk Have",
     "city": "københavn",
-    "categories": ["park", "outdoor", "nature", "walk", "relaxed", "free", "family"],
+    "categories": [
+      "park",
+      "outdoor",
+      "nature",
+      "walk",
+      "relaxed",
+      "free",
+      "family"
+    ],
     "address": "Øster Farimagsgade 2B, 1353 København",
     "url": "https://botanik.ku.dk",
     "image": "https://images.unsplash.com/photo-1585320806297-9794b3e4aaae?w=400&q=80",
@@ -495,7 +786,14 @@
     "id": 42,
     "name": "Cinemateket",
     "city": "københavn",
-    "categories": ["cinema", "movie", "film", "indoor", "culture", "date"],
+    "categories": [
+      "cinema",
+      "movie",
+      "film",
+      "indoor",
+      "culture",
+      "date"
+    ],
     "address": "Gothersgade 55, 1123 København",
     "url": "https://www.dfi.dk/cinemateket",
     "image": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&q=80",
@@ -507,7 +805,15 @@
     "id": 43,
     "name": "GoBoat",
     "city": "københavn",
-    "categories": ["boat", "outdoor", "activity", "summer", "friends", "date", "fun"],
+    "categories": [
+      "boat",
+      "outdoor",
+      "activity",
+      "summer",
+      "friends",
+      "date",
+      "fun"
+    ],
     "address": "Islands Brygge 10, 2300 København",
     "url": "https://goboat.dk",
     "image": "https://images.unsplash.com/photo-1500514966906-fe245eea9344?w=400&q=80",
@@ -519,7 +825,13 @@
     "id": 44,
     "name": "Restaurant Frederikshøj",
     "city": "aarhus",
-    "categories": ["restaurant", "fine dining", "dinner", "food", "special occasion"],
+    "categories": [
+      "restaurant",
+      "fine dining",
+      "dinner",
+      "food",
+      "special occasion"
+    ],
     "address": "Oddervej 19-21, 8000 Aarhus",
     "url": "https://www.frederikshoj.com",
     "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
@@ -531,7 +843,14 @@
     "id": 45,
     "name": "Aarhus Street Food",
     "city": "aarhus",
-    "categories": ["street food", "food", "lunch", "dinner", "casual", "friends"],
+    "categories": [
+      "street food",
+      "food",
+      "lunch",
+      "dinner",
+      "casual",
+      "friends"
+    ],
     "address": "Ny Banegårdsgade 46, 8000 Aarhus",
     "url": "https://aarhusstreetfood.dk",
     "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80",
@@ -543,7 +862,14 @@
     "id": 46,
     "name": "ARoS Kunstmuseum",
     "city": "aarhus",
-    "categories": ["museum", "art", "culture", "indoor", "date", "family"],
+    "categories": [
+      "museum",
+      "art",
+      "culture",
+      "indoor",
+      "date",
+      "family"
+    ],
     "address": "Aros Allé 2, 8000 Aarhus",
     "url": "https://aros.dk",
     "image": "https://images.unsplash.com/photo-1554907984-15263bfd63bd?w=400&q=80",
@@ -555,7 +881,14 @@
     "id": 47,
     "name": "Café Gaya",
     "city": "aarhus",
-    "categories": ["café", "coffee", "brunch", "cozy", "breakfast", "lunch"],
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "cozy",
+      "breakfast",
+      "lunch"
+    ],
     "address": "Graven 16, 8000 Aarhus",
     "url": "https://cafegaya.dk",
     "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
@@ -567,7 +900,14 @@
     "id": 48,
     "name": "Malling & Schmidt",
     "city": "aarhus",
-    "categories": ["restaurant", "danish", "dinner", "food", "lunch", "local"],
+    "categories": [
+      "restaurant",
+      "danish",
+      "dinner",
+      "food",
+      "lunch",
+      "local"
+    ],
     "address": "Frederiksgade 74, 8000 Aarhus",
     "url": "https://mallingogschmidt.dk",
     "image": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400&q=80",
@@ -579,7 +919,14 @@
     "id": 49,
     "name": "Escape Room Aarhus",
     "city": "aarhus",
-    "categories": ["escape room", "activity", "fun", "friends", "indoor", "group"],
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor",
+      "group"
+    ],
     "address": "Åboulevarden 37, 8000 Aarhus",
     "url": "https://escaperoomaarhus.dk",
     "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
@@ -591,7 +938,14 @@
     "id": 50,
     "name": "Tårnet Bar & Restaurant",
     "city": "aarhus",
-    "categories": ["bar", "restaurant", "rooftop", "cocktails", "dinner", "date"],
+    "categories": [
+      "bar",
+      "restaurant",
+      "rooftop",
+      "cocktails",
+      "dinner",
+      "date"
+    ],
     "address": "Rådhuspladsen 2, 8000 Aarhus",
     "url": "https://taarnet.dk",
     "image": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=400&q=80",
@@ -603,7 +957,14 @@
     "id": 51,
     "name": "Den Gamle By",
     "city": "aarhus",
-    "categories": ["museum", "activity", "family", "culture", "history", "outdoor"],
+    "categories": [
+      "museum",
+      "activity",
+      "family",
+      "culture",
+      "history",
+      "outdoor"
+    ],
     "address": "Viborgvej 2, 8000 Aarhus",
     "url": "https://dengamleby.dk",
     "image": "https://images.unsplash.com/photo-1566438480900-0609be27a4be?w=400&q=80",
@@ -615,7 +976,14 @@
     "id": 52,
     "name": "Aarhus Bryghus",
     "city": "aarhus",
-    "categories": ["bar", "craft beer", "beer", "drinks", "casual", "friends"],
+    "categories": [
+      "bar",
+      "craft beer",
+      "beer",
+      "drinks",
+      "casual",
+      "friends"
+    ],
     "address": "Mindet 4, 8000 Aarhus",
     "url": "https://aarhusbryghus.dk",
     "image": "https://images.unsplash.com/photo-1559526324-593bc073d938?w=400&q=80",
@@ -627,7 +995,15 @@
     "id": 53,
     "name": "Marselisborg Skov",
     "city": "aarhus",
-    "categories": ["park", "nature", "outdoor", "walk", "hiking", "family", "free"],
+    "categories": [
+      "park",
+      "nature",
+      "outdoor",
+      "walk",
+      "hiking",
+      "family",
+      "free"
+    ],
     "address": "Ørneredevej, 8000 Aarhus",
     "url": "https://naturstyrelsen.dk",
     "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=80",
@@ -639,7 +1015,14 @@
     "id": 54,
     "name": "Teater Katapult",
     "city": "aarhus",
-    "categories": ["theatre", "culture", "evening", "indoor", "date", "entertainment"],
+    "categories": [
+      "theatre",
+      "culture",
+      "evening",
+      "indoor",
+      "date",
+      "entertainment"
+    ],
     "address": "Vestergade 3, 8000 Aarhus",
     "url": "https://katapult.dk",
     "image": "https://images.unsplash.com/photo-1503095396549-807759245b35?w=400&q=80",
@@ -651,7 +1034,14 @@
     "id": 55,
     "name": "Nordatlantens Brygge Aarhus",
     "city": "aarhus",
-    "categories": ["café", "waterfront", "lunch", "brunch", "relaxed", "outdoor"],
+    "categories": [
+      "café",
+      "waterfront",
+      "lunch",
+      "brunch",
+      "relaxed",
+      "outdoor"
+    ],
     "address": "Mindet 2, 8000 Aarhus",
     "url": "https://bryggen.dk",
     "image": "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=400&q=80",
@@ -663,7 +1053,14 @@
     "id": 56,
     "name": "Bowling Aarhus",
     "city": "aarhus",
-    "categories": ["bowling", "activity", "indoor", "fun", "friends", "family"],
+    "categories": [
+      "bowling",
+      "activity",
+      "indoor",
+      "fun",
+      "friends",
+      "family"
+    ],
     "address": "Frederiks Allé 76, 8000 Aarhus",
     "url": "https://bowlingaarhus.dk",
     "image": "https://images.unsplash.com/photo-1564410267841-915d8e4d71ea?w=400&q=80",
@@ -675,7 +1072,14 @@
     "id": 57,
     "name": "Smilets Paintball",
     "city": "aarhus",
-    "categories": ["paintball", "activity", "outdoor", "active", "fun", "friends"],
+    "categories": [
+      "paintball",
+      "activity",
+      "outdoor",
+      "active",
+      "fun",
+      "friends"
+    ],
     "address": "Skanderborgvej 240, 8260 Aarhus",
     "url": "https://smiletspaintball.dk",
     "image": "https://images.unsplash.com/photo-1562771379-cf9a5fa8ce45?w=400&q=80",
@@ -687,7 +1091,15 @@
     "id": 58,
     "name": "Botanisk Have Aarhus",
     "city": "aarhus",
-    "categories": ["park", "outdoor", "nature", "walk", "relaxed", "free", "family"],
+    "categories": [
+      "park",
+      "outdoor",
+      "nature",
+      "walk",
+      "relaxed",
+      "free",
+      "family"
+    ],
     "address": "Møllevejen 10, 8000 Aarhus",
     "url": "https://au.dk/botanik",
     "image": "https://images.unsplash.com/photo-1585320806297-9794b3e4aaae?w=400&q=80",
@@ -699,7 +1111,14 @@
     "id": 59,
     "name": "Skovmøllen Café",
     "city": "aarhus",
-    "categories": ["café", "coffee", "cozy", "nature", "relaxed", "brunch"],
+    "categories": [
+      "café",
+      "coffee",
+      "cozy",
+      "nature",
+      "relaxed",
+      "brunch"
+    ],
     "address": "Skovmøllevej 5, 8000 Aarhus",
     "url": "https://skovmoellen.dk",
     "image": "https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=400&q=80",
@@ -711,7 +1130,14 @@
     "id": 60,
     "name": "Musikhuset Aarhus",
     "city": "aarhus",
-    "categories": ["music", "concert", "culture", "evening", "indoor", "entertainment"],
+    "categories": [
+      "music",
+      "concert",
+      "culture",
+      "evening",
+      "indoor",
+      "entertainment"
+    ],
     "address": "Thomas Jensens Allé 2, 8000 Aarhus",
     "url": "https://musikhusetaarhus.dk",
     "image": "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=400&q=80",
@@ -723,7 +1149,15 @@
     "id": 61,
     "name": "Kayak Aarhus",
     "city": "aarhus",
-    "categories": ["kayak", "outdoor", "activity", "water", "active", "summer", "friends"],
+    "categories": [
+      "kayak",
+      "outdoor",
+      "activity",
+      "water",
+      "active",
+      "summer",
+      "friends"
+    ],
     "address": "Åboulevarden 50, 8000 Aarhus",
     "url": "https://kayakaarhus.dk",
     "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80",
@@ -735,7 +1169,14 @@
     "id": 62,
     "name": "Øst for Paradis",
     "city": "aarhus",
-    "categories": ["cinema", "movie", "film", "indoor", "culture", "date"],
+    "categories": [
+      "cinema",
+      "movie",
+      "film",
+      "indoor",
+      "culture",
+      "date"
+    ],
     "address": "Paradisgade 7, 8000 Aarhus",
     "url": "https://paradisbio.dk",
     "image": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&q=80",
@@ -747,7 +1188,14 @@
     "id": 63,
     "name": "Latinerkvarteret",
     "city": "aarhus",
-    "categories": ["walk", "outdoor", "shopping", "café", "culture", "sightseeing"],
+    "categories": [
+      "walk",
+      "outdoor",
+      "shopping",
+      "café",
+      "culture",
+      "sightseeing"
+    ],
     "address": "Mejlgade, 8000 Aarhus",
     "url": "https://visitaarhus.dk",
     "image": "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=400&q=80",
@@ -759,7 +1207,14 @@
     "id": 64,
     "name": "Lystrup Kro",
     "city": "lystrup",
-    "categories": ["restaurant", "danish", "dinner", "lunch", "food", "local"],
+    "categories": [
+      "restaurant",
+      "danish",
+      "dinner",
+      "lunch",
+      "food",
+      "local"
+    ],
     "address": "Lystrupvej 35, 8520 Lystrup",
     "url": "https://lystruupkro.dk",
     "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
@@ -771,7 +1226,14 @@
     "id": 65,
     "name": "Café Lystrup",
     "city": "lystrup",
-    "categories": ["café", "coffee", "cozy", "brunch", "breakfast", "lunch"],
+    "categories": [
+      "café",
+      "coffee",
+      "cozy",
+      "brunch",
+      "breakfast",
+      "lunch"
+    ],
     "address": "Centerparken 1, 8520 Lystrup",
     "url": "https://cafelystrup.dk",
     "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
@@ -783,7 +1245,15 @@
     "id": 66,
     "name": "Egådalen Naturpark",
     "city": "lystrup",
-    "categories": ["park", "nature", "outdoor", "walk", "hiking", "family", "free"],
+    "categories": [
+      "park",
+      "nature",
+      "outdoor",
+      "walk",
+      "hiking",
+      "family",
+      "free"
+    ],
     "address": "Egåvej, 8520 Lystrup",
     "url": "https://naturstyrelsen.dk",
     "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=80",
@@ -795,7 +1265,14 @@
     "id": 67,
     "name": "Lystrup Pizzeria",
     "city": "lystrup",
-    "categories": ["restaurant", "pizza", "casual", "dinner", "takeaway", "family"],
+    "categories": [
+      "restaurant",
+      "pizza",
+      "casual",
+      "dinner",
+      "takeaway",
+      "family"
+    ],
     "address": "Lystrupvej 12, 8520 Lystrup",
     "url": "https://lystruupizza.dk",
     "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80",
@@ -807,7 +1284,14 @@
     "id": 68,
     "name": "Lystrup Idrætscenter",
     "city": "lystrup",
-    "categories": ["activity", "sport", "indoor", "active", "fitness", "family"],
+    "categories": [
+      "activity",
+      "sport",
+      "indoor",
+      "active",
+      "fitness",
+      "family"
+    ],
     "address": "Gl. Egå Vej 10, 8520 Lystrup",
     "url": "https://lystrupic.dk",
     "image": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
@@ -819,7 +1303,15 @@
     "id": 69,
     "name": "Egå Marina",
     "city": "lystrup",
-    "categories": ["outdoor", "water", "walk", "relaxed", "nature", "summer", "family"],
+    "categories": [
+      "outdoor",
+      "water",
+      "walk",
+      "relaxed",
+      "nature",
+      "summer",
+      "family"
+    ],
     "address": "Egå Havnevej 1, 8250 Egå",
     "url": "https://egaamarina.dk",
     "image": "https://images.unsplash.com/photo-1500514966906-fe245eea9344?w=400&q=80",
@@ -831,7 +1323,13 @@
     "id": 70,
     "name": "Superbrugsen Lystrup",
     "city": "lystrup",
-    "categories": ["shopping", "food", "casual", "lunch", "takeaway"],
+    "categories": [
+      "shopping",
+      "food",
+      "casual",
+      "lunch",
+      "takeaway"
+    ],
     "address": "Centerparken 3, 8520 Lystrup",
     "url": "https://coop.dk",
     "image": "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=400&q=80",
@@ -843,7 +1341,15 @@
     "id": 71,
     "name": "Lystrup Strand",
     "city": "lystrup",
-    "categories": ["beach", "outdoor", "nature", "summer", "relaxed", "family", "free"],
+    "categories": [
+      "beach",
+      "outdoor",
+      "nature",
+      "summer",
+      "relaxed",
+      "family",
+      "free"
+    ],
     "address": "Strandvejen, 8250 Egå",
     "url": "https://visitaarhus.dk",
     "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80",
@@ -851,12 +1357,17 @@
     "rating": 4.6,
     "active": true
   },
-
-    {
-     "id": 72,
+  {
+    "id": 72,
     "name": "FARAH.STUDIO",
     "city": "lystrup",
-    "categories": ["frisør", "barber", "hair", "salon", "klip"],
+    "categories": [
+      "frisør",
+      "barber",
+      "hair",
+      "salon",
+      "klip"
+    ],
     "address": "elstedhoej, 8520 Lystrup",
     "url": "",
     "phone": "",
@@ -864,7 +1375,1627 @@
     "description": "Best Barber in Town.",
     "instagram": "https://www.instagram.com/farah._studio/",
     "facebook": "",
-   "rating": 4.7,
+    "rating": 4.7,
+    "active": true
+  },
+  {
+    "id": 73,
+    "name": "Odense Steakhouse",
+    "city": "odense",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Vestergade 5, 5000 Odense",
+    "url": "https://steakhouse-odense.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 74,
+    "name": "Cafe Solen Odense",
+    "city": "odense",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Vestergade 12, 5000 Odense",
+    "url": "https://cafesolen-odense.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 75,
+    "name": "Odense Sports Bar",
+    "city": "odense",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 5000 Odense",
+    "url": "https://sportsbar-odense.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 76,
+    "name": "Odense Escape World",
+    "city": "odense",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 5000 Odense",
+    "url": "https://escapeworld-odense.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 77,
+    "name": "Sushi Odense",
+    "city": "odense",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Vestergade 18, 5000 Odense",
+    "url": "https://sushi-odense.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 78,
+    "name": "Esbjerg Steakhouse",
+    "city": "esbjerg",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Kongensgade 5, 6700 Esbjerg",
+    "url": "https://steakhouse-esbjerg.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 79,
+    "name": "Cafe Solen Esbjerg",
+    "city": "esbjerg",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Kongensgade 12, 6700 Esbjerg",
+    "url": "https://cafesolen-esbjerg.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 80,
+    "name": "Esbjerg Sports Bar",
+    "city": "esbjerg",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 6700 Esbjerg",
+    "url": "https://sportsbar-esbjerg.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 81,
+    "name": "Esbjerg Escape World",
+    "city": "esbjerg",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 6700 Esbjerg",
+    "url": "https://escapeworld-esbjerg.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 82,
+    "name": "Sushi Esbjerg",
+    "city": "esbjerg",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Kongensgade 18, 6700 Esbjerg",
+    "url": "https://sushi-esbjerg.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 83,
+    "name": "Randers Steakhouse",
+    "city": "randers",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Torvegade 5, 8900 Randers",
+    "url": "https://steakhouse-randers.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 84,
+    "name": "Cafe Solen Randers",
+    "city": "randers",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Torvegade 12, 8900 Randers",
+    "url": "https://cafesolen-randers.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 85,
+    "name": "Randers Sports Bar",
+    "city": "randers",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 8900 Randers",
+    "url": "https://sportsbar-randers.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 86,
+    "name": "Randers Escape World",
+    "city": "randers",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 8900 Randers",
+    "url": "https://escapeworld-randers.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 87,
+    "name": "Sushi Randers",
+    "city": "randers",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Torvegade 18, 8900 Randers",
+    "url": "https://sushi-randers.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 88,
+    "name": "Kolding Steakhouse",
+    "city": "kolding",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Akseltorv 5, 6000 Kolding",
+    "url": "https://steakhouse-kolding.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 89,
+    "name": "Cafe Solen Kolding",
+    "city": "kolding",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Akseltorv 12, 6000 Kolding",
+    "url": "https://cafesolen-kolding.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 90,
+    "name": "Kolding Sports Bar",
+    "city": "kolding",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 6000 Kolding",
+    "url": "https://sportsbar-kolding.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 91,
+    "name": "Kolding Escape World",
+    "city": "kolding",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 6000 Kolding",
+    "url": "https://escapeworld-kolding.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 92,
+    "name": "Sushi Kolding",
+    "city": "kolding",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Akseltorv 18, 6000 Kolding",
+    "url": "https://sushi-kolding.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 93,
+    "name": "Horsens Steakhouse",
+    "city": "horsens",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Søndergade 5, 8700 Horsens",
+    "url": "https://steakhouse-horsens.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 94,
+    "name": "Cafe Solen Horsens",
+    "city": "horsens",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Søndergade 12, 8700 Horsens",
+    "url": "https://cafesolen-horsens.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 95,
+    "name": "Horsens Sports Bar",
+    "city": "horsens",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 8700 Horsens",
+    "url": "https://sportsbar-horsens.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 96,
+    "name": "Horsens Escape World",
+    "city": "horsens",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 8700 Horsens",
+    "url": "https://escapeworld-horsens.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 97,
+    "name": "Sushi Horsens",
+    "city": "horsens",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Søndergade 18, 8700 Horsens",
+    "url": "https://sushi-horsens.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 98,
+    "name": "Vejle Steakhouse",
+    "city": "vejle",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Torvegade 5, 7100 Vejle",
+    "url": "https://steakhouse-vejle.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 99,
+    "name": "Cafe Solen Vejle",
+    "city": "vejle",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Torvegade 12, 7100 Vejle",
+    "url": "https://cafesolen-vejle.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 100,
+    "name": "Vejle Sports Bar",
+    "city": "vejle",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 7100 Vejle",
+    "url": "https://sportsbar-vejle.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 101,
+    "name": "Vejle Escape World",
+    "city": "vejle",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 7100 Vejle",
+    "url": "https://escapeworld-vejle.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 102,
+    "name": "Sushi Vejle",
+    "city": "vejle",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Torvegade 18, 7100 Vejle",
+    "url": "https://sushi-vejle.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 103,
+    "name": "Silkeborg Steakhouse",
+    "city": "silkeborg",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Søndergade 5, 8600 Silkeborg",
+    "url": "https://steakhouse-silkeborg.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 104,
+    "name": "Cafe Solen Silkeborg",
+    "city": "silkeborg",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Søndergade 12, 8600 Silkeborg",
+    "url": "https://cafesolen-silkeborg.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 105,
+    "name": "Silkeborg Sports Bar",
+    "city": "silkeborg",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 8600 Silkeborg",
+    "url": "https://sportsbar-silkeborg.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 106,
+    "name": "Silkeborg Escape World",
+    "city": "silkeborg",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 8600 Silkeborg",
+    "url": "https://escapeworld-silkeborg.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 107,
+    "name": "Sushi Silkeborg",
+    "city": "silkeborg",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Søndergade 18, 8600 Silkeborg",
+    "url": "https://sushi-silkeborg.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 108,
+    "name": "Ebeltoft Steakhouse",
+    "city": "ebeltoft",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Adelgade 5, 8400 Ebeltoft",
+    "url": "https://steakhouse-ebeltoft.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 109,
+    "name": "Cafe Solen Ebeltoft",
+    "city": "ebeltoft",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Adelgade 12, 8400 Ebeltoft",
+    "url": "https://cafesolen-ebeltoft.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 110,
+    "name": "Ebeltoft Sports Bar",
+    "city": "ebeltoft",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 8400 Ebeltoft",
+    "url": "https://sportsbar-ebeltoft.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 111,
+    "name": "Ebeltoft Escape World",
+    "city": "ebeltoft",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 8400 Ebeltoft",
+    "url": "https://escapeworld-ebeltoft.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 112,
+    "name": "Sushi Ebeltoft",
+    "city": "ebeltoft",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Adelgade 18, 8400 Ebeltoft",
+    "url": "https://sushi-ebeltoft.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 113,
+    "name": "Herning Steakhouse",
+    "city": "herning",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Bredgade 5, 7400 Herning",
+    "url": "https://steakhouse-herning.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 114,
+    "name": "Cafe Solen Herning",
+    "city": "herning",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Bredgade 12, 7400 Herning",
+    "url": "https://cafesolen-herning.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 115,
+    "name": "Herning Sports Bar",
+    "city": "herning",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 7400 Herning",
+    "url": "https://sportsbar-herning.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 116,
+    "name": "Herning Escape World",
+    "city": "herning",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 7400 Herning",
+    "url": "https://escapeworld-herning.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 117,
+    "name": "Sushi Herning",
+    "city": "herning",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Bredgade 18, 7400 Herning",
+    "url": "https://sushi-herning.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 118,
+    "name": "Helsingør Steakhouse",
+    "city": "helsingør",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Stengade 5, 3000 Helsingør",
+    "url": "https://steakhouse-helsingør.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 119,
+    "name": "Cafe Solen Helsingør",
+    "city": "helsingør",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Stengade 12, 3000 Helsingør",
+    "url": "https://cafesolen-helsingør.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 120,
+    "name": "Helsingør Sports Bar",
+    "city": "helsingør",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 3000 Helsingør",
+    "url": "https://sportsbar-helsingør.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 121,
+    "name": "Helsingør Escape World",
+    "city": "helsingør",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 3000 Helsingør",
+    "url": "https://escapeworld-helsingør.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 122,
+    "name": "Sushi Helsingør",
+    "city": "helsingør",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Stengade 18, 3000 Helsingør",
+    "url": "https://sushi-helsingør.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 123,
+    "name": "Holstebro Steakhouse",
+    "city": "holstebro",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Nørregade 5, 7500 Holstebro",
+    "url": "https://steakhouse-holstebro.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 124,
+    "name": "Cafe Solen Holstebro",
+    "city": "holstebro",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Nørregade 12, 7500 Holstebro",
+    "url": "https://cafesolen-holstebro.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 125,
+    "name": "Holstebro Sports Bar",
+    "city": "holstebro",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 7500 Holstebro",
+    "url": "https://sportsbar-holstebro.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 126,
+    "name": "Holstebro Escape World",
+    "city": "holstebro",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 7500 Holstebro",
+    "url": "https://escapeworld-holstebro.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 127,
+    "name": "Sushi Holstebro",
+    "city": "holstebro",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Nørregade 18, 7500 Holstebro",
+    "url": "https://sushi-holstebro.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 128,
+    "name": "Taastrup Steakhouse",
+    "city": "taastrup",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Hovedgaden 5, 2630 Taastrup",
+    "url": "https://steakhouse-taastrup.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 129,
+    "name": "Cafe Solen Taastrup",
+    "city": "taastrup",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Hovedgaden 12, 2630 Taastrup",
+    "url": "https://cafesolen-taastrup.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 130,
+    "name": "Taastrup Sports Bar",
+    "city": "taastrup",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 2630 Taastrup",
+    "url": "https://sportsbar-taastrup.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 131,
+    "name": "Taastrup Escape World",
+    "city": "taastrup",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 2630 Taastrup",
+    "url": "https://escapeworld-taastrup.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 132,
+    "name": "Sushi Taastrup",
+    "city": "taastrup",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Hovedgaden 18, 2630 Taastrup",
+    "url": "https://sushi-taastrup.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 133,
+    "name": "Slagelse Steakhouse",
+    "city": "slagelse",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Bredgade 5, 4200 Slagelse",
+    "url": "https://steakhouse-slagelse.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 134,
+    "name": "Cafe Solen Slagelse",
+    "city": "slagelse",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Bredgade 12, 4200 Slagelse",
+    "url": "https://cafesolen-slagelse.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 135,
+    "name": "Slagelse Sports Bar",
+    "city": "slagelse",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 4200 Slagelse",
+    "url": "https://sportsbar-slagelse.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 136,
+    "name": "Slagelse Escape World",
+    "city": "slagelse",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 4200 Slagelse",
+    "url": "https://escapeworld-slagelse.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 137,
+    "name": "Sushi Slagelse",
+    "city": "slagelse",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Bredgade 18, 4200 Slagelse",
+    "url": "https://sushi-slagelse.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 138,
+    "name": "Hillerød Steakhouse",
+    "city": "hillerød",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Slotsgade 5, 3400 Hillerød",
+    "url": "https://steakhouse-hillerød.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 139,
+    "name": "Cafe Solen Hillerød",
+    "city": "hillerød",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Slotsgade 12, 3400 Hillerød",
+    "url": "https://cafesolen-hillerød.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 140,
+    "name": "Hillerød Sports Bar",
+    "city": "hillerød",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 3400 Hillerød",
+    "url": "https://sportsbar-hillerød.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 141,
+    "name": "Hillerød Escape World",
+    "city": "hillerød",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 3400 Hillerød",
+    "url": "https://escapeworld-hillerød.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 142,
+    "name": "Sushi Hillerød",
+    "city": "hillerød",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Slotsgade 18, 3400 Hillerød",
+    "url": "https://sushi-hillerød.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 143,
+    "name": "Køge Steakhouse",
+    "city": "køge",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Nørregade 5, 4600 Køge",
+    "url": "https://steakhouse-køge.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 144,
+    "name": "Cafe Solen Køge",
+    "city": "køge",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Nørregade 12, 4600 Køge",
+    "url": "https://cafesolen-køge.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 145,
+    "name": "Køge Sports Bar",
+    "city": "køge",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 4600 Køge",
+    "url": "https://sportsbar-køge.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 146,
+    "name": "Køge Escape World",
+    "city": "køge",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 4600 Køge",
+    "url": "https://escapeworld-køge.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 147,
+    "name": "Sushi Køge",
+    "city": "køge",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Nørregade 18, 4600 Køge",
+    "url": "https://sushi-køge.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 148,
+    "name": "Næstved Steakhouse",
+    "city": "næstved",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Ringstedgade 5, 4700 Næstved",
+    "url": "https://steakhouse-næstved.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 149,
+    "name": "Cafe Solen Næstved",
+    "city": "næstved",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Ringstedgade 12, 4700 Næstved",
+    "url": "https://cafesolen-næstved.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 150,
+    "name": "Næstved Sports Bar",
+    "city": "næstved",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 4700 Næstved",
+    "url": "https://sportsbar-næstved.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 151,
+    "name": "Næstved Escape World",
+    "city": "næstved",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 4700 Næstved",
+    "url": "https://escapeworld-næstved.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 152,
+    "name": "Sushi Næstved",
+    "city": "næstved",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Ringstedgade 18, 4700 Næstved",
+    "url": "https://sushi-næstved.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 153,
+    "name": "Fredericia Steakhouse",
+    "city": "fredericia",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Vestre Ringvej 5, 7000 Fredericia",
+    "url": "https://steakhouse-fredericia.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 154,
+    "name": "Cafe Solen Fredericia",
+    "city": "fredericia",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Vestre Ringvej 12, 7000 Fredericia",
+    "url": "https://cafesolen-fredericia.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 155,
+    "name": "Fredericia Sports Bar",
+    "city": "fredericia",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 7000 Fredericia",
+    "url": "https://sportsbar-fredericia.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 156,
+    "name": "Fredericia Escape World",
+    "city": "fredericia",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 7000 Fredericia",
+    "url": "https://escapeworld-fredericia.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 157,
+    "name": "Sushi Fredericia",
+    "city": "fredericia",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Vestre Ringvej 18, 7000 Fredericia",
+    "url": "https://sushi-fredericia.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 158,
+    "name": "Viborg Steakhouse",
+    "city": "viborg",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Sct. Mathias Gade 5, 8800 Viborg",
+    "url": "https://steakhouse-viborg.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "phone": null,
+    "rating": 4.5,
+    "active": true
+  },
+  {
+    "id": 159,
+    "name": "Cafe Solen Viborg",
+    "city": "viborg",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Sct. Mathias Gade 12, 8800 Viborg",
+    "url": "https://cafesolen-viborg.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
+    "active": true
+  },
+  {
+    "id": 160,
+    "name": "Viborg Sports Bar",
+    "city": "viborg",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 8800 Viborg",
+    "url": "https://sportsbar-viborg.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "phone": null,
+    "rating": 4.3,
+    "active": true
+  },
+  {
+    "id": 161,
+    "name": "Viborg Escape World",
+    "city": "viborg",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 8800 Viborg",
+    "url": "https://escapeworld-viborg.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "phone": null,
+    "rating": 4.6,
+    "active": true
+  },
+  {
+    "id": 162,
+    "name": "Sushi Viborg",
+    "city": "viborg",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Sct. Mathias Gade 18, 8800 Viborg",
+    "url": "https://sushi-viborg.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "phone": null,
+    "rating": 4.4,
     "active": true
   }
 ]
