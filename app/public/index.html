@@ -474,7 +474,8 @@
             match = entry; break;
           }
         }
-        if (!match) return [];
+        console.log('[OSM] query:', q, '→ match:', match, 'center:', clat, clon);
+        if (!match) { console.log('[OSM] no keyword match'); return []; }
         const radius = 5000;
         let overpassQ;
         if (match.tag === 'cuisine') {
@@ -482,30 +483,41 @@
         } else {
           overpassQ = `[out:json][timeout:10];(node["${match.tag}"="${match.value}"](around:${radius},${clat},${clon});way["${match.tag}"="${match.value}"](around:${radius},${clat},${clon}););out center body;`;
         }
-        const res = await fetch('https://overpass-api.de/api/interpreter', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `data=${encodeURIComponent(overpassQ)}`,
-          signal: AbortSignal.timeout(15000),
-        });
-        const data = await res.json();
-        return (data.elements || [])
-          .filter(el => el.tags && el.tags.name)
-          .slice(0, 12)
-          .map(el => {
-            const elLat = el.lat ?? (el.center && el.center.lat);
-            const elLon = el.lon ?? (el.center && el.center.lon);
-            const street = [el.tags['addr:street'], el.tags['addr:housenumber']].filter(Boolean).join(' ');
-            const addrCity = el.tags['addr:city'] || '';
-            const address = [street, addrCity].filter(Boolean).join(', ') || null;
-            return {
-              name: el.tags.name, type: q, address,
-              url: el.tags.website || el.tags['contact:website'] || null,
-              phone: el.tags.phone || el.tags['contact:phone'] || null,
-              image: null, osm: true,
-              coords: elLat != null && elLon != null ? [elLat, elLon] : null,
-            };
+        console.log('[OSM] Overpass query:', overpassQ);
+        const controller = new AbortController();
+        const tid = setTimeout(() => controller.abort(), 15000);
+        try {
+          const res = await fetch('https://overpass-api.de/api/interpreter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `data=${encodeURIComponent(overpassQ)}`,
+            signal: controller.signal,
           });
+          clearTimeout(tid);
+          const data = await res.json();
+          console.log('[OSM] elements:', data.elements?.length);
+          return (data.elements || [])
+            .filter(el => el.tags && el.tags.name)
+            .slice(0, 12)
+            .map(el => {
+              const elLat = el.lat ?? (el.center && el.center.lat);
+              const elLon = el.lon ?? (el.center && el.center.lon);
+              const street = [el.tags['addr:street'], el.tags['addr:housenumber']].filter(Boolean).join(' ');
+              const addrCity = el.tags['addr:city'] || '';
+              const address = [street, addrCity].filter(Boolean).join(', ') || null;
+              return {
+                name: el.tags.name, type: q, address,
+                url: el.tags.website || el.tags['contact:website'] || null,
+                phone: el.tags.phone || el.tags['contact:phone'] || null,
+                image: null, osm: true,
+                coords: elLat != null && elLon != null ? [elLat, elLon] : null,
+              };
+            });
+        } catch (err) {
+          clearTimeout(tid);
+          console.error('[OSM] fetch error:', err);
+          return [];
+        }
       }
 
       async function showNearestForCity(city, q) {
