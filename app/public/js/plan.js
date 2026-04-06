@@ -1,6 +1,11 @@
 const plan = JSON.parse(localStorage.getItem('selectedPlan') || 'null');
 const preferences = JSON.parse(localStorage.getItem('preferences') || '{}');
 
+function stripEmoji(str) {
+  if (!str) return str;
+  return String(str).replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FEFF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA9F}]/gu, '').replace(/[\u2702-\u27B0]/g, '').trim();
+}
+
 function da(str) {
   if (!str) return '–';
   return str
@@ -24,8 +29,8 @@ document.title = `${plan.title} · hvadnu`;
 
 // Populate hero
 document.getElementById('planEmoji').textContent = '';
-document.getElementById('planTitle').textContent = plan.title;
-document.getElementById('planTagline').textContent = plan.tagline;
+document.getElementById('planTitle').textContent = stripEmoji(plan.title);
+document.getElementById('planTagline').textContent = stripEmoji(plan.tagline);
 
 // Stats
 const statsEl = document.getElementById('planStats');
@@ -38,7 +43,7 @@ statsEl.innerHTML = `
 `;
 
 // Why section
-document.getElementById('planWhy').textContent = plan.why;
+document.getElementById('planWhy').textContent = stripEmoji(plan.why);
 
 // Good for tags
 const goodForEl = document.getElementById('goodForTags');
@@ -74,15 +79,15 @@ if (plan.steps && plan.steps.length) {
         <div class="step-num-circle">${step.order}</div>
         <div class="step-content">
           <div class="step-header">
-            <span class="step-name">${step.name}</span>
-            <span class="step-type-badge">${step.type}</span>
+            <span class="step-name">${stripEmoji(step.name)}</span>
+            <span class="step-type-badge">${stripEmoji(step.type)}</span>
           </div>
-          <p class="step-activity">${step.activity}</p>
+          <p class="step-activity">${stripEmoji(step.activity)}</p>
           <div class="step-meta">
             <span>${da(step.duration)}</span>
             <span>${da(step.estimatedCost)}</span>
           </div>
-          ${step.tip ? `<div class="step-tip">${step.tip}</div>` : ''}
+          ${step.tip ? `<div class="step-tip">${stripEmoji(step.tip)}</div>` : ''}
           <a href="${mapsUrl}" target="_blank" rel="noopener" class="step-map-link">
             ${t('plan.mapsLink')}
           </a>

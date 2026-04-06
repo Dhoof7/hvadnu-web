@@ -1,3 +1,8 @@
+function stripEmoji(str) {
+  if (!str) return str;
+  return String(str).replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FEFF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA9F}]/gu, '').replace(/[\u2702-\u27B0]/g, '').trim();
+}
+
 function da(str) {
   if (!str) return '–';
   return str
@@ -58,11 +63,11 @@ function renderCard(plan, index) {
   return `
     <div class="result-card" data-plan-index="${index}">
       <div class="result-card-top">
-        <h3>${plan.title}</h3>
-        <p class="result-card-tagline">${plan.tagline}</p>
+        <h3>${stripEmoji(plan.title)}</h3>
+        <p class="result-card-tagline">${stripEmoji(plan.tagline)}</p>
 
         <div class="why-box">
-          <p>${plan.why}</p>
+          <p>${stripEmoji(plan.why)}</p>
         </div>
 
         <div class="result-stats">
