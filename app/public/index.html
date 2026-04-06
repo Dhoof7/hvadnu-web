@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="da">
   <head>
-      <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Hvad Skal Vi?</title>
@@ -440,15 +440,28 @@
         const resultsEl = document.getElementById('nearestResults');
         resultsEl.innerHTML = '<p class="nearest-hint">Henter steder...</p>';
         try {
-          const results = await fetch(`/api/search?q=${encodeURIComponent(q || '')}&city=${encodeURIComponent(city)}`).then(r => r.json());
-          renderNearestResults(results, q);
+          if (q) {
+            // Run local search and OSM search in parallel
+            const latParam = userCoords ? `&lat=${userCoords[0]}&lon=${userCoords[1]}` : '';
+            const [localResults, osmResults] = await Promise.all([
+              fetch(`/api/search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(city)}`).then(r => r.json()).catch(() => []),
+              fetch(`/api/osm-search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(city)}${latParam}`).then(r => r.json()).catch(() => []),
+            ]);
+            // Sponsors first, then OSM results (deduplicated by name)
+            const seen = new Set(localResults.map(r => r.name.toLowerCase()));
+            const dedupedOsm = osmResults.filter(r => !seen.has(r.name.toLowerCase()));
+            renderNearestResults([...localResults, ...dedupedOsm], q);
+          } else {
+            const results = await fetch(`/api/search?city=${encodeURIComponent(city)}`).then(r => r.json());
+            renderNearestResults(results, q);
+          }
         } catch {
           resultsEl.innerHTML = '<p class="nearest-hint">Noget gik galt. Prøv igen.</p>';
         }
       }
 
       // City center coords for distance calculation
-      const CITY_COORDS = { aalborg:[57.0488,9.9217], aarhus:[56.1629,10.2039], copenhagen:[55.6761,12.5683], lystrup:[56.2058,10.2175] };
+      const CITY_COORDS = { aalborg:[57.0488,9.9217], aarhus:[56.1629,10.2039], københavn:[55.6761,12.5683], odense:[55.4038,10.4024], esbjerg:[55.4769,8.4594], randers:[56.4607,10.0365], kolding:[55.4904,9.4722], horsens:[55.8607,9.8502], vejle:[55.7093,9.5356], roskilde:[55.6415,12.0803] };
       let userCoords = null;
       navigator.geolocation && navigator.geolocation.getCurrentPosition(p => { userCoords = [p.coords.latitude, p.coords.longitude]; }, () => {});
 
@@ -458,8 +471,14 @@
         return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       }
 
-      function getDistance(city) {
-        const coords = CITY_COORDS[city];
+      function getDistance(r) {
+        // If OSM result has exact coords, use those for precise distance
+        if (userCoords && r.coords) {
+          const km = haversine(userCoords, r.coords);
+          return km < 1 ? `${Math.round(km*1000)} m` : `${km.toFixed(1)} km`;
+        }
+        // Fallback to city center distance
+        const coords = CITY_COORDS[selectedNearestCity];
         if (!userCoords || !coords) return null;
         const km = haversine(userCoords, coords);
         return km < 1 ? `${Math.round(km*1000)} m` : `${km.toFixed(1)} km`;
@@ -472,21 +491,28 @@
           return;
         }
         window._nearestData = results;
-        resultsEl.innerHTML = results.slice(0, 9).map((r, i) => {
-          const dist = getDistance(selectedNearestCity);
+        resultsEl.innerHTML = results.slice(0, 12).map((r, i) => {
+          const dist = getDistance(r);
+          const mapsUrl = r.coords
+            ? `https://www.google.com/maps/search/?api=1&query=${r.coords[0]},${r.coords[1]}`
+            : r.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.name + ' ' + (r.address || ''))}` : null;
           return `
-          <button class="nearest-result ${r.sponsored ? 'nearest-result--sponsored' : ''}" onclick="openPlaceModal(window._nearestData[${i}])">
-            ${r.image ? `<img class="nearest-result-img" src="${r.image}" alt="${r.name}" loading="lazy">` : '<div class="nearest-result-img nearest-result-img--placeholder"></div>'}
+          <button class="nearest-result ${r.sponsored ? 'nearest-result--sponsored' : ''} ${r.osm ? 'nearest-result--osm' : ''}" onclick="${r.osm && mapsUrl ? `window.open('${mapsUrl}','_blank')` : `openPlaceModal(window._nearestData[${i}])`}">
+            ${r.image ? `<img class="nearest-result-img" src="${r.image}" alt="${r.name}" loading="lazy">` : `
+            <div class="nearest-result-img nearest-result-img--placeholder">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.4"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>`}
             <div class="nearest-result-info">
               <div class="nearest-result-top">
                 <span class="nearest-result-name">${r.name}</span>
                 ${r.sponsored ? '<span class="nearest-result-badge">Anbefalet</span>' : ''}
+                ${r.osm ? '<span class="nearest-result-badge nearest-result-badge--osm">OpenStreetMap</span>' : ''}
               </div>
               <span class="nearest-result-type">${r.type || ''}</span>
               ${r.address ? `<span class="nearest-result-addr">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 ${r.address}${dist ? ' · ' + dist : ''}
-              </span>` : ''}
+              </span>` : dist ? `<span class="nearest-result-addr">${dist} væk</span>` : ''}
             </div>
           </button>
         `}).join('');

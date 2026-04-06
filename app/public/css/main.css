@@ -213,6 +213,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .nearest-result-top { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
 .nearest-result-name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .nearest-result-badge { font-size: 10px; font-weight: 700; color: #fff; background: var(--accent); border-radius: 4px; padding: 2px 6px; flex-shrink: 0; }
+.nearest-result-badge--osm { background: rgba(255,255,255,.12); color: rgba(255,255,255,.5); font-weight: 500; }
 .nearest-result-type { font-size: 11px; color: rgba(255,255,255,.5); display: block; margin-bottom: 4px; }
 .nearest-result-addr {
   display: flex; align-items: center; gap: 4px;

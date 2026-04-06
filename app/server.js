@@ -254,6 +254,119 @@ app.get('/api/admin/stats', async (req, res) => {
   }
 });
 
+const OSM_MAP = [
+  { keywords: ['frisør', 'friseur', 'hår', 'hair', 'salon'], tag: 'amenity', value: 'hairdresser' },
+  { keywords: ['barber'], tag: 'shop', value: 'barber' },
+  { keywords: ['restaurant', 'spisestedet', 'spise', 'mad'], tag: 'amenity', value: 'restaurant' },
+  { keywords: ['café', 'cafe', 'kaffe', 'coffee', 'kaffebar'], tag: 'amenity', value: 'cafe' },
+  { keywords: ['bar', 'pub', 'natklub', 'nightclub'], tag: 'amenity', value: 'bar' },
+  { keywords: ['hotel', 'overnatning'], tag: 'tourism', value: 'hotel' },
+  { keywords: ['bowling'], tag: 'leisure', value: 'bowling_alley' },
+  { keywords: ['biograf', 'kino', 'film', 'cinema'], tag: 'amenity', value: 'cinema' },
+  { keywords: ['museum'], tag: 'tourism', value: 'museum' },
+  { keywords: ['fitness', 'gym', 'træning', 'crossfit'], tag: 'leisure', value: 'fitness_centre' },
+  { keywords: ['tandlæge', 'tand'], tag: 'amenity', value: 'dentist' },
+  { keywords: ['apotek'], tag: 'amenity', value: 'pharmacy' },
+  { keywords: ['supermarked', 'dagligvarer'], tag: 'shop', value: 'supermarket' },
+  { keywords: ['bageri', 'bager', 'brød'], tag: 'shop', value: 'bakery' },
+  { keywords: ['blomster', 'blomsterhandler'], tag: 'shop', value: 'florist' },
+  { keywords: ['tattoo', 'tatovering'], tag: 'shop', value: 'tattoo' },
+  { keywords: ['bibliotek'], tag: 'amenity', value: 'library' },
+  { keywords: ['pizza'], tag: 'cuisine', value: 'pizza' },
+  { keywords: ['sushi'], tag: 'cuisine', value: 'sushi' },
+  { keywords: ['burger'], tag: 'cuisine', value: 'burger' },
+  { keywords: ['thai'], tag: 'cuisine', value: 'thai' },
+  { keywords: ['kebab', 'grillbar'], tag: 'amenity', value: 'fast_food' },
+  { keywords: ['is', 'isbar', 'iskiosk', 'gelato'], tag: 'amenity', value: 'ice_cream' },
+  { keywords: ['svømmehal', 'pool', 'svømmecenter'], tag: 'leisure', value: 'swimming_pool' },
+  { keywords: ['læge', 'lægeklinik', 'klinik'], tag: 'amenity', value: 'doctors' },
+  { keywords: ['park', 'legeplads'], tag: 'leisure', value: 'park' },
+  { keywords: ['fodbold', 'idræt', 'sportshal', 'sport'], tag: 'leisure', value: 'sports_centre' },
+];
+
+const OSM_CITY_CENTERS = {
+  'københavn': [55.6761, 12.5683],
+  'aarhus': [56.1629, 10.2039],
+  'odense': [55.4038, 10.4024],
+  'aalborg': [57.0488, 9.9217],
+  'esbjerg': [55.4769, 8.4594],
+  'randers': [56.4607, 10.0365],
+  'kolding': [55.4904, 9.4722],
+  'horsens': [55.8607, 9.8502],
+  'vejle': [55.7093, 9.5356],
+  'roskilde': [55.6415, 12.0803],
+};
+
+app.get('/api/osm-search', async (req, res) => {
+  const q = (req.query.q || '').toLowerCase().trim();
+  const city = (req.query.city || '').toLowerCase().trim();
+  const userLat = parseFloat(req.query.lat);
+  const userLon = parseFloat(req.query.lon);
+  if (!q) return res.json([]);
+
+  // Find matching OSM tag
+  const words = q.split(/\s+/);
+  let match = null;
+  for (const entry of OSM_MAP) {
+    if (entry.keywords.some(k => words.some(w => w.includes(k) || k.includes(w)))) {
+      match = entry;
+      break;
+    }
+  }
+  if (!match) return res.json([]);
+
+  // Determine center coordinates
+  let clat, clon;
+  if (!isNaN(userLat) && !isNaN(userLon)) {
+    clat = userLat; clon = userLon;
+  } else if (city && OSM_CITY_CENTERS[city]) {
+    [clat, clon] = OSM_CITY_CENTERS[city];
+  } else {
+    return res.json([]);
+  }
+
+  const radius = 5000;
+  let overpassQ;
+  if (match.tag === 'cuisine') {
+    overpassQ = `[out:json][timeout:10];(node["amenity"="restaurant"]["cuisine"="${match.value}"](around:${radius},${clat},${clon});way["amenity"="restaurant"]["cuisine"="${match.value}"](around:${radius},${clat},${clon}););out center body;`;
+  } else {
+    overpassQ = `[out:json][timeout:10];(node["${match.tag}"="${match.value}"](around:${radius},${clat},${clon});way["${match.tag}"="${match.value}"](around:${radius},${clat},${clon}););out center body;`;
+  }
+
+  try {
+    const response = await fetch('https://overpass-api.de/api/interpreter', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `data=${encodeURIComponent(overpassQ)}`,
+      signal: AbortSignal.timeout(12000),
+    });
+    const data = await response.json();
+    const results = (data.elements || [])
+      .filter(el => el.tags && el.tags.name)
+      .slice(0, 12)
+      .map(el => {
+        const elLat = el.lat ?? (el.center && el.center.lat);
+        const elLon = el.lon ?? (el.center && el.center.lon);
+        const street = [el.tags['addr:street'], el.tags['addr:housenumber']].filter(Boolean).join(' ');
+        const addrCity = el.tags['addr:city'] || '';
+        const address = [street, addrCity].filter(Boolean).join(', ') || null;
+        return {
+          name: el.tags.name,
+          type: q,
+          address,
+          url: el.tags.website || el.tags['contact:website'] || null,
+          phone: el.tags.phone || el.tags['contact:phone'] || null,
+          image: null,
+          coords: elLat != null && elLon != null ? [elLat, elLon] : null,
+          osm: true,
+        };
+      });
+    res.json(results);
+  } catch {
+    res.status(500).json({ error: 'OSM fejl' });
+  }
+});
+
 app.get('/api/search', (req, res) => {
   const q = (req.query.q || '').toLowerCase().trim();
   const city = (req.query.city || '').toLowerCase().trim();
