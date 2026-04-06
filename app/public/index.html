@@ -436,18 +436,89 @@
         } catch {}
       }
 
+      const OSM_MAP = [
+        { keywords: ['frisør','friseur','hår','hair','salon'], tag:'amenity', value:'hairdresser' },
+        { keywords: ['barber'], tag:'shop', value:'barber' },
+        { keywords: ['restaurant','spise','mad'], tag:'amenity', value:'restaurant' },
+        { keywords: ['café','cafe','kaffe','coffee','kaffebar'], tag:'amenity', value:'cafe' },
+        { keywords: ['bar','pub','natklub'], tag:'amenity', value:'bar' },
+        { keywords: ['hotel','overnatning'], tag:'tourism', value:'hotel' },
+        { keywords: ['bowling'], tag:'leisure', value:'bowling_alley' },
+        { keywords: ['biograf','kino','film','cinema'], tag:'amenity', value:'cinema' },
+        { keywords: ['museum'], tag:'tourism', value:'museum' },
+        { keywords: ['fitness','gym','træning','crossfit'], tag:'leisure', value:'fitness_centre' },
+        { keywords: ['tandlæge','tand'], tag:'amenity', value:'dentist' },
+        { keywords: ['apotek'], tag:'amenity', value:'pharmacy' },
+        { keywords: ['supermarked','dagligvarer'], tag:'shop', value:'supermarket' },
+        { keywords: ['bageri','bager','brød'], tag:'shop', value:'bakery' },
+        { keywords: ['blomster'], tag:'shop', value:'florist' },
+        { keywords: ['tattoo','tatovering'], tag:'shop', value:'tattoo' },
+        { keywords: ['bibliotek'], tag:'amenity', value:'library' },
+        { keywords: ['pizza'], tag:'cuisine', value:'pizza' },
+        { keywords: ['sushi'], tag:'cuisine', value:'sushi' },
+        { keywords: ['burger'], tag:'cuisine', value:'burger' },
+        { keywords: ['thai'], tag:'cuisine', value:'thai' },
+        { keywords: ['kebab','grillbar'], tag:'amenity', value:'fast_food' },
+        { keywords: ['is','isbar','iskiosk','gelato'], tag:'amenity', value:'ice_cream' },
+        { keywords: ['svømmehal','pool'], tag:'leisure', value:'swimming_pool' },
+        { keywords: ['læge','lægeklinik','klinik'], tag:'amenity', value:'doctors' },
+        { keywords: ['park','legeplads'], tag:'leisure', value:'park' },
+        { keywords: ['sport','fodbold','idræt','sportshal'], tag:'leisure', value:'sports_centre' },
+      ];
+
+      async function osmSearch(q, clat, clon) {
+        const words = q.toLowerCase().split(/\s+/);
+        let match = null;
+        for (const entry of OSM_MAP) {
+          if (entry.keywords.some(k => words.some(w => w.includes(k) || k.includes(w)))) {
+            match = entry; break;
+          }
+        }
+        if (!match) return [];
+        const radius = 5000;
+        let overpassQ;
+        if (match.tag === 'cuisine') {
+          overpassQ = `[out:json][timeout:10];(node["amenity"="restaurant"]["cuisine"="${match.value}"](around:${radius},${clat},${clon});way["amenity"="restaurant"]["cuisine"="${match.value}"](around:${radius},${clat},${clon}););out center body;`;
+        } else {
+          overpassQ = `[out:json][timeout:10];(node["${match.tag}"="${match.value}"](around:${radius},${clat},${clon});way["${match.tag}"="${match.value}"](around:${radius},${clat},${clon}););out center body;`;
+        }
+        const res = await fetch('https://overpass-api.de/api/interpreter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `data=${encodeURIComponent(overpassQ)}`,
+          signal: AbortSignal.timeout(15000),
+        });
+        const data = await res.json();
+        return (data.elements || [])
+          .filter(el => el.tags && el.tags.name)
+          .slice(0, 12)
+          .map(el => {
+            const elLat = el.lat ?? (el.center && el.center.lat);
+            const elLon = el.lon ?? (el.center && el.center.lon);
+            const street = [el.tags['addr:street'], el.tags['addr:housenumber']].filter(Boolean).join(' ');
+            const addrCity = el.tags['addr:city'] || '';
+            const address = [street, addrCity].filter(Boolean).join(', ') || null;
+            return {
+              name: el.tags.name, type: q, address,
+              url: el.tags.website || el.tags['contact:website'] || null,
+              phone: el.tags.phone || el.tags['contact:phone'] || null,
+              image: null, osm: true,
+              coords: elLat != null && elLon != null ? [elLat, elLon] : null,
+            };
+          });
+      }
+
       async function showNearestForCity(city, q) {
         const resultsEl = document.getElementById('nearestResults');
         resultsEl.innerHTML = '<p class="nearest-hint">Henter steder...</p>';
         try {
           if (q) {
-            // Run local search and OSM search in parallel
-            const latParam = userCoords ? `&lat=${userCoords[0]}&lon=${userCoords[1]}` : '';
+            // Get center coords for OSM
+            const center = userCoords || (city && CITY_COORDS[city] ? CITY_COORDS[city] : null);
             const [localResults, osmResults] = await Promise.all([
               fetch(`/api/search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(city)}`).then(r => r.json()).catch(() => []),
-              fetch(`/api/osm-search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(city)}${latParam}`).then(r => r.json()).catch(() => []),
+              center ? osmSearch(q, center[0], center[1]).catch(() => []) : Promise.resolve([]),
             ]);
-            // Sponsors first, then OSM results (deduplicated by name)
             const seen = new Set(localResults.map(r => r.name.toLowerCase()));
             const dedupedOsm = osmResults.filter(r => !seen.has(r.name.toLowerCase()));
             renderNearestResults([...localResults, ...dedupedOsm], q);
