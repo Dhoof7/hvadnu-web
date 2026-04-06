@@ -154,14 +154,14 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .home-hero-content .free-input { background: rgba(255,255,255,.95); }
 
 /* Hero right panel */
-.hero-right-panel { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 60px 80px 60px 40px; }
+.hero-right-panel { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 60px 60px 60px 40px; }
 
 /* Nearest widget */
 .nearest-widget {
   background: rgba(255,255,255,.1); backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,.15); border-radius: 24px;
-  padding: 28px; width: 100%; max-width: 400px;
+  padding: 32px; width: 100%; max-width: 480px;
   transform: translateZ(0);
   box-shadow: 0 24px 60px rgba(0,0,0,.4);
 }
