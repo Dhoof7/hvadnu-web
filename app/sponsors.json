@@ -1742,5 +1742,95 @@
     "phone": null,
     "rating": 4.4,
     "active": true
+  },
+  {
+    "id": 103,
+    "name": "Roskilde Steakhouse",
+    "categories": [
+      "restaurant",
+      "steak",
+      "dinner",
+      "food",
+      "date"
+    ],
+    "address": "Algade 5, 4000 Roskilde",
+    "url": "https://steakhouse-roskilde.dk",
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80",
+    "rating": 4.5,
+    "city": "roskilde",
+    "phone": null,
+    "active": true
+  },
+  {
+    "id": 104,
+    "name": "Cafe Solen Roskilde",
+    "categories": [
+      "café",
+      "coffee",
+      "brunch",
+      "lunch",
+      "cozy"
+    ],
+    "address": "Algade 12, 4000 Roskilde",
+    "url": "https://cafesolen-roskilde.dk",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "rating": 4.4,
+    "city": "roskilde",
+    "phone": null,
+    "active": true
+  },
+  {
+    "id": 105,
+    "name": "Roskilde Sports Bar",
+    "categories": [
+      "bar",
+      "sports",
+      "drinks",
+      "friends",
+      "nightlife"
+    ],
+    "address": "Torvet 7, 4000 Roskilde",
+    "url": "https://sportsbar-roskilde.dk",
+    "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?w=400&q=80",
+    "rating": 4.3,
+    "city": "roskilde",
+    "phone": null,
+    "active": true
+  },
+  {
+    "id": 106,
+    "name": "Roskilde Escape World",
+    "categories": [
+      "escape room",
+      "activity",
+      "fun",
+      "friends",
+      "indoor"
+    ],
+    "address": "Nørregade 3, 4000 Roskilde",
+    "url": "https://escapeworld-roskilde.dk",
+    "image": "https://images.unsplash.com/photo-1525026198548-4baa812f1183?w=400&q=80",
+    "rating": 4.6,
+    "city": "roskilde",
+    "phone": null,
+    "active": true
+  },
+  {
+    "id": 107,
+    "name": "Sushi Roskilde",
+    "categories": [
+      "sushi",
+      "japanese",
+      "restaurant",
+      "dinner",
+      "lunch"
+    ],
+    "address": "Algade 18, 4000 Roskilde",
+    "url": "https://sushi-roskilde.dk",
+    "image": "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80",
+    "rating": 4.4,
+    "city": "roskilde",
+    "phone": null,
+    "active": true
   }
 ]
