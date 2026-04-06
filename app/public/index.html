@@ -553,7 +553,33 @@
             opt.textContent = c.label;
             sel.appendChild(opt);
           });
-          sel.addEventListener('change', () => { selectedHeroCity = sel.value; });
+          const CITY_IMGS = {
+            'københavn': '/img/københavn.png',
+            'aarhus': '/img/Aarhus.png',
+            'aalborg': '/img/Aalborg.png',
+            'odense': '/img/Odense.png',
+            'esbjerg': '/img/Esbjerg.png',
+            'randers': '/img/Randers.png',
+            'kolding': '/img/Kolding.png',
+            'horsens': '/img/Horsens.png',
+            'vejle': '/img/Vejle.png',
+            'roskilde': '/img/Roskilde.png',
+          };
+          function updateHeroBgImg(city) {
+            const img = document.querySelector('.hero-bg-img img');
+            if (!img) return;
+            const src = CITY_IMGS[city] || '/img/copen.png';
+            img.style.opacity = '0';
+            img.style.transition = 'opacity 0.4s ease';
+            setTimeout(() => {
+              img.src = src;
+              img.onload = () => { img.style.opacity = '1'; };
+            }, 200);
+          }
+          sel.addEventListener('change', () => {
+            selectedHeroCity = sel.value;
+            updateHeroBgImg(sel.value);
+          });
         } catch {}
       })();
 
