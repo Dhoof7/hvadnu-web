@@ -467,21 +467,40 @@
       let activeQuickChip = null;
       let activeIntent = null;
 
+      function showDefaultState() {
+        document.getElementById('nearestResults').innerHTML =
+          '<p class="nearest-hint">Vælg en kategori eller søg på hvad du leder efter</p>';
+      }
+
       async function showRandomSponsors() {
+        const resultsEl = document.getElementById('nearestResults');
         try {
           const sponsors = await fetch('/api/sponsors').then(r => r.json());
           const shuffled = sponsors.filter(s => s.active && s.image).sort(() => Math.random() - 0.5).slice(0, 3);
-          renderSmartResults(shuffled.map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, phone: s.phone || null, sponsored: true, reasons: [], badge: 'Anbefalet' })));
-        } catch {}
+          if (shuffled.length) {
+            renderSmartResults(shuffled.map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, phone: s.phone || null, sponsored: true, reasons: [], badge: 'Anbefalet' })));
+          } else {
+            showDefaultState();
+          }
+        } catch {
+          showDefaultState();
+        }
       }
 
       async function doSmartSearch(q, intent) {
         const resultsEl = document.getElementById('nearestResults');
-        resultsEl.innerHTML = '<p class="nearest-hint">Finder de bedste steder for dig...</p>';
+        resultsEl.innerHTML = '<p class="nearest-hint">Finder de bedste steder...</p>';
         try {
           const url = `/api/smart-search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(selectedNearestCity)}&intent=${encodeURIComponent(intent || '')}`;
-          const results = await fetch(url).then(r => r.json());
-          renderSmartResults(results, q);
+          const data = await fetch(url).then(r => r.json());
+          const results = Array.isArray(data) ? data : [];
+          if (results.length) {
+            renderSmartResults(results, q);
+          } else {
+            // Fallback: regular search
+            const fallback = await fetch(`/api/search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(selectedNearestCity)}`).then(r => r.json()).catch(() => []);
+            renderSmartResults(fallback.map(r => ({ ...r, reasons: [], badge: null })), q);
+          }
         } catch {
           resultsEl.innerHTML = '<p class="nearest-hint">Noget gik galt. Prøv igen.</p>';
         }
@@ -549,18 +568,18 @@
         window.location.href = '/quiz';
       }
 
-      // Quick chips
-      document.querySelectorAll('.nearest-chip').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const q = btn.dataset.q;
-          document.getElementById('nearestInput').value = q;
-          document.querySelectorAll('.nearest-chip').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          activeQuickChip = q;
-          activeIntent = null;
-          showIntentChips(q);
-          doSmartSearch(q, '');
-        });
+      // Quick chips — event delegation
+      document.getElementById('nearestQuickChips').addEventListener('click', e => {
+        const btn = e.target.closest('.nearest-chip');
+        if (!btn) return;
+        const q = btn.dataset.q;
+        document.getElementById('nearestInput').value = q;
+        document.querySelectorAll('.nearest-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeQuickChip = q;
+        activeIntent = null;
+        showIntentChips(q);
+        doSmartSearch(q, '');
       });
 
       document.getElementById('nearestSearchBtn').addEventListener('click', () => {
