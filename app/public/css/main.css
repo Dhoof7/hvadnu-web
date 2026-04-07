@@ -251,6 +251,70 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .nearest-link--fb { background: rgba(66,103,178,.2); color: #4267b2; }
 .nearest-link--phone { background: rgba(255,255,255,.12); color: rgba(255,255,255,.8); }
 
+/* Quick chips */
+.nearest-quick-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.nearest-chip {
+  padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.75); cursor: pointer; transition: all .15s; font-family: var(--sans);
+}
+.nearest-chip:hover, .nearest-chip.active {
+  background: rgba(255,255,255,.22); color: #fff; border-color: rgba(255,255,255,.4);
+}
+
+/* Intent chips */
+.nearest-intent-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; min-height: 0; }
+.nearest-intent-chip {
+  padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  background: rgba(94,23,235,.2); border: 1px solid rgba(94,23,235,.35);
+  color: rgba(255,255,255,.85); cursor: pointer; transition: all .15s; font-family: var(--sans);
+}
+.nearest-intent-chip:hover, .nearest-intent-chip.active {
+  background: rgba(94,23,235,.45); border-color: var(--accent); color: #fff;
+}
+
+/* Smart result cards */
+.smart-card {
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px; overflow: hidden; transition: background .15s; margin-bottom: 2px;
+}
+.smart-card:hover { background: rgba(255,255,255,.12); }
+.smart-card--sponsored { border-color: rgba(255,255,255,.2); }
+.smart-card-top-row { display: flex; gap: 10px; padding: 12px 12px 8px; align-items: flex-start; }
+.smart-card-img { width: 52px; height: 52px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+.smart-card-img--placeholder { width: 52px; height: 52px; border-radius: 10px; background: rgba(255,255,255,.1); flex-shrink: 0; }
+.smart-card-meta { flex: 1; min-width: 0; }
+.smart-card-name-row { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; flex-wrap: wrap; }
+.smart-card-name { font-size: 13px; font-weight: 700; color: #fff; }
+.smart-badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; flex-shrink: 0; white-space: nowrap; }
+.smart-badge--best { background: #5e17eb; color: #fff; }
+.smart-badge--cheap { background: #1a7a4a; color: #fff; }
+.smart-badge--popular { background: #c0392b; color: #fff; }
+.smart-badge--date { background: #8e24aa; color: #fff; }
+.smart-badge--friends { background: #1565c0; color: #fff; }
+.smart-badge--work { background: #00695c; color: #fff; }
+.smart-card-type { font-size: 11px; color: rgba(255,255,255,.4); display: block; }
+.smart-card-addr { font-size: 11px; color: rgba(255,255,255,.35); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.smart-card-reasons { display: flex; flex-wrap: wrap; gap: 5px; padding: 0 12px 10px; }
+.smart-reason {
+  font-size: 11px; padding: 3px 8px; border-radius: 6px;
+  background: rgba(255,255,255,.07); color: rgba(255,255,255,.65);
+  border: 1px solid rgba(255,255,255,.1);
+}
+.smart-card-actions { display: flex; gap: 6px; padding: 0 12px 12px; }
+.smart-btn-plan {
+  flex: 1; padding: 7px 10px; border-radius: 8px; font-size: 12px; font-weight: 600;
+  background: #5e17eb; color: #fff; border: none; cursor: pointer;
+  font-family: var(--sans); transition: opacity .15s; text-align: center;
+}
+.smart-btn-plan:hover { opacity: .85; }
+.smart-btn-maps {
+  padding: 7px 10px; border-radius: 8px; font-size: 12px; font-weight: 600;
+  background: rgba(255,255,255,.1); color: rgba(255,255,255,.75);
+  border: 1px solid rgba(255,255,255,.12); text-decoration: none; transition: background .15s;
+}
+.smart-btn-maps:hover { background: rgba(255,255,255,.18); color: #fff; }
+
 /* How it works */
 .how-it-works { background: #0d2247; padding: 100px 80px; }
 

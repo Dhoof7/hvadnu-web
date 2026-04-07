@@ -71,16 +71,24 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
             Det nærmeste
           </div>
-          <p class="nearest-sub">Vælg by og søg efter steder nær dig</p>
           <select class="nearest-city-select" id="nearestCityChips">
             <option value="">Alle byer</option>
           </select>
           <div class="nearest-search-row">
-            <input type="text" id="nearestInput" class="nearest-input" placeholder="Restaurant, frisør, hotel, bowling...">
+            <input type="text" id="nearestInput" class="nearest-input" placeholder="Hvad vil du lave?">
             <button id="nearestSearchBtn" class="nearest-btn" aria-label="Søg">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
           </div>
+          <div class="nearest-quick-chips" id="nearestQuickChips">
+            <button class="nearest-chip" data-q="café">Café</button>
+            <button class="nearest-chip" data-q="bar">Bar</button>
+            <button class="nearest-chip" data-q="frisør">Frisør</button>
+            <button class="nearest-chip" data-q="date">Date</button>
+            <button class="nearest-chip" data-q="billig mad">Billig mad</button>
+            <button class="nearest-chip" data-q="noget at lave">Noget at lave</button>
+          </div>
+          <div class="nearest-intent-chips" id="nearestIntentChips"></div>
           <div id="nearestResults" class="nearest-results"></div>
         </div>
       </div>
@@ -434,69 +442,146 @@
         } catch {}
       })();
 
+      const INTENT_MAP = {
+        'café': ['Hyggelig café','Billig café','God til arbejde','God til venner','God til date'],
+        'kaffe': ['Hyggelig café','Billig café','God til arbejde'],
+        'bar': ['God stemning','Billig bar','Live musik','God til date','God til venner'],
+        'frisør': ['Hurtig klip','Billig klipning','Herre frisør','Dame frisør'],
+        'barber': ['Fade og skæg','Hurtig klip','Billig barbering'],
+        'restaurant': ['Billig frokost','God til date','God til venner','Hurtig mad'],
+        'mad': ['Billig mad','Street food','God til venner','Hurtig frokost'],
+        'billig mad': ['Pizza og kebab','Street food','Burger','Hurtig og billig'],
+        'date': ['Romantisk café','Fin restaurant','Hyggelig bar','Unik oplevelse'],
+        'noget at lave': ['Udendørs aktivitet','Indendørs sjov','Escape room','God til regn'],
+      };
+
+      const BADGE_CLASS = {
+        'Bedste valg': 'smart-badge--best',
+        'Billigste option': 'smart-badge--cheap',
+        'Mest populær': 'smart-badge--popular',
+        'Perfekt til date': 'smart-badge--date',
+        'God til venner': 'smart-badge--friends',
+        'God til arbejde': 'smart-badge--work',
+      };
+
+      let activeQuickChip = null;
+      let activeIntent = null;
+
       async function showRandomSponsors() {
         try {
           const sponsors = await fetch('/api/sponsors').then(r => r.json());
-          const shuffled = sponsors.filter(s => s.active && s.image).sort(() => Math.random() - 0.5).slice(0, 6);
-          renderNearestResults(shuffled.map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, description: null, instagram: s.instagram || null, facebook: s.facebook || null, phone: s.phone || null, sponsored: true })), '');
+          const shuffled = sponsors.filter(s => s.active && s.image).sort(() => Math.random() - 0.5).slice(0, 3);
+          renderSmartResults(shuffled.map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, phone: s.phone || null, sponsored: true, reasons: [], badge: 'Anbefalet' })));
         } catch {}
       }
 
-      async function showNearestForCity(city, q) {
+      async function doSmartSearch(q, intent) {
         const resultsEl = document.getElementById('nearestResults');
-        resultsEl.innerHTML = '<p class="nearest-hint">Henter steder...</p>';
+        resultsEl.innerHTML = '<p class="nearest-hint">Finder de bedste steder for dig...</p>';
         try {
-          const results = await fetch(`/api/search?q=${encodeURIComponent(q || '')}&city=${encodeURIComponent(city)}`).then(r => r.json());
-          renderNearestResults(results, q);
+          const url = `/api/smart-search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(selectedNearestCity)}&intent=${encodeURIComponent(intent || '')}`;
+          const results = await fetch(url).then(r => r.json());
+          renderSmartResults(results, q);
         } catch {
           resultsEl.innerHTML = '<p class="nearest-hint">Noget gik galt. Prøv igen.</p>';
         }
       }
 
-      // City center coords for distance calculation
-      const CITY_COORDS = { aalborg:[57.0488,9.9217], aarhus:[56.1629,10.2039], københavn:[55.6761,12.5683], odense:[55.4038,10.4024], esbjerg:[55.4769,8.4594], randers:[56.4607,10.0365], kolding:[55.4904,9.4722], horsens:[55.8607,9.8502], vejle:[55.7093,9.5356], roskilde:[55.6415,12.0803] };
-      let userCoords = null;
-      navigator.geolocation && navigator.geolocation.getCurrentPosition(p => { userCoords = [p.coords.latitude, p.coords.longitude]; }, () => {});
-
-      function haversine([lat1,lon1],[lat2,lon2]) {
-        const R = 6371, dLat = (lat2-lat1)*Math.PI/180, dLon = (lon2-lon1)*Math.PI/180;
-        const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
-        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      async function showNearestForCity(city, q) {
+        if (q) {
+          await doSmartSearch(q, activeIntent || '');
+        } else {
+          showRandomSponsors();
+        }
       }
 
-      function getDistance(city) {
-        const coords = CITY_COORDS[city];
-        if (!userCoords || !coords) return null;
-        const km = haversine(userCoords, coords);
-        return km < 1 ? `${Math.round(km*1000)} m` : `${km.toFixed(1)} km`;
+      function showIntentChips(q) {
+        const container = document.getElementById('nearestIntentChips');
+        const key = Object.keys(INTENT_MAP).find(k => q.toLowerCase().includes(k));
+        const intents = key ? INTENT_MAP[key] : [];
+        if (!intents.length) { container.innerHTML = ''; return; }
+        container.innerHTML = intents.map(i =>
+          `<button class="nearest-intent-chip${activeIntent === i ? ' active' : ''}" onclick="selectIntent('${i}', '${q}')">${i}</button>`
+        ).join('');
       }
 
-      function renderNearestResults(results, q) {
+      function selectIntent(intent, q) {
+        activeIntent = intent;
+        showIntentChips(q);
+        doSmartSearch(q, intent);
+      }
+
+      function renderSmartResults(results, q) {
         const resultsEl = document.getElementById('nearestResults');
         if (!results.length) {
           resultsEl.innerHTML = `<p class="nearest-hint">${q ? 'Ingen resultater for "' + q + '"' : 'Ingen anbefalede steder endnu'}</p>`;
           return;
         }
         window._nearestData = results;
-        resultsEl.innerHTML = results.slice(0, 9).map((r, i) => {
-          const dist = getDistance(selectedNearestCity);
+        resultsEl.innerHTML = results.map((r, i) => {
+          const badgeClass = BADGE_CLASS[r.badge] || 'smart-badge--best';
+          const mapsUrl = r.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.name + ' ' + r.address)}` : null;
           return `
-          <button class="nearest-result ${r.sponsored ? 'nearest-result--sponsored' : ''}" onclick="openPlaceModal(window._nearestData[${i}])">
-            ${r.image ? `<img class="nearest-result-img" src="${r.image}" alt="${r.name}" loading="lazy">` : '<div class="nearest-result-img nearest-result-img--placeholder"></div>'}
-            <div class="nearest-result-info">
-              <div class="nearest-result-top">
-                <span class="nearest-result-name">${r.name}</span>
-                ${r.sponsored ? '<span class="nearest-result-badge">Anbefalet</span>' : ''}
+          <div class="smart-card${r.sponsored ? ' smart-card--sponsored' : ''}">
+            <div class="smart-card-top-row">
+              ${r.image ? `<img class="smart-card-img" src="${r.image}" alt="${r.name}" loading="lazy">` : '<div class="smart-card-img smart-card-img--placeholder"></div>'}
+              <div class="smart-card-meta">
+                <div class="smart-card-name-row">
+                  <span class="smart-card-name">${r.name}</span>
+                  ${r.badge ? `<span class="smart-badge ${badgeClass}">${r.badge}</span>` : ''}
+                </div>
+                <span class="smart-card-type">${r.type || ''}</span>
+                ${r.address ? `<span class="smart-card-addr">${r.address}</span>` : ''}
               </div>
-              <span class="nearest-result-type">${r.type || ''}</span>
-              ${r.address ? `<span class="nearest-result-addr">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                ${r.address}${dist ? ' · ' + dist : ''}
-              </span>` : ''}
             </div>
-          </button>
-        `}).join('');
+            ${r.reasons && r.reasons.length ? `<div class="smart-card-reasons">${r.reasons.map(reason => `<span class="smart-reason">${reason}</span>`).join('')}</div>` : ''}
+            <div class="smart-card-actions">
+              <button class="smart-btn-plan" onclick="makePlanFrom(window._nearestData[${i}])">Lav en plan →</button>
+              ${mapsUrl ? `<a class="smart-btn-maps" href="${mapsUrl}" target="_blank" rel="noopener">Maps</a>` : ''}
+              ${r.url ? `<a class="smart-btn-maps" href="${r.url}" target="_blank" rel="noopener">Web</a>` : ''}
+            </div>
+          </div>`;
+        }).join('');
       }
+
+      function makePlanFrom(place) {
+        sessionStorage.setItem('planFrom', JSON.stringify({ place: place.name, type: place.type, city: selectedNearestCity }));
+        window.location.href = '/quiz';
+      }
+
+      // Quick chips
+      document.querySelectorAll('.nearest-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const q = btn.dataset.q;
+          document.getElementById('nearestInput').value = q;
+          document.querySelectorAll('.nearest-chip').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeQuickChip = q;
+          activeIntent = null;
+          showIntentChips(q);
+          doSmartSearch(q, '');
+        });
+      });
+
+      document.getElementById('nearestSearchBtn').addEventListener('click', () => {
+        const q = document.getElementById('nearestInput').value.trim();
+        if (q) { activeIntent = null; showIntentChips(q); doSmartSearch(q, ''); }
+      });
+      document.getElementById('nearestInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          const q = e.target.value.trim();
+          if (q) { activeIntent = null; showIntentChips(q); doSmartSearch(q, ''); }
+        }
+      });
+      document.getElementById('nearestInput').addEventListener('input', e => {
+        if (!e.target.value.trim()) {
+          document.getElementById('nearestIntentChips').innerHTML = '';
+          document.querySelectorAll('.nearest-chip').forEach(b => b.classList.remove('active'));
+          activeQuickChip = null; activeIntent = null;
+          if (selectedNearestCity) showNearestForCity(selectedNearestCity, '');
+          else showRandomSponsors();
+        }
+      });
 
       function openPlaceModal(r) {
         const set = (id, val) => { const el = document.getElementById(id); if (el) el.style.display = val ? '' : 'none'; return el; };
@@ -525,23 +610,6 @@
         document.getElementById('placeModal').classList.remove('open');
         document.body.style.overflow = '';
       }
-
-      document.getElementById('nearestSearchBtn').addEventListener('click', () => {
-        const q = document.getElementById('nearestInput').value.trim();
-        if (q) showNearestForCity(selectedNearestCity, q);
-      });
-      document.getElementById('nearestInput').addEventListener('keydown', e => {
-        if (e.key === 'Enter') {
-          const q = e.target.value.trim();
-          if (q) showNearestForCity(selectedNearestCity, q);
-        }
-      });
-      document.getElementById('nearestInput').addEventListener('input', e => {
-        if (!e.target.value.trim()) {
-          if (selectedNearestCity) showNearestForCity(selectedNearestCity, '');
-          else showRandomSponsors();
-        }
-      });
 
       // Load cities into dropdown
       (async () => {

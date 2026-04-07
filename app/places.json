@@ -2658,5 +2658,299 @@
     "instagram": null,
     "facebook": null,
     "active": true
+  },
+  {
+    "name": "Aalborg Barbershop",
+    "city": "aalborg",
+    "type": "Frisør",
+    "address": "Algade 30, 9000 Aalborg",
+    "url": "",
+    "phone": "+45 98 11 22 33",
+    "image": "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=400&q=80",
+    "description": "Klassisk barbershop med erfarne frisører. Perfekt til herreklip, fade og skægtrim.",
+    "tags": [
+      "herrer",
+      "fade",
+      "barbershop",
+      "hurtig"
+    ],
+    "active": true
+  },
+  {
+    "name": "Studio Hair Aalborg",
+    "city": "aalborg",
+    "type": "Frisør",
+    "address": "Nytorv 14, 9000 Aalborg",
+    "url": "",
+    "phone": "+45 98 13 44 55",
+    "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80",
+    "description": "Moderne hår salon for damer og herrer. Specialister i farvebehandling og styling til gode priser.",
+    "tags": [
+      "damer",
+      "farve",
+      "styling",
+      "god pris"
+    ],
+    "active": true
+  },
+  {
+    "name": "Quick Cut Aalborg",
+    "city": "aalborg",
+    "type": "Frisør",
+    "address": "Boulevarden 9, 9000 Aalborg",
+    "url": "",
+    "phone": "+45 98 12 88 77",
+    "image": "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80",
+    "description": "Billig og hurtig frisør midt i Aalborg. Ingen booking nødvendig. Fra 150 kr.",
+    "tags": [
+      "billig",
+      "hurtig",
+      "ingen booking"
+    ],
+    "active": true
+  },
+  {
+    "name": "The Barber Club Aarhus",
+    "city": "aarhus",
+    "type": "Frisør",
+    "address": "Jægergårdsgade 20, 8000 Aarhus",
+    "url": "",
+    "phone": "+45 86 19 22 11",
+    "image": "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=400&q=80",
+    "description": "Populær barbershop med fokus på klassiske fade, skæg og moderne herrestil. Book online.",
+    "tags": [
+      "herrer",
+      "fade",
+      "populær",
+      "barbershop"
+    ],
+    "active": true
+  },
+  {
+    "name": "Aarhus Hair Studio",
+    "city": "aarhus",
+    "type": "Frisør",
+    "address": "Strøget 8, 8000 Aarhus C",
+    "url": "",
+    "phone": "+45 86 12 33 44",
+    "image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80",
+    "description": "Centralt beliggende hår salon med erfarne frisører. For damer og herrer. God atmosfære.",
+    "tags": [
+      "central",
+      "damer",
+      "hyggelig"
+    ],
+    "active": true
+  },
+  {
+    "name": "Budget Klip Aarhus",
+    "city": "aarhus",
+    "type": "Frisør",
+    "address": "Ryesgade 42, 8000 Aarhus",
+    "url": "",
+    "phone": "+45 86 18 77 66",
+    "image": "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80",
+    "description": "Billigste frisør i Aarhus. Hurtig service uden ventetid. Fra 120 kr. for en grundklipning.",
+    "tags": [
+      "billig",
+      "hurtig",
+      "budget"
+    ],
+    "active": true
+  },
+  {
+    "name": "Nørrebro Barbershop",
+    "city": "københavn",
+    "type": "Frisør",
+    "address": "Nørrebrogade 45, 2200 København N",
+    "url": "",
+    "phone": "+45 35 37 22 33",
+    "image": "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=400&q=80",
+    "description": "Populær barbershop på Nørrebro. Specialister i fade og skæg. Hyggelig atmosfære.",
+    "tags": [
+      "herrer",
+      "fade",
+      "populær"
+    ],
+    "active": true
+  },
+  {
+    "name": "Salon Chic København",
+    "city": "københavn",
+    "type": "Frisør",
+    "address": "Strøget 62, 1100 København K",
+    "url": "",
+    "phone": "+45 33 15 44 55",
+    "image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80",
+    "description": "Moderne hår salon på Strøget. Eksperter i klip, farve og behandlinger. Top kvalitet.",
+    "tags": [
+      "damer",
+      "moderne",
+      "farve"
+    ],
+    "active": true
+  },
+  {
+    "name": "Fast Cuts KBH",
+    "city": "københavn",
+    "type": "Frisør",
+    "address": "Vesterbrogade 88, 1620 København V",
+    "url": "",
+    "phone": "+45 33 21 55 44",
+    "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80",
+    "description": "Hurtig og billig frisør på Vesterbro. Fra 100 kr. Walk-in velkommen.",
+    "tags": [
+      "billig",
+      "hurtig",
+      "walk-in"
+    ],
+    "active": true
+  },
+  {
+    "name": "Odense Hår og Stil",
+    "city": "odense",
+    "type": "Frisør",
+    "address": "Vestergade 32, 5000 Odense C",
+    "url": "",
+    "phone": "+45 66 12 33 44",
+    "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80",
+    "description": "Hyggelig frisørsalon i centrum af Odense. For hele familien. God service til fair priser.",
+    "tags": [
+      "familie",
+      "hyggelig",
+      "fair pris"
+    ],
+    "active": true
+  },
+  {
+    "name": "Barber Palace Odense",
+    "city": "odense",
+    "type": "Frisør",
+    "address": "Kongensgade 18, 5000 Odense",
+    "url": "",
+    "phone": "+45 66 14 55 66",
+    "image": "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80",
+    "description": "Klassisk barbershop med fokus på herreklip, fade og skægtrim. Walk-in velkommen.",
+    "tags": [
+      "herrer",
+      "fade",
+      "barbershop"
+    ],
+    "active": true
+  },
+  {
+    "name": "Esbjerg Frisørhus",
+    "city": "esbjerg",
+    "type": "Frisør",
+    "address": "Skolegade 14, 6700 Esbjerg",
+    "url": "",
+    "phone": "+45 75 12 33 44",
+    "image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80",
+    "description": "Erfaren frisørsalon i centrum af Esbjerg. Alle typer klip og behandlinger for damer og herrer.",
+    "tags": [
+      "erfaren",
+      "central",
+      "damer",
+      "herrer"
+    ],
+    "active": true
+  },
+  {
+    "name": "Cut and Style Esbjerg",
+    "city": "esbjerg",
+    "type": "Frisør",
+    "address": "Torvet 8, 6700 Esbjerg",
+    "url": "",
+    "phone": "+45 75 13 22 11",
+    "image": "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=400&q=80",
+    "description": "Moderne salon med gode priser. Klipninger fra 130 kr. Specialister i moderne frisurer.",
+    "tags": [
+      "billig",
+      "moderne",
+      "god pris"
+    ],
+    "active": true
+  },
+  {
+    "name": "Randers Barber og Hår",
+    "city": "randers",
+    "type": "Frisør",
+    "address": "Storegade 22, 8900 Randers C",
+    "url": "",
+    "phone": "+45 86 42 33 44",
+    "image": "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80",
+    "description": "Din lokale frisør i Randers. God service og rimelige priser. Walk-in velkommen.",
+    "tags": [
+      "lokal",
+      "rimelig pris",
+      "walk-in"
+    ],
+    "active": true
+  },
+  {
+    "name": "Kolding Hair Studio",
+    "city": "kolding",
+    "type": "Frisør",
+    "address": "Akseltorv 4, 6000 Kolding",
+    "url": "",
+    "phone": "+45 75 52 33 44",
+    "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80",
+    "description": "Moderne frisørsalon i centrum af Kolding. Eksperter i klip, styling og farvebehandling.",
+    "tags": [
+      "moderne",
+      "central",
+      "styling",
+      "farve"
+    ],
+    "active": true
+  },
+  {
+    "name": "Horsens Barbershop",
+    "city": "horsens",
+    "type": "Frisør",
+    "address": "Søndergade 14, 8700 Horsens",
+    "url": "",
+    "phone": "+45 75 62 33 44",
+    "image": "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=400&q=80",
+    "description": "Populær barbershop i Horsens. Klassiske og moderne herrefrisurer og fade specialist.",
+    "tags": [
+      "herrer",
+      "barbershop",
+      "fade",
+      "populær"
+    ],
+    "active": true
+  },
+  {
+    "name": "Vejle Hår og Beauty",
+    "city": "vejle",
+    "type": "Frisør",
+    "address": "Nørretorv 10, 7100 Vejle",
+    "url": "",
+    "phone": "+45 75 82 33 44",
+    "image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80",
+    "description": "Komplet skønhedssalon med frisør, negle og behandlinger. Centralt beliggende i Vejle.",
+    "tags": [
+      "damer",
+      "beauty",
+      "central"
+    ],
+    "active": true
+  },
+  {
+    "name": "Roskilde Frisøren",
+    "city": "roskilde",
+    "type": "Frisør",
+    "address": "Algade 15, 4000 Roskilde",
+    "url": "",
+    "phone": "+45 46 32 33 44",
+    "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80",
+    "description": "Hyggelig frisørsalon i hjertet af Roskilde. God service til fair priser. Damer og herrer.",
+    "tags": [
+      "hyggelig",
+      "fair pris",
+      "central"
+    ],
+    "active": true
   }
 ]

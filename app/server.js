@@ -255,6 +255,61 @@ app.get('/api/admin/stats', async (req, res) => {
 });
 
 
+app.get('/api/smart-search', aiLimiter, async (req, res) => {
+  const q = (req.query.q || '').trim().slice(0, 200);
+  const intent = (req.query.intent || '').trim().slice(0, 100);
+  const city = (req.query.city || '').toLowerCase().trim();
+  if (!q) return res.json([]);
+
+  const qLower = q.toLowerCase();
+  const matchesCity = (c) => !city || c === city;
+  const matchesQ = (text) => (text || '').toLowerCase().includes(qLower) || qLower.split(' ').some(w => w.length > 2 && (text || '').toLowerCase().includes(w));
+
+  const sponsorCandidates = SPONSORS.filter(s =>
+    s.active && matchesCity(s.city) &&
+    (s.categories.some(c => matchesQ(c)) || matchesQ(s.name) || matchesQ(s.description || ''))
+  ).map(s => ({ name: s.name, type: s.categories[0] || '', address: s.address || '', description: s.description || '', image: s.image || null, url: s.url || null, phone: s.phone || null, sponsored: true, tags: [] }));
+
+  const seen = new Set(sponsorCandidates.map(s => s.name.toLowerCase()));
+  const placeCandidates = PLACES.filter(p =>
+    p.active && matchesCity(p.city) &&
+    (matchesQ(p.type) || matchesQ(p.name) || matchesQ(p.description || '') || (p.tags || []).some(t => matchesQ(t)))
+  ).filter(p => !seen.has(p.name.toLowerCase()))
+   .map(p => ({ name: p.name, type: p.type || '', address: p.address || '', description: p.description || '', image: p.image || null, url: p.url || null, phone: p.phone || null, sponsored: false, tags: p.tags || [] }));
+
+  const candidates = [...sponsorCandidates, ...placeCandidates].slice(0, 15);
+  if (!candidates.length) return res.json([]);
+  if (candidates.length <= 3) return res.json(candidates.map(p => ({ ...p, reasons: [], badge: null })));
+
+  const intentText = intent ? ` De vil specifikt have: "${intent}".` : '';
+  const prompt = `Du er en dansk lokal guide. Brugeren søger: "${q}".${intentText}
+
+Tilgængelige steder:
+${candidates.map((p, i) => `${i + 1}. ${p.name} (${p.type}) — ${p.description}${p.tags.length ? ' Tags: ' + p.tags.join(', ') : ''}`).join('\n')}
+
+Vælg de 3 bedste steder der matcher søgningen og intent. For hvert: 2-3 korte grunde (max 6 ord pr. grund, på dansk). Vælg ét badge: "Bedste valg", "Billigste option", "Mest populær", "Perfekt til date", "God til venner", "God til arbejde".
+Svar KUN i JSON: [{"index":1,"reasons":["...","..."],"badge":"..."}]`;
+
+  try {
+    const msg = await getAnthropic().messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 300,
+      messages: [{ role: 'user', content: prompt }],
+    });
+    const text = msg.content[0].text.trim();
+    const jsonMatch = text.match(/\[[\s\S]*?\]/);
+    if (!jsonMatch) throw new Error('no json');
+    const picks = JSON.parse(jsonMatch[0]);
+    const results = picks
+      .filter(pick => pick.index >= 1 && pick.index <= candidates.length)
+      .slice(0, 3)
+      .map(pick => ({ ...candidates[pick.index - 1], reasons: pick.reasons || [], badge: pick.badge || null }));
+    res.json(results);
+  } catch {
+    res.json(candidates.slice(0, 3).map(p => ({ ...p, reasons: [], badge: null })));
+  }
+});
+
 app.get('/api/search', (req, res) => {
   const q = (req.query.q || '').toLowerCase().trim();
   const city = (req.query.city || '').toLowerCase().trim();
