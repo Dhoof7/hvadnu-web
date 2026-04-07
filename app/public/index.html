@@ -80,11 +80,11 @@
             </div>
             <div class="nw-pills" id="nwCategories">
               <button class="nw-pill" data-q="café"     style="background:#5e17eb">Café</button>
-              <button class="nw-pill" data-q="bar"      style="background:#e65100">Bar</button>
-              <button class="nw-pill" data-q="date"     style="background:#c2185b">Date</button>
-              <button class="nw-pill" data-q="billig mad" style="background:#2e7d32">Billig mad</button>
-              <button class="nw-pill" data-q="frisør"   style="background:#1565c0">Frisør</button>
-              <button class="nw-pill" data-q="noget at lave" style="background:#00838f">Aktiviteter</button>
+              <button class="nw-pill" data-q="bar"      style="background:#3730a3">Bar</button>
+              <button class="nw-pill" data-q="date"     style="background:#7c3aed">Date</button>
+              <button class="nw-pill" data-q="billig mad" style="background:#1e3a8a">Billig mad</button>
+              <button class="nw-pill" data-q="frisør"   style="background:#4338ca">Frisør</button>
+              <button class="nw-pill" data-q="noget at lave" style="background:#1d4ed8">Aktiviteter</button>
             </div>
             <div class="nw-s1-footer">
               <select class="nw-city-sel" id="nearestCityChips">
@@ -469,16 +469,16 @@
       })();
 
       const INTENT_MAP = {
-        'café':          [['Hyggelig café','#5e17eb'],['Billig café','#1a7a4a'],['God til arbejde','#00695c'],['God til venner','#1565c0'],['God til date','#c2185b'],['Hurtig kop','#e64a19']],
-        'kaffe':         [['Hyggelig café','#5e17eb'],['Billig café','#1a7a4a'],['God til arbejde','#00695c']],
-        'bar':           [['God stemning','#1565c0'],['Billig bar','#1a7a4a'],['Live musik','#c2185b'],['God til date','#8e24aa'],['God til venner','#e64a19']],
-        'frisør':        [['Hurtig klip','#e64a19'],['Billig klipning','#1a7a4a'],['Herre frisør','#1565c0'],['Dame frisør','#c2185b']],
-        'barber':        [['Fade og skæg','#1565c0'],['Hurtig klip','#e64a19'],['Billig barbering','#1a7a4a']],
-        'restaurant':    [['Billig frokost','#1a7a4a'],['God til date','#c2185b'],['God til venner','#1565c0'],['Hurtig mad','#e64a19']],
-        'mad':           [['Billig mad','#1a7a4a'],['Street food','#e64a19'],['God til venner','#1565c0'],['Hurtig frokost','#c2185b']],
-        'billig mad':    [['Pizza og kebab','#e64a19'],['Street food','#1a7a4a'],['Burger','#c2185b'],['Hurtig og billig','#00695c']],
-        'date':          [['Romantisk café','#c2185b'],['Fin restaurant','#8e24aa'],['Hyggelig bar','#1565c0'],['Unik oplevelse','#5e17eb']],
-        'noget at lave': [['Udendørs aktivitet','#00838f'],['Indendørs sjov','#1565c0'],['Escape room','#5e17eb'],['God til regn','#1a7a4a']],
+        'café':          [['Hyggelig café','#5e17eb'],['Billig café','#3730a3'],['God til arbejde','#4338ca'],['God til venner','#1e3a8a'],['God til date','#7c3aed'],['Hurtig kop','#1d4ed8']],
+        'kaffe':         [['Hyggelig café','#5e17eb'],['Billig café','#3730a3'],['God til arbejde','#4338ca']],
+        'bar':           [['God stemning','#1d4ed8'],['Billig bar','#3730a3'],['Live musik','#5e17eb'],['God til date','#7c3aed'],['God til venner','#1e3a8a']],
+        'frisør':        [['Hurtig klip','#4338ca'],['Billig klipning','#3730a3'],['Herre frisør','#1e3a8a'],['Dame frisør','#7c3aed']],
+        'barber':        [['Fade og skæg','#1e3a8a'],['Hurtig klip','#4338ca'],['Billig barbering','#3730a3']],
+        'restaurant':    [['Billig frokost','#3730a3'],['God til date','#7c3aed'],['God til venner','#1e3a8a'],['Hurtig mad','#1d4ed8']],
+        'mad':           [['Billig mad','#3730a3'],['Street food','#1d4ed8'],['God til venner','#1e3a8a'],['Hurtig frokost','#4338ca']],
+        'billig mad':    [['Pizza og kebab','#1d4ed8'],['Street food','#3730a3'],['Burger','#4338ca'],['Hurtig og billig','#1e3a8a']],
+        'date':          [['Romantisk café','#7c3aed'],['Fin restaurant','#5e17eb'],['Hyggelig bar','#4338ca'],['Unik oplevelse','#3730a3']],
+        'noget at lave': [['Udendørs aktivitet','#1d4ed8'],['Indendørs sjov','#3730a3'],['Escape room','#5e17eb'],['God til regn','#4338ca']],
       };
 
       const BADGE_CLASS = {
@@ -493,7 +493,7 @@
       let _nwCurrentQ = '';
       let _nwCurrentIntent = '';
 
-      const CAT_COLOR = { 'café':'#5e17eb','bar':'#e65100','date':'#c2185b','billig mad':'#2e7d32','frisør':'#1565c0','noget at lave':'#00838f','aktiviteter':'#00838f' };
+      const CAT_COLOR = { 'café':'#5e17eb','bar':'#3730a3','date':'#7c3aed','billig mad':'#1e3a8a','frisør':'#4338ca','noget at lave':'#1d4ed8','aktiviteter':'#1d4ed8' };
 
       function nwShowIntents(q) {
         const key = Object.keys(INTENT_MAP).find(k => q.toLowerCase().includes(k)) || q.toLowerCase();
