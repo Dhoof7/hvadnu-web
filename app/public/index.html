@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/main.css?v=2" />
   </head>
   <body>
     <nav class="navbar">
@@ -67,29 +67,56 @@
       <!-- HERO RIGHT PANEL -->
       <div class="hero-right-panel">
         <div class="nearest-widget">
-          <div class="nearest-header">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Det nærmeste
+
+          <!-- Step 1: Search & Categories -->
+          <div class="nw-step" id="nwStep1">
+            <div class="nw-s1-top">
+              <p class="nw-brand-title">Det nærmeste</p>
+              <p class="nw-brand-sub">Stop med at tænke. Start med at opleve.</p>
+            </div>
+            <div class="nw-search-wrap">
+              <svg class="nw-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="nearestInput" class="nw-input" placeholder="Hvad vil du lave?">
+            </div>
+            <div class="nw-pills" id="nwCategories">
+              <button class="nw-pill" data-q="café"     style="background:#5e17eb">Café</button>
+              <button class="nw-pill" data-q="bar"      style="background:#e65100">Bar</button>
+              <button class="nw-pill" data-q="date"     style="background:#c2185b">Date</button>
+              <button class="nw-pill" data-q="billig mad" style="background:#2e7d32">Billig mad</button>
+              <button class="nw-pill" data-q="frisør"   style="background:#1565c0">Frisør</button>
+              <button class="nw-pill" data-q="noget at lave" style="background:#00838f">Aktiviteter</button>
+            </div>
+            <div class="nw-s1-footer">
+              <select class="nw-city-sel" id="nearestCityChips">
+                <option value="">Alle byer</option>
+              </select>
+              <button id="nearestSearchBtn" class="nw-find-btn">Find noget →</button>
+            </div>
           </div>
-          <select class="nearest-city-select" id="nearestCityChips">
-            <option value="">Alle byer</option>
-          </select>
-          <div class="nearest-search-row">
-            <input type="text" id="nearestInput" class="nearest-input" placeholder="Hvad vil du lave?">
-            <button id="nearestSearchBtn" class="nearest-btn" aria-label="Søg">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+
+          <!-- Step 2: Intent Selection -->
+          <div class="nw-step" id="nwStep2" style="display:none">
+            <button class="nw-back" id="nwBack2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              Tilbage
             </button>
+            <div class="nw-s2-card" id="nwS2Card">
+              <p class="nw-s2-sub">Søger efter</p>
+              <p class="nw-s2-cat" id="nwCatLabel">Café</p>
+            </div>
+            <div class="nw-intent-grid" id="nwIntentGrid"></div>
           </div>
-          <div class="nearest-quick-chips" id="nearestQuickChips">
-            <button class="nearest-chip" data-q="café">Café</button>
-            <button class="nearest-chip" data-q="bar">Bar</button>
-            <button class="nearest-chip" data-q="frisør">Frisør</button>
-            <button class="nearest-chip" data-q="date">Date</button>
-            <button class="nearest-chip" data-q="billig mad">Billig mad</button>
-            <button class="nearest-chip" data-q="noget at lave">Noget at lave</button>
+
+          <!-- Step 3: Results -->
+          <div class="nw-step" id="nwStep3" style="display:none">
+            <button class="nw-back" id="nwBack3">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              Tilbage
+            </button>
+            <p class="nw-results-heading">Bedste matches til dig</p>
+            <div id="nearestResults" class="nw-results-list"></div>
           </div>
-          <div class="nearest-intent-chips" id="nearestIntentChips"></div>
-          <div id="nearestResults" class="nearest-results"></div>
+
         </div>
       </div>
 
@@ -402,6 +429,21 @@
     <script>
       let selectedHeroCity = '';
       let selectedNearestCity = '';
+      let _nwFromSearch = false; // track if step3 came from direct search (back goes to step1)
+
+      // ── Nearest widget step navigation ──
+      function nwShowStep(n) {
+        [1,2,3].forEach(i => {
+          const el = document.getElementById('nwStep' + i);
+          if (el) el.style.display = i === n ? '' : 'none';
+        });
+      }
+
+      document.getElementById('nwBack2').addEventListener('click', () => nwShowStep(1));
+      document.getElementById('nwBack3').addEventListener('click', () => {
+        if (_nwFromSearch) nwShowStep(1);
+        else nwShowStep(2);
+      });
 
       // Load nearest city dropdown
       (async () => {
@@ -413,46 +455,30 @@
             opt.value = c.value; opt.textContent = c.label;
             sel.appendChild(opt);
           });
+          sel.addEventListener('change', () => { selectedNearestCity = sel.value; });
 
-          function selectNearestCity(value) {
-            selectedNearestCity = value;
-            sel.value = value;
-          }
-
-          sel.addEventListener('change', () => {
-            selectedNearestCity = sel.value;
-            const q = document.getElementById('nearestInput').value.trim();
-            showNearestForCity(selectedNearestCity, q);
-          });
-
-          // Auto-load from cache, else show random sponsors
           try {
             const cached = JSON.parse(localStorage.getItem('nearbyCity_v2') || 'null');
             if (cached && cached.city) {
               const nc = cached.city.toLowerCase();
               const match = cities.find(c => nc.includes(c.value) || c.value.includes(nc));
-              if (match) {
-                selectNearestCity(match.value);
-                showNearestForCity(match.value, '');
-                return;
-              }
+              if (match) { selectedNearestCity = match.value; sel.value = match.value; }
             }
           } catch {}
-          showRandomSponsors();
         } catch {}
       })();
 
       const INTENT_MAP = {
-        'café': ['Hyggelig café','Billig café','God til arbejde','God til venner','God til date'],
-        'kaffe': ['Hyggelig café','Billig café','God til arbejde'],
-        'bar': ['God stemning','Billig bar','Live musik','God til date','God til venner'],
-        'frisør': ['Hurtig klip','Billig klipning','Herre frisør','Dame frisør'],
-        'barber': ['Fade og skæg','Hurtig klip','Billig barbering'],
-        'restaurant': ['Billig frokost','God til date','God til venner','Hurtig mad'],
-        'mad': ['Billig mad','Street food','God til venner','Hurtig frokost'],
-        'billig mad': ['Pizza og kebab','Street food','Burger','Hurtig og billig'],
-        'date': ['Romantisk café','Fin restaurant','Hyggelig bar','Unik oplevelse'],
-        'noget at lave': ['Udendørs aktivitet','Indendørs sjov','Escape room','God til regn'],
+        'café':          [['Hyggelig café','#5e17eb'],['Billig café','#1a7a4a'],['God til arbejde','#00695c'],['God til venner','#1565c0'],['God til date','#c2185b'],['Hurtig kop','#e64a19']],
+        'kaffe':         [['Hyggelig café','#5e17eb'],['Billig café','#1a7a4a'],['God til arbejde','#00695c']],
+        'bar':           [['God stemning','#1565c0'],['Billig bar','#1a7a4a'],['Live musik','#c2185b'],['God til date','#8e24aa'],['God til venner','#e64a19']],
+        'frisør':        [['Hurtig klip','#e64a19'],['Billig klipning','#1a7a4a'],['Herre frisør','#1565c0'],['Dame frisør','#c2185b']],
+        'barber':        [['Fade og skæg','#1565c0'],['Hurtig klip','#e64a19'],['Billig barbering','#1a7a4a']],
+        'restaurant':    [['Billig frokost','#1a7a4a'],['God til date','#c2185b'],['God til venner','#1565c0'],['Hurtig mad','#e64a19']],
+        'mad':           [['Billig mad','#1a7a4a'],['Street food','#e64a19'],['God til venner','#1565c0'],['Hurtig frokost','#c2185b']],
+        'billig mad':    [['Pizza og kebab','#e64a19'],['Street food','#1a7a4a'],['Burger','#c2185b'],['Hurtig og billig','#00695c']],
+        'date':          [['Romantisk café','#c2185b'],['Fin restaurant','#8e24aa'],['Hyggelig bar','#1565c0'],['Unik oplevelse','#5e17eb']],
+        'noget at lave': [['Udendørs aktivitet','#00838f'],['Indendørs sjov','#1565c0'],['Escape room','#5e17eb'],['God til regn','#1a7a4a']],
       };
 
       const BADGE_CLASS = {
@@ -464,100 +490,86 @@
         'God til arbejde': 'smart-badge--work',
       };
 
-      let activeQuickChip = null;
-      let activeIntent = null;
+      let _nwCurrentQ = '';
+      let _nwCurrentIntent = '';
 
-      function showDefaultState() {
-        document.getElementById('nearestResults').innerHTML =
-          '<p class="nearest-hint">Vælg en kategori eller søg på hvad du leder efter</p>';
+      const CAT_COLOR = { 'café':'#5e17eb','bar':'#e65100','date':'#c2185b','billig mad':'#2e7d32','frisør':'#1565c0','noget at lave':'#00838f','aktiviteter':'#00838f' };
+
+      function nwShowIntents(q) {
+        const key = Object.keys(INTENT_MAP).find(k => q.toLowerCase().includes(k)) || q.toLowerCase();
+        const intents = INTENT_MAP[key] || [];
+        const grid = document.getElementById('nwIntentGrid');
+        const label = q.charAt(0).toUpperCase() + q.slice(1);
+        document.getElementById('nwCatLabel').textContent = label;
+        const color = CAT_COLOR[q.toLowerCase()] || '#5e17eb';
+        document.getElementById('nwS2Card').style.borderColor = color + '66';
+
+        grid.innerHTML = intents.length
+          ? intents.map(([lbl, clr]) => `
+              <button class="nw-icard" onclick="nwSelectIntent('${lbl}','${q}','${clr}',this)">
+                <span class="nw-icard-icon" style="background:${clr}"></span>
+                <span class="nw-icard-label">${lbl}</span>
+              </button>`).join('')
+          : '<p class="nw-hint">Ingen underkategorier</p>';
       }
 
-      async function showRandomSponsors() {
-        const resultsEl = document.getElementById('nearestResults');
-        try {
-          const sponsors = await fetch('/api/sponsors').then(r => r.json());
-          const shuffled = sponsors.filter(s => s.active && s.image).sort(() => Math.random() - 0.5).slice(0, 3);
-          if (shuffled.length) {
-            renderSmartResults(shuffled.map(s => ({ name: s.name, type: s.categories[0], address: s.address, url: s.url, image: s.image, phone: s.phone || null, sponsored: true, reasons: [], badge: 'Anbefalet' })));
-          } else {
-            showDefaultState();
-          }
-        } catch {
-          showDefaultState();
-        }
+      function nwSelectIntent(intent, q, color, btn) {
+        _nwCurrentIntent = intent;
+        _nwFromSearch = false;
+        document.querySelectorAll('.nw-intent-card').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        nwShowStep(3);
+        nwDoSearch(q, intent);
       }
 
-      async function doSmartSearch(q, intent) {
-        const resultsEl = document.getElementById('nearestResults');
-        resultsEl.innerHTML = '<p class="nearest-hint">Finder de bedste steder...</p>';
+      async function nwDoSearch(q, intent) {
+        const el = document.getElementById('nearestResults');
+        el.innerHTML = '<p class="nw-hint nw-loading">Finder de bedste steder...</p>';
         try {
           const url = `/api/smart-search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(selectedNearestCity)}&intent=${encodeURIComponent(intent || '')}`;
           const data = await fetch(url).then(r => r.json());
           const results = Array.isArray(data) ? data : [];
           if (results.length) {
-            renderSmartResults(results, q);
+            nwRenderResults(results);
           } else {
-            // Fallback: regular search
             const fallback = await fetch(`/api/search?q=${encodeURIComponent(q)}&city=${encodeURIComponent(selectedNearestCity)}`).then(r => r.json()).catch(() => []);
-            renderSmartResults(fallback.map(r => ({ ...r, reasons: [], badge: null })), q);
+            nwRenderResults(fallback.map(r => ({ ...r, reasons: [], badge: null })));
           }
         } catch {
-          resultsEl.innerHTML = '<p class="nearest-hint">Noget gik galt. Prøv igen.</p>';
+          el.innerHTML = '<p class="nw-hint">Noget gik galt. Prøv igen.</p>';
         }
       }
 
-      async function showNearestForCity(city, q) {
-        if (q) {
-          await doSmartSearch(q, activeIntent || '');
-        } else {
-          showRandomSponsors();
-        }
-      }
-
-      function showIntentChips(q) {
-        const container = document.getElementById('nearestIntentChips');
-        const key = Object.keys(INTENT_MAP).find(k => q.toLowerCase().includes(k));
-        const intents = key ? INTENT_MAP[key] : [];
-        if (!intents.length) { container.innerHTML = ''; return; }
-        container.innerHTML = intents.map(i =>
-          `<button class="nearest-intent-chip${activeIntent === i ? ' active' : ''}" onclick="selectIntent('${i}', '${q}')">${i}</button>`
-        ).join('');
-      }
-
-      function selectIntent(intent, q) {
-        activeIntent = intent;
-        showIntentChips(q);
-        doSmartSearch(q, intent);
-      }
-
-      function renderSmartResults(results, q) {
-        const resultsEl = document.getElementById('nearestResults');
+      function nwRenderResults(results) {
+        const el = document.getElementById('nearestResults');
         if (!results.length) {
-          resultsEl.innerHTML = `<p class="nearest-hint">${q ? 'Ingen resultater for "' + q + '"' : 'Ingen anbefalede steder endnu'}</p>`;
+          el.innerHTML = '<p class="nw-hint">Ingen resultater — prøv et andet søgeord</p>';
           return;
         }
         window._nearestData = results;
-        resultsEl.innerHTML = results.map((r, i) => {
+        el.innerHTML = results.map((r, i) => {
           const badgeClass = BADGE_CLASS[r.badge] || 'smart-badge--best';
           const mapsUrl = r.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.name + ' ' + r.address)}` : null;
+          const stars = r.rating ? '★'.repeat(Math.round(r.rating)) + '☆'.repeat(5 - Math.round(r.rating)) : '';
           return `
-          <div class="smart-card${r.sponsored ? ' smart-card--sponsored' : ''}">
-            <div class="smart-card-top-row">
-              ${r.image ? `<img class="smart-card-img" src="${r.image}" alt="${r.name}" loading="lazy">` : '<div class="smart-card-img smart-card-img--placeholder"></div>'}
-              <div class="smart-card-meta">
-                <div class="smart-card-name-row">
-                  <span class="smart-card-name">${r.name}</span>
+          <div class="nw-result-card">
+            <div class="nw-result-top">
+              ${r.image ? `<img class="nw-result-img" src="${r.image}" alt="${r.name}" loading="lazy">` : '<div class="nw-result-img nw-result-img--placeholder"></div>'}
+              <div class="nw-result-info">
+                <div class="nw-result-name-row">
+                  <span class="nw-result-name">${r.name}</span>
                   ${r.badge ? `<span class="smart-badge ${badgeClass}">${r.badge}</span>` : ''}
                 </div>
-                <span class="smart-card-type">${r.type || ''}</span>
-                ${r.address ? `<span class="smart-card-addr">${r.address}</span>` : ''}
+                <span class="nw-result-type">${r.type || ''}</span>
+                ${stars ? `<span class="nw-result-stars">${stars}</span>` : ''}
+                ${r.address ? `<span class="nw-result-addr">${r.address}</span>` : ''}
               </div>
             </div>
-            ${r.reasons && r.reasons.length ? `<div class="smart-card-reasons">${r.reasons.map(reason => `<span class="smart-reason">${reason}</span>`).join('')}</div>` : ''}
-            <div class="smart-card-actions">
-              <button class="smart-btn-plan" onclick="makePlanFrom(window._nearestData[${i}])">Lav en plan →</button>
-              ${mapsUrl ? `<a class="smart-btn-maps" href="${mapsUrl}" target="_blank" rel="noopener">Maps</a>` : ''}
-              ${r.url ? `<a class="smart-btn-maps" href="${r.url}" target="_blank" rel="noopener">Web</a>` : ''}
+            ${r.reasons && r.reasons.length ? `<p class="nw-result-desc">${r.reasons[0]}</p>` : ''}
+            <div class="nw-result-actions">
+              <button class="nw-btn-plan" onclick="makePlanFrom(window._nearestData[${i}])">Se plan →</button>
+              ${mapsUrl ? `<a class="nw-btn-maps" href="${mapsUrl}" target="_blank" rel="noopener">Maps</a>` : ''}
+              ${r.url ? `<a class="nw-btn-maps" href="${r.url}" target="_blank" rel="noopener">Web</a>` : ''}
             </div>
           </div>`;
         }).join('');
@@ -568,38 +580,31 @@
         window.location.href = '/quiz';
       }
 
-      // Quick chips — event delegation
-      document.getElementById('nearestQuickChips').addEventListener('click', e => {
-        const btn = e.target.closest('.nearest-chip');
+      // Category pill click
+      document.getElementById('nwCategories').addEventListener('click', e => {
+        const btn = e.target.closest('.nw-pill');
         if (!btn) return;
-        const q = btn.dataset.q;
-        document.getElementById('nearestInput').value = q;
-        document.querySelectorAll('.nearest-chip').forEach(b => b.classList.remove('active'));
+        _nwCurrentQ = btn.dataset.q;
+        _nwCurrentIntent = '';
+        document.querySelectorAll('.nw-pill').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        activeQuickChip = q;
-        activeIntent = null;
-        showIntentChips(q);
-        doSmartSearch(q, '');
+        nwShowIntents(_nwCurrentQ);
+        nwShowStep(2);
       });
 
-      document.getElementById('nearestSearchBtn').addEventListener('click', () => {
+      // Direct search (button or Enter)
+      function nwTriggerSearch() {
         const q = document.getElementById('nearestInput').value.trim();
-        if (q) { activeIntent = null; showIntentChips(q); doSmartSearch(q, ''); }
-      });
+        if (!q) return;
+        _nwCurrentQ = q;
+        _nwCurrentIntent = '';
+        _nwFromSearch = true;
+        nwShowStep(3);
+        nwDoSearch(q, '');
+      }
+      document.getElementById('nearestSearchBtn').addEventListener('click', nwTriggerSearch);
       document.getElementById('nearestInput').addEventListener('keydown', e => {
-        if (e.key === 'Enter') {
-          const q = e.target.value.trim();
-          if (q) { activeIntent = null; showIntentChips(q); doSmartSearch(q, ''); }
-        }
-      });
-      document.getElementById('nearestInput').addEventListener('input', e => {
-        if (!e.target.value.trim()) {
-          document.getElementById('nearestIntentChips').innerHTML = '';
-          document.querySelectorAll('.nearest-chip').forEach(b => b.classList.remove('active'));
-          activeQuickChip = null; activeIntent = null;
-          if (selectedNearestCity) showNearestForCity(selectedNearestCity, '');
-          else showRandomSponsors();
-        }
+        if (e.key === 'Enter') nwTriggerSearch();
       });
 
       function openPlaceModal(r) {
