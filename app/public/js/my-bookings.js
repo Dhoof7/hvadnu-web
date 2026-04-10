@@ -210,7 +210,6 @@ function renderListings(listings) {
       <div class="dash-item-actions">
         <a href="/listing?id=${l.id}" class="dash-action-btn">Se opslag</a>
         <button class="dash-action-btn" onclick="openEditModal(${JSON.stringify(l).replace(/"/g,'&quot;')})">Rediger</button>
-        ${l.active ? `<button class="dash-action-btn danger" onclick="deactivateListing('${l.id}')">Deaktiver</button>` : ''}
         <button class="dash-action-btn danger" onclick="deleteListing('${l.id}')">Slet</button>
       </div>
     </div>`).join('');
