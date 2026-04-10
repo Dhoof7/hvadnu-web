@@ -15,7 +15,11 @@ function updateProgress() {
 }
 
 function prevStep() {
-  if (currentStep > 1) showStep(currentStep - 1);
+  if (currentStep > 1) {
+    let prev = currentStep - 1;
+    if (prev === 5 && preferences.days > 1) prev = 4;
+    showStep(prev);
+  }
 }
 
 function showStep(n) {
@@ -43,7 +47,9 @@ async function submitQuiz() {
 
 function nextStep() {
   if (currentStep < TOTAL_STEPS) {
-    showStep(currentStep + 1);
+    let next = currentStep + 1;
+    if (next === 5 && preferences.days > 1) next = 6;
+    showStep(next);
   } else {
     submitQuiz();
   }
@@ -57,7 +63,7 @@ document.querySelectorAll('.option-card').forEach(card => {
     const value = card.dataset.value;
     step.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
-    preferences[key] = value;
+    preferences[key] = key === 'days' ? parseInt(value) : value;
     setTimeout(nextStep, 380);
   });
 });

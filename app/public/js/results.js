@@ -47,11 +47,12 @@ function showError(msg) {
 
 function buildPreferencesSummary(p) {
   const who = { couple: 'date', friends: 'venner', family: 'familie' };
-  const time = { '1h': '1 time', '2-3h': '2–3 timer', 'fullday': 'hel dag', 'weekend': 'weekendtur', 'vacation': 'ferie' };
+  const time = { '1h': '1 time', '2-3h': '2–3 timer', 'fullday': 'hel dag' };
   const parts = [];
   if (p.who) parts.push(who[p.who] || p.who);
   if (p.mood) parts.push(p.mood);
-  if (p.time) parts.push(time[p.time] || p.time);
+  if (p.days > 1) parts.push(`${p.days} dage`);
+  else if (p.time) parts.push(time[p.time] || p.time);
   if (p.city) parts.push(p.city);
   return parts.join(' · ');
 }

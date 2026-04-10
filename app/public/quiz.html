@@ -87,8 +87,23 @@
         </div>
       </div>
 
-      <!-- STEP 4: Time -->
-      <div class="quiz-step" data-step="4" data-key="time">
+      <!-- STEP 4: Days -->
+      <div class="quiz-step" data-step="4" data-key="days">
+        <p class="quiz-eyebrow">PLANLÆG TUREN</p>
+        <h2 class="quiz-question">Hvor mange dage?</h2>
+        <div class="option-grid days-grid">
+          <button class="option-card day-num-card" data-value="1"><span class="day-big-num">1</span><span class="option-sub">dag</span></button>
+          <button class="option-card day-num-card" data-value="2"><span class="day-big-num">2</span><span class="option-sub">dage</span></button>
+          <button class="option-card day-num-card" data-value="3"><span class="day-big-num">3</span><span class="option-sub">dage</span></button>
+          <button class="option-card day-num-card" data-value="4"><span class="day-big-num">4</span><span class="option-sub">dage</span></button>
+          <button class="option-card day-num-card" data-value="5"><span class="day-big-num">5</span><span class="option-sub">dage</span></button>
+          <button class="option-card day-num-card" data-value="6"><span class="day-big-num">6</span><span class="option-sub">dage</span></button>
+          <button class="option-card day-num-card" data-value="7"><span class="day-big-num">7</span><span class="option-sub">dage</span></button>
+        </div>
+      </div>
+
+      <!-- STEP 5: Time (only shown for 1 day) -->
+      <div class="quiz-step" data-step="5" data-key="time">
         <p class="quiz-eyebrow" data-i18n="quiz.time.eyebrow">DIN TIDSPLAN</p>
         <h2 class="quiz-question" data-i18n="quiz.time.question">Hvor meget tid har I?</h2>
         <div class="option-grid cols-3">
@@ -104,19 +119,11 @@
             <span class="option-label" data-i18n="quiz.fullday.label">Hel dag</span>
             <span class="option-sub" data-i18n="quiz.fullday.sub">6+ timer, gør det til noget</span>
           </button>
-          <button class="option-card" data-value="weekend">
-            <span class="option-label">Weekendtur</span>
-            <span class="option-sub">2 dage</span>
-          </button>
-          <button class="option-card" data-value="vacation">
-            <span class="option-label">Ferie</span>
-            <span class="option-sub">3–7 dage</span>
-          </button>
         </div>
       </div>
 
-      <!-- STEP 5: Setting -->
-      <div class="quiz-step" data-step="5" data-key="setting">
+      <!-- STEP 6: Setting -->
+      <div class="quiz-step" data-step="6" data-key="setting">
         <p class="quiz-eyebrow" data-i18n="quiz.setting.eyebrow">STEMNINGEN</p>
         <h2 class="quiz-question" data-i18n="quiz.setting.question">Indendørs eller udendørs?</h2>
         <div class="option-grid cols-3">
@@ -135,8 +142,8 @@
         </div>
       </div>
 
-      <!-- STEP 6: Mood -->
-      <div class="quiz-step" data-step="6" data-key="mood">
+      <!-- STEP 7: Mood -->
+      <div class="quiz-step" data-step="7" data-key="mood">
         <p class="quiz-eyebrow" data-i18n="quiz.mood.eyebrow">SIDSTE SPØRGSMÅL</p>
         <h2 class="quiz-question" data-i18n="quiz.mood.question">Hvad er stemningen?</h2>
         <div class="option-grid cols-5">

@@ -95,20 +95,16 @@ const TIME_LABELS = {
   '1h': 'about 1 hour',
   '2-3h': '2 to 3 hours',
   'fullday': 'a full day, 6+ hours',
-  'weekend': 'a 2-day weekend trip',
-  'vacation': 'a 3 to 5 day vacation',
 };
 
-function buildPrompt(who, budget, time, setting, mood, city, lang = 'da') {
+function buildPrompt(who, budget, time, setting, mood, city, lang = 'da', days = 1) {
   const location = city ? `in ${city}, Denmark` : 'in their city';
   const langNote = lang === 'da' ? 'Reply in Danish.' : 'Reply in English.';
-  const isMultiDay = time === 'weekend' || time === 'vacation';
+  const numDays = parseInt(days) || 1;
 
-  if (isMultiDay) {
-    const numDays = time === 'weekend' ? 2 : 4;
-    const totalTimeLabel = time === 'weekend' ? '2 dage' : '4 dage';
-    return `Activity planner. ${langNote} Generate exactly 3 JSON multi-day plans for: ${WHO_LABELS[who] || who}, ${BUDGET_LABELS[budget] || budget}, ${TIME_LABELS[time]}, ${setting}, mood: ${mood}, ${location}. Each plan has a "days" array with exactly ${numDays} day objects, each day has 2-3 steps. Return ONLY a raw JSON array:
-[{"id":1,"title":"short title","tagline":"one sentence","emoji":"emoji","why":"one sentence","totalTime":"${totalTimeLabel}","totalCost":"X-Xkr","goodFor":["l1","l2"],"days":[{"day":1,"label":"Dag 1 – Theme","steps":[{"order":1,"name":"place","type":"Café/Restaurant/Bar/Museum/Park/etc","activity":"one sentence","duration":"X min","estimatedCost":"Xkr","mapSearch":"query"}]},{"day":2,"label":"Dag 2 – Theme","steps":[...]}]}]`;
+  if (numDays > 1) {
+    return `Activity planner. ${langNote} Generate exactly 3 JSON multi-day plans for: ${WHO_LABELS[who] || who}, ${BUDGET_LABELS[budget] || budget}, a ${numDays}-day trip, ${setting}, mood: ${mood}, ${location}. Each plan has a "days" array with exactly ${numDays} day objects, each day has 2-3 steps. Return ONLY a raw JSON array:
+[{"id":1,"title":"short title","tagline":"one sentence","emoji":"emoji","why":"one sentence","totalTime":"${numDays} dage","totalCost":"X-Xkr","goodFor":["l1","l2"],"days":[{"day":1,"label":"Dag 1 – Theme","steps":[{"order":1,"name":"place","type":"Café/Restaurant/Bar/Museum/Park/etc","activity":"one sentence","duration":"X min","estimatedCost":"Xkr","mapSearch":"query"}]},{"day":2,"label":"Dag 2 – Theme","steps":[...]}]}]`;
   }
 
   return `Activity planner. ${langNote} Generate exactly 3 JSON plans for: ${WHO_LABELS[who] || who}, ${BUDGET_LABELS[budget] || budget}, ${TIME_LABELS[time] || time}, ${setting}, mood: ${mood}, ${location}. 3 distinct plans, each exactly 2 steps. Return ONLY a raw JSON array:
@@ -189,13 +185,14 @@ app.post('/api/recommend-free', aiLimiter, async (req, res) => {
 });
 
 app.post('/api/recommend', aiLimiter, async (req, res) => {
-  const { who, budget, time, setting, mood, city, lang } = req.body;
-  if (!who || !budget || !time || !setting || !mood) {
+  const { who, budget, time, setting, mood, city, lang, days } = req.body;
+  const numDays = parseInt(days) || 1;
+  const isMultiDay = numDays > 1;
+  if (!who || !budget || (!time && !isMultiDay) || !setting || !mood) {
     return res.status(400).json({ error: 'Missing preferences' });
   }
-  const isMultiDay = time === 'weekend' || time === 'vacation';
   res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive' });
-  await streamPlans(res, buildPrompt(who, budget, time, setting, mood, city, lang), city, isMultiDay);
+  await streamPlans(res, buildPrompt(who, budget, time, setting, mood, city, lang, numDays), city, isMultiDay);
 });
 
 app.get('/api/sponsors', (_req, res) => {
