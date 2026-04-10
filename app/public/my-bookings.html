@@ -113,9 +113,8 @@
           <div class="cf-row">
             <div class="cf-field">
               <label class="cf-label">Billeder</label>
-              <input class="cf-input" id="cfImageFile" type="file" accept="image/*" multiple style="padding:8px 12px;">
-              <p style="font-size:12px;color:var(--muted);margin:4px 0 6px;">Hold Ctrl/Cmd nede for at vælge flere billeder</p>
-              <input class="cf-input" id="cfImage" type="url" placeholder="Eller indsæt billede URL" maxlength="500">
+              <div id="cfImageList" class="img-slot-list"></div>
+              <button type="button" class="dash-action-btn" onclick="addImageSlot('cfImageList')" style="margin-top:8px;">+ Tilføj billede</button>
             </div>
           </div>
 
@@ -182,9 +181,8 @@
         <div class="cf-row"><div class="cf-field">
           <label class="cf-label">Billeder</label>
           <div id="eExistingImages" style="margin-bottom:10px;"></div>
-          <input class="cf-input" id="eImageFile" type="file" accept="image/*" multiple style="padding:8px 12px;">
-          <p style="font-size:12px;color:var(--muted);margin:4px 0 6px;">Hold Ctrl/Cmd nede for at vælge flere billeder</p>
-          <input class="cf-input" id="eImageInput" type="url" placeholder="Eller indsæt billede URL" maxlength="500">
+          <div id="eImageList" class="img-slot-list"></div>
+          <button type="button" class="dash-action-btn" onclick="addImageSlot('eImageList')" style="margin-top:8px;">+ Tilføj billede</button>
         </div></div>
         <div class="cf-row"><div class="cf-field">
           <label class="cf-label">Faciliteter</label>

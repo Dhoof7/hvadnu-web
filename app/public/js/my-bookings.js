@@ -297,6 +297,33 @@ function closeEditModal() {
 }
 window.closeEditModal = closeEditModal;
 
+// ===== Dynamic image slots =====
+function addImageSlot(listId) {
+  const list = document.getElementById(listId);
+  const idx  = list.children.length;
+  const slot = document.createElement('div');
+  slot.className = 'img-slot';
+  slot.innerHTML = `
+    <div class="img-slot-row">
+      <input type="file" accept="image/*" class="cf-input img-slot-file" style="flex:1;padding:8px 12px;" data-idx="${idx}">
+      <span style="padding:0 8px;color:var(--muted);font-size:13px;">eller</span>
+      <input type="url" class="cf-input img-slot-url" placeholder="Billede URL" style="flex:1;" data-idx="${idx}">
+      <button type="button" onclick="this.closest('.img-slot').remove()" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);padding:0 6px;flex-shrink:0;">&times;</button>
+    </div>
+    <div class="img-slot-preview" data-idx="${idx}"></div>
+  `;
+  // Show preview on file select
+  slot.querySelector('.img-slot-file').addEventListener('change', function() {
+    const preview = slot.querySelector('.img-slot-preview');
+    if (this.files[0]) {
+      const url = URL.createObjectURL(this.files[0]);
+      preview.innerHTML = `<img src="${url}" style="height:70px;border-radius:8px;margin-top:6px;object-fit:cover;">`;
+    }
+  });
+  list.appendChild(slot);
+}
+window.addImageSlot = addImageSlot;
+
 async function uploadImageFile(file, session) {
   if (!session || !file) return null;
   const ext  = file.name.split('.').pop();
@@ -306,16 +333,19 @@ async function uploadImageFile(file, session) {
   return _sb.storage.from('listings').getPublicUrl(data.path).data.publicUrl;
 }
 
-// Multi-image manager: returns array of URLs (upload files + keep existing URLs)
-async function collectImages(fileInputId, urlInputId, session) {
+// Multi-image manager: reads from dynamic slot list
+async function collectImages(listId, session) {
   const urls = [];
-  const urlVal = document.getElementById(urlInputId)?.value.trim();
-  if (urlVal) urls.push(urlVal);
-  const fileInput = document.getElementById(fileInputId);
-  if (fileInput?.files) {
-    for (const file of fileInput.files) {
-      const url = await uploadImageFile(file, session);
+  const list = document.getElementById(listId);
+  if (!list) return urls;
+  for (const slot of list.querySelectorAll('.img-slot')) {
+    const fileInput = slot.querySelector('.img-slot-file');
+    const urlInput  = slot.querySelector('.img-slot-url');
+    if (fileInput?.files[0]) {
+      const url = await uploadImageFile(fileInput.files[0], session);
       if (url) urls.push(url);
+    } else if (urlInput?.value.trim()) {
+      urls.push(urlInput.value.trim());
     }
   }
   return urls;
@@ -339,7 +369,7 @@ async function saveEdit() {
     const { data: { session } } = await _sb.auth.getSession();
 
     let images;
-    try { images = await collectImages('eImageFile', 'eImageInput', session); }
+    try { images = await collectImages('eImageList', session); }
     catch (e) { msg.textContent = 'Billede upload fejlede: ' + e.message; msg.className = 'lst-book-msg error'; btn.disabled = false; btn.textContent = 'Gem ændringer'; return; }
 
     // Preserve existing images if no new ones provided
@@ -402,7 +432,7 @@ async function createListing() {
     if (!session) { openAuthModal('login'); btn.disabled = false; btn.textContent = 'Opret opslag'; return; }
 
     let images;
-    try { images = await collectImages('cfImageFile', 'cfImage', session); }
+    try { images = await collectImages('cfImageList', session); }
     catch (e) { msg.textContent = 'Billede upload fejlede: ' + e.message; msg.className = 'lst-book-msg error'; btn.disabled = false; btn.textContent = 'Opret opslag'; return; }
 
     const amenities = [...document.querySelectorAll('.cf-amenities input:checked')].map(i => i.value);
@@ -432,9 +462,9 @@ async function createListing() {
     msg.className = 'lst-book-msg success';
     btn.disabled = false; btn.textContent = 'Opret opslag';
 
-    ['cfTitle','cfCity','cfAddress','cfDesc','cfPrice','cfImage'].forEach(id => { document.getElementById(id).value = ''; });
+    ['cfTitle','cfCity','cfAddress','cfDesc','cfPrice'].forEach(id => { document.getElementById(id).value = ''; });
     document.getElementById('cfMaxGuests').value = '2';
-    document.getElementById('cfImageFile').value = '';
+    document.getElementById('cfImageList').innerHTML = '';
     document.querySelectorAll('.cf-amenities input').forEach(i => { i.checked = false; });
 
     const lRes = await fetch('/api/my-listings', { headers: { Authorization: `Bearer ${session.access_token}` } });
