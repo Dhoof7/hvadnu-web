@@ -47,7 +47,7 @@ function showError(msg) {
 
 function buildPreferencesSummary(p) {
   const who = { couple: 'date', friends: 'venner', family: 'familie' };
-  const time = { '1h': '1 time', '2-3h': '2–3 timer', 'fullday': 'hel dag' };
+  const time = { '1h': '1 time', '2-3h': '2–3 timer', 'fullday': 'hel dag', 'weekend': 'weekendtur', 'vacation': 'ferie' };
   const parts = [];
   if (p.who) parts.push(who[p.who] || p.who);
   if (p.mood) parts.push(p.mood);
@@ -79,6 +79,7 @@ function renderCard(plan, index) {
             <span class="stat-label">Pris</span>
             <span class="stat-value">${da(plan.totalCost)}</span>
           </div>
+          ${plan.days ? `<div class="stat-item"><span class="stat-label">Dage</span><span class="stat-value">${plan.days.length}</span></div>` : ''}
         </div>
 
         <ul class="highlights">${highlights}</ul>

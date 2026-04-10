@@ -33,13 +33,14 @@ document.getElementById('planTitle').textContent = stripEmoji(plan.title);
 document.getElementById('planTagline').textContent = stripEmoji(plan.tagline);
 
 // Stats
+const allSteps = plan.days ? plan.days.flatMap(d => d.steps) : (plan.steps || []);
 const statsEl = document.getElementById('planStats');
 statsEl.innerHTML = `
   <div class="plan-stat">${da(plan.totalCost)}</div>
   <span class="plan-stat-sep">|</span>
   <div class="plan-stat">${da(plan.totalTime)}</div>
   <span class="plan-stat-sep">|</span>
-  <div class="plan-stat">${plan.steps ? plan.steps.length : 0} stop</div>
+  <div class="plan-stat">${plan.days ? `${plan.days.length} dage` : `${allSteps.length} stop`}</div>
 `;
 
 // Why section
@@ -69,40 +70,48 @@ function renderPlaceCard(y) {
   `;
 }
 
+function renderStep(step) {
+  const mapsUrl = buildMapsUrl(step.mapSearch, preferences.city);
+  return `
+    <div class="timeline-step">
+      <div class="step-num-circle">${step.order}</div>
+      <div class="step-content">
+        <div class="step-header">
+          <span class="step-name">${stripEmoji(step.name)}</span>
+          <span class="step-type-badge">${stripEmoji(step.type)}</span>
+        </div>
+        <p class="step-activity">${stripEmoji(step.activity)}</p>
+        <div class="step-meta">
+          <span>${da(step.duration)}</span>
+          <span>${da(step.estimatedCost)}</span>
+        </div>
+        ${step.tip ? `<div class="step-tip">${stripEmoji(step.tip)}</div>` : ''}
+        <a href="${mapsUrl}" target="_blank" rel="noopener" class="step-map-link">
+          ${t('plan.mapsLink')}
+        </a>
+        ${renderPlaceCard(step.yelpPlace)}
+      </div>
+    </div>
+  `;
+}
+
 // Timeline
 const timelineEl = document.getElementById('planTimeline');
-if (plan.steps && plan.steps.length) {
-  timelineEl.innerHTML = plan.steps.map(step => {
-    const mapsUrl = buildMapsUrl(step.mapSearch, preferences.city);
-    return `
-      <div class="timeline-step">
-        <div class="step-num-circle">${step.order}</div>
-        <div class="step-content">
-          <div class="step-header">
-            <span class="step-name">${stripEmoji(step.name)}</span>
-            <span class="step-type-badge">${stripEmoji(step.type)}</span>
-          </div>
-          <p class="step-activity">${stripEmoji(step.activity)}</p>
-          <div class="step-meta">
-            <span>${da(step.duration)}</span>
-            <span>${da(step.estimatedCost)}</span>
-          </div>
-          ${step.tip ? `<div class="step-tip">${stripEmoji(step.tip)}</div>` : ''}
-          <a href="${mapsUrl}" target="_blank" rel="noopener" class="step-map-link">
-            ${t('plan.mapsLink')}
-          </a>
-
-          ${renderPlaceCard(step.yelpPlace)}
-        </div>
-      </div>
-    `;
-  }).join('');
+if (plan.days && plan.days.length) {
+  timelineEl.innerHTML = plan.days.map(day => `
+    <div class="timeline-day">
+      <div class="timeline-day-header">${day.label}</div>
+      ${day.steps.map(step => renderStep(step)).join('')}
+    </div>
+  `).join('');
+} else if (plan.steps && plan.steps.length) {
+  timelineEl.innerHTML = plan.steps.map(step => renderStep(step)).join('');
 }
 
 // Map links section
 const mapLinksEl = document.getElementById('mapLinks');
-if (plan.steps && plan.steps.length) {
-  mapLinksEl.innerHTML = plan.steps.map(step => {
+if (allSteps.length) {
+  mapLinksEl.innerHTML = allSteps.map(step => {
     const mapsUrl = buildMapsUrl(step.mapSearch, preferences.city);
     return `
       <a href="${mapsUrl}" target="_blank" rel="noopener" class="map-link-btn">
@@ -140,7 +149,7 @@ function initMap() {
           // Instead, add a single city marker with plan info
           const marker = L.marker([parseFloat(lat), parseFloat(lon)])
             .addTo(map)
-            .bindPopup(`<strong>${plan.title}</strong><br>${plan.steps.length} stop i ${city}`)
+            .bindPopup(`<strong>${plan.title}</strong><br>${allSteps.length} stop i ${city}`)
             .openPopup();
         }
       })

@@ -95,21 +95,32 @@ const TIME_LABELS = {
   '1h': 'about 1 hour',
   '2-3h': '2 to 3 hours',
   'fullday': 'a full day, 6+ hours',
+  'weekend': 'a 2-day weekend trip',
+  'vacation': 'a 3 to 5 day vacation',
 };
 
 function buildPrompt(who, budget, time, setting, mood, city, lang = 'da') {
   const location = city ? `in ${city}, Denmark` : 'in their city';
   const langNote = lang === 'da' ? 'Reply in Danish.' : 'Reply in English.';
+  const isMultiDay = time === 'weekend' || time === 'vacation';
+
+  if (isMultiDay) {
+    const numDays = time === 'weekend' ? 2 : 4;
+    const totalTimeLabel = time === 'weekend' ? '2 dage' : '4 dage';
+    return `Activity planner. ${langNote} Generate exactly 3 JSON multi-day plans for: ${WHO_LABELS[who] || who}, ${BUDGET_LABELS[budget] || budget}, ${TIME_LABELS[time]}, ${setting}, mood: ${mood}, ${location}. Each plan has a "days" array with exactly ${numDays} day objects, each day has 2-3 steps. Return ONLY a raw JSON array:
+[{"id":1,"title":"short title","tagline":"one sentence","emoji":"emoji","why":"one sentence","totalTime":"${totalTimeLabel}","totalCost":"X-Xkr","goodFor":["l1","l2"],"days":[{"day":1,"label":"Dag 1 – Theme","steps":[{"order":1,"name":"place","type":"Café/Restaurant/Bar/Museum/Park/etc","activity":"one sentence","duration":"X min","estimatedCost":"Xkr","mapSearch":"query"}]},{"day":2,"label":"Dag 2 – Theme","steps":[...]}]}]`;
+  }
+
   return `Activity planner. ${langNote} Generate exactly 3 JSON plans for: ${WHO_LABELS[who] || who}, ${BUDGET_LABELS[budget] || budget}, ${TIME_LABELS[time] || time}, ${setting}, mood: ${mood}, ${location}. 3 distinct plans, each exactly 2 steps. Return ONLY a raw JSON array:
 [{"id":1,"title":"short title","tagline":"one sentence","emoji":"emoji","why":"one sentence","totalTime":"X hours","totalCost":"X-Xkr","goodFor":["l1","l2"],"steps":[{"order":1,"name":"place","type":"Café/Restaurant/Bar/Museum/Park/Bowling/Cinema/Escape Room/etc","activity":"one sentence","duration":"X min","estimatedCost":"Xkr","mapSearch":"query"}]}]`;
 }
 
-async function streamPlans(res, prompt, city) {
+async function streamPlans(res, prompt, city, isMultiDay = false) {
   const send = (data) => res.write(`data: ${JSON.stringify(data)}\n\n`);
   try {
     const stream = getAnthropic().messages.stream({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 1200,
+      max_tokens: isMultiDay ? 3000 : 1200,
       messages: [{ role: 'user', content: prompt }],
     });
 
@@ -139,11 +150,14 @@ async function streamPlans(res, prompt, city) {
     send({ status: 'enriching' });
 
     // Place lookup is synchronous (reads from memory) — no async needed
-    plans.forEach(plan =>
-      plan.steps.forEach(step => {
+    plans.forEach(plan => {
+      const allSteps = plan.days
+        ? plan.days.flatMap(d => d.steps)
+        : (plan.steps || []);
+      allSteps.forEach(step => {
         step.yelpPlace = findPlace(step.type, city);
-      })
-    );
+      });
+    });
 
     send({ plans });
   } catch (err) {
@@ -179,8 +193,9 @@ app.post('/api/recommend', aiLimiter, async (req, res) => {
   if (!who || !budget || !time || !setting || !mood) {
     return res.status(400).json({ error: 'Missing preferences' });
   }
+  const isMultiDay = time === 'weekend' || time === 'vacation';
   res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive' });
-  await streamPlans(res, buildPrompt(who, budget, time, setting, mood, city, lang), city);
+  await streamPlans(res, buildPrompt(who, budget, time, setting, mood, city, lang), city, isMultiDay);
 });
 
 app.get('/api/sponsors', (_req, res) => {

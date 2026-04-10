@@ -592,6 +592,10 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 
 /* Timeline */
 .timeline { display: flex; flex-direction: column; gap: 0; }
+.timeline-day { margin-bottom: 8px; }
+.timeline-day-header { display: flex; align-items: center; gap: 12px; font-family: var(--sans); font-size: 13px; font-weight: 700; color: #0d2247; text-transform: uppercase; letter-spacing: .08em; padding: 20px 0 12px; }
+.timeline-day-header::before { content: ''; display: block; width: 28px; height: 2px; background: #e8621a; border-radius: 2px; flex-shrink: 0; }
+.timeline-day + .timeline-day .timeline-day-header { padding-top: 32px; border-top: 1px solid rgba(0,0,0,.08); margin-top: 8px; }
 .timeline-step {
   display: flex; gap: 24px; position: relative;
 }
