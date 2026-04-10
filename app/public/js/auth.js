@@ -183,7 +183,40 @@ function isPasswordStrong(pw) {
   return pw.length >= 8 && /[A-Z]/.test(pw) && /[0-9]/.test(pw) && /[^A-Za-z0-9]/.test(pw);
 }
 
+function showInAppBrowserOverlay() {
+  if (document.getElementById('inAppOverlay')) return;
+  const url = window.location.href;
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  const hint = isIOS
+    ? 'Tryk på <strong>···</strong> eller <strong>del-ikonet</strong> og vælg <strong>"Åbn i Safari"</strong>'
+    : 'Tryk på <strong>···</strong> øverst og vælg <strong>"Åbn i Chrome"</strong>';
+
+  const el = document.createElement('div');
+  el.id = 'inAppOverlay';
+  el.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:99999;display:flex;align-items:flex-end;justify-content:center;padding:0 0 32px;';
+  el.innerHTML = `
+    <div style="background:#fff;border-radius:24px;padding:32px 28px;width:100%;max-width:420px;margin:0 16px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.4);">
+      <div style="font-size:36px;margin-bottom:12px;">🌐</div>
+      <h3 style="font-size:18px;font-weight:700;color:#1a1a28;margin-bottom:8px;">Åbn i din rigtige browser</h3>
+      <p style="font-size:14px;color:#6b6b6b;margin-bottom:20px;line-height:1.5;">Google tillader ikke login i denne in-app browser.<br>${hint}</p>
+      <div style="background:#f5f5f5;border-radius:12px;padding:12px 16px;font-size:13px;color:#555;word-break:break-all;margin-bottom:16px;">${url}</div>
+      <button onclick="navigator.clipboard.writeText('${url.replace(/'/g,"\\'")}').then(()=>{ this.textContent='Kopieret!'; this.style.background='#27ae60'; setTimeout(()=>{ this.textContent='Kopiér link'; this.style.background='#1a1a28'; },2000); })" style="width:100%;padding:14px;background:#1a1a28;color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:10px;">Kopiér link</button>
+      <button onclick="document.getElementById('inAppOverlay').remove()" style="width:100%;padding:12px;background:transparent;color:#aaa;border:none;font-size:14px;cursor:pointer;font-family:inherit;">Luk</button>
+    </div>
+  `;
+  document.body.appendChild(el);
+}
+
 async function signInWithGoogle() {
+  const ua = navigator.userAgent || '';
+  const isInAppBrowser = /FBAN|FBAV|Instagram|Twitter\/|Line\/|Pinterest|Snapchat|TikTok|Musical\.ly|GSA\//.test(ua)
+    || (ua.includes('wv') && /Android/.test(ua));
+
+  if (isInAppBrowser) {
+    showInAppBrowserOverlay();
+    return;
+  }
+
   await _sb.auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo: window.location.href }

@@ -1,11 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
-  <rect width="60" height="60" rx="12" fill="#ffffff"/>
-  <text
-    font-family="Georgia, 'Times New Roman', serif"
-    font-weight="700"
-    text-anchor="middle"
-  >
-    <tspan x="30" y="28" font-size="22" fill="#0d2247" letter-spacing="-0.5">hvad</tspan>
-    <tspan x="30" y="50" font-size="22" fill="#5e17eb" letter-spacing="-0.5">nu</tspan>
-  </text>
+  <!-- Circle border: navy main arc + orange accent -->
+  <circle cx="30" cy="30" r="26" fill="white" stroke="#0d2247" stroke-width="5" stroke-dasharray="100 163.4" stroke-dashoffset="-10"/>
+  <circle cx="30" cy="30" r="26" fill="none" stroke="#e8621a" stroke-width="5" stroke-dasharray="30 133.4" stroke-dashoffset="90"/>
+  <!-- Location pin -->
+  <path d="M30 14c-4.418 0-8 3.582-8 8 0 2.811 1.448 5.282 3.637 6.738L30 38l4.363-9.262C36.552 27.282 38 24.811 38 22c0-4.418-3.582-8-8-8z" fill="#0d2247"/>
+  <circle cx="30" cy="22" r="3" fill="white"/>
 </svg>

@@ -47,11 +47,13 @@ button { font-family: var(--sans); cursor: pointer; }
 }
 .nav-dropdown a:hover, .nav-dropdown button:hover { background: rgba(255,255,255,.08); }
 .nav-dropdown .nav-dd-divider { height: 1px; background: rgba(255,255,255,.1); margin: 4px 0; }
-.logo { display: flex; align-items: center; gap: 10px; color: #fff; }
+.logo { display: flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; }
 .logo-icon { font-size: 16px; color: var(--accent); }
 .logo-text { font-family: var(--serif); font-size: 15px; font-weight: 600; color: #fff; }
-.logo-wordmark { font-family: var(--serif); font-size: 30px; font-weight: 700; color: #0d2247; letter-spacing: -.02em; }
-.logo-nu { color: #5e17eb; }
+.logo-pin { width: 18px; height: 22px; flex-shrink: 0; }
+.logo-wordmark { font-family: 'Inter', system-ui, sans-serif; font-size: 26px; font-weight: 800; color: #0d2247; letter-spacing: -.02em; line-height: 1; }
+.logo-ud { color: #0d2247; }
+.logo-nu { color: #e8621a; }
 .nav-links { display: flex; gap: 28px; }
 .nav-links a { color: rgba(0,0,0,.6); font-size: 14px; transition: color .2s; }
 .nav-links a:hover { color: #000; }
