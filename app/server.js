@@ -410,6 +410,204 @@ app.get('/api/admin/traffic', async (req, res) => {
   }
 });
 
+// ===== BOOKING API =====
+const bookingLimiter = rateLimit({ windowMs: 60_000, max: 30, standardHeaders: true, legacyHeaders: false });
+
+function sbHeaders(token) {
+  return { apikey: SUPABASE_ANON, Authorization: `Bearer ${token || SUPABASE_ANON}`, 'Content-Type': 'application/json' };
+}
+function sbServiceHeaders() {
+  const key = process.env.SUPABASE_SERVICE_KEY || SUPABASE_ANON;
+  return { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' };
+}
+function extractToken(req) {
+  const auth = req.headers.authorization || '';
+  return auth.startsWith('Bearer ') ? auth.slice(7) : null;
+}
+async function getUserId(token) {
+  const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: sbHeaders(token) });
+  const u = await r.json();
+  return u.id || null;
+}
+
+// GET /api/listings
+app.get('/api/listings', async (req, res) => {
+  const { city } = req.query;
+  let url = `${SUPABASE_URL}/rest/v1/listings?active=eq.true&order=created_at.desc`;
+  if (city) url += `&city=eq.${encodeURIComponent(city)}`;
+  try {
+    const r = await fetch(url, { headers: sbHeaders() });
+    res.json(await r.json());
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// GET /api/listings/:id  — must come before /api/listings/:id/unavailable
+app.get('/api/listings/:id/unavailable', async (req, res) => {
+  try {
+    const r = await fetch(
+      `${SUPABASE_URL}/rest/v1/bookings?listing_id=eq.${req.params.id}&status=eq.confirmed&select=check_in,check_out`,
+      { headers: sbServiceHeaders() }
+    );
+    res.json(await r.json());
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.get('/api/listings/:id', async (req, res) => {
+  try {
+    const r = await fetch(
+      `${SUPABASE_URL}/rest/v1/listings?id=eq.${req.params.id}&active=eq.true&limit=1`,
+      { headers: sbHeaders() }
+    );
+    const data = await r.json();
+    if (!Array.isArray(data) || !data.length) return res.status(404).json({ error: 'Ikke fundet' });
+    res.json(data[0]);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// POST /api/listings
+app.post('/api/listings', bookingLimiter, async (req, res) => {
+  const token = extractToken(req);
+  if (!token) return res.status(401).json({ error: 'Login krævet' });
+  const { title, description, city, address, price_per_night, max_guests, amenities, image_url } = req.body;
+  if (!title || !city || !price_per_night) return res.status(400).json({ error: 'Titel, by og pris er påkrævet' });
+  const price = parseFloat(price_per_night);
+  if (isNaN(price) || price <= 0) return res.status(400).json({ error: 'Ugyldig pris' });
+  const userId = await getUserId(token);
+  if (!userId) return res.status(401).json({ error: 'Ugyldig session' });
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/listings`, {
+      method: 'POST',
+      headers: { ...sbHeaders(token), Prefer: 'return=representation' },
+      body: JSON.stringify({
+        host_id: userId,
+        title: String(title).slice(0, 200),
+        description: String(description || '').slice(0, 2000),
+        city: String(city).slice(0, 100).toLowerCase().trim(),
+        address: String(address || '').slice(0, 300),
+        price_per_night: price,
+        max_guests: Math.max(1, Math.min(20, parseInt(max_guests) || 2)),
+        amenities: Array.isArray(amenities) ? amenities.slice(0, 20) : [],
+        image_url: String(image_url || '').slice(0, 500) || null,
+        active: true,
+      }),
+    });
+    const data = await r.json();
+    if (!r.ok) return res.status(r.status).json({ error: data.message || 'Kunne ikke oprette opslag' });
+    res.status(201).json(Array.isArray(data) ? data[0] : data);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// PATCH /api/listings/:id/deactivate
+app.patch('/api/listings/:id/deactivate', bookingLimiter, async (req, res) => {
+  const token = extractToken(req);
+  if (!token) return res.status(401).json({ error: 'Login krævet' });
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/listings?id=eq.${req.params.id}`, {
+      method: 'PATCH',
+      headers: { ...sbHeaders(token), Prefer: 'return=representation' },
+      body: JSON.stringify({ active: false }),
+    });
+    const data = await r.json();
+    if (!r.ok) return res.status(r.status).json({ error: 'Fejl' });
+    res.json(Array.isArray(data) ? (data[0] || {}) : data);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// POST /api/bookings
+app.post('/api/bookings', bookingLimiter, async (req, res) => {
+  const token = extractToken(req);
+  if (!token) return res.status(401).json({ error: 'Login krævet' });
+  const { listing_id, check_in, check_out, guests, message } = req.body;
+  if (!listing_id || !check_in || !check_out) return res.status(400).json({ error: 'Mangler felter' });
+  const cin   = new Date(check_in  + 'T00:00:00');
+  const cout  = new Date(check_out + 'T00:00:00');
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  if (isNaN(cin) || isNaN(cout)) return res.status(400).json({ error: 'Ugyldige datoer' });
+  if (cout <= cin)   return res.status(400).json({ error: 'Check-out skal være efter check-in' });
+  if (cin < today)   return res.status(400).json({ error: 'Check-in kan ikke være i fortiden' });
+  const [userId, listingRes] = await Promise.all([
+    getUserId(token),
+    fetch(`${SUPABASE_URL}/rest/v1/listings?id=eq.${listing_id}&active=eq.true&limit=1`, { headers: sbHeaders() }),
+  ]);
+  if (!userId) return res.status(401).json({ error: 'Ugyldig session' });
+  const listings = await listingRes.json();
+  if (!Array.isArray(listings) || !listings.length) return res.status(404).json({ error: 'Opslag ikke fundet' });
+  const listing = listings[0];
+  if (listing.host_id === userId) return res.status(400).json({ error: 'Du kan ikke booke dit eget opslag' });
+  const nights      = Math.round((cout - cin) / 86400000);
+  const total_price = nights * listing.price_per_night;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/bookings`, {
+      method: 'POST',
+      headers: { ...sbHeaders(token), Prefer: 'return=representation' },
+      body: JSON.stringify({
+        listing_id,
+        guest_id: userId,
+        check_in,
+        check_out,
+        guests: Math.max(1, Math.min(listing.max_guests, parseInt(guests) || 1)),
+        total_price,
+        message: String(message || '').slice(0, 500),
+      }),
+    });
+    const data = await r.json();
+    if (!r.ok) {
+      if (data.code === '23P01' || String(data.message || '').includes('no_overlap')) {
+        return res.status(409).json({ error: 'Disse datoer er allerede booket. Vælg andre datoer.' });
+      }
+      return res.status(r.status).json({ error: data.message || 'Booking fejlede' });
+    }
+    res.status(201).json(Array.isArray(data) ? data[0] : data);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// GET /api/my-bookings
+app.get('/api/my-bookings', async (req, res) => {
+  const token = extractToken(req);
+  if (!token) return res.status(401).json({ error: 'Login krævet' });
+  const userId = await getUserId(token);
+  if (!userId) return res.status(401).json({ error: 'Ugyldig session' });
+  try {
+    const r = await fetch(
+      `${SUPABASE_URL}/rest/v1/bookings?guest_id=eq.${userId}&order=check_in.asc&select=*,listings(id,title,city,address,price_per_night,image_url)`,
+      { headers: sbHeaders(token) }
+    );
+    res.json(await r.json());
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// GET /api/my-listings
+app.get('/api/my-listings', async (req, res) => {
+  const token = extractToken(req);
+  if (!token) return res.status(401).json({ error: 'Login krævet' });
+  const userId = await getUserId(token);
+  if (!userId) return res.status(401).json({ error: 'Ugyldig session' });
+  try {
+    const r = await fetch(
+      `${SUPABASE_URL}/rest/v1/listings?host_id=eq.${userId}&order=created_at.desc`,
+      { headers: sbHeaders(token) }
+    );
+    res.json(await r.json());
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// PATCH /api/bookings/:id/cancel
+app.patch('/api/bookings/:id/cancel', bookingLimiter, async (req, res) => {
+  const token = extractToken(req);
+  if (!token) return res.status(401).json({ error: 'Login krævet' });
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/bookings?id=eq.${req.params.id}&status=eq.confirmed`, {
+      method: 'PATCH',
+      headers: { ...sbHeaders(token), Prefer: 'return=representation' },
+      body: JSON.stringify({ status: 'cancelled' }),
+    });
+    const data = await r.json();
+    if (!r.ok) return res.status(r.status).json({ error: 'Fejl' });
+    if (!Array.isArray(data) || !data.length) return res.status(404).json({ error: 'Booking ikke fundet' });
+    res.json(data[0]);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });

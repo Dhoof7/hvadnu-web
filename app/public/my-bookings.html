@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mine Bookinger · UdNu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="logo">
+      <svg class="logo-pin" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12c0 4.215 2.172 7.923 5.455 10.107L12 30l6.545-7.893C21.828 19.923 24 16.215 24 12 24 5.373 18.627 0 12 0z" fill="#0d2247"/><circle cx="12" cy="12" r="4.5" fill="white"/></svg>
+      <span class="logo-wordmark"><span class="logo-ud">Ud</span><span class="logo-nu">Nu</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/booking" class="nav-link-plain">← Booking</a>
+      <div id="navAuthWrap"></div>
+    </div>
+  </nav>
+
+  <!-- NOT LOGGED IN -->
+  <div id="notLoggedIn" style="display:none;text-align:center;padding:100px 24px;">
+    <h2 style="font-family:var(--serif);font-size:28px;margin-bottom:12px;">Log ind for at fortsætte</h2>
+    <p style="color:var(--muted);margin-bottom:24px;">Du skal være logget ind for at se dine bookinger.</p>
+    <a href="#" onclick="openAuthModal('login');return false;" class="btn-primary">Log ind</a>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboardContent" style="display:none;">
+
+    <div class="dash-header">
+      <div class="dash-header-inner">
+        <h1>Mit dashboard</h1>
+        <p id="dashUserName" style="color:rgba(255,255,255,.6);font-size:15px;margin-top:4px;"></p>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="dash-tabs-wrap">
+      <div class="dash-tabs">
+        <button class="dash-tab active" data-tab="bookings" onclick="switchTab('bookings')">Mine bookinger</button>
+        <button class="dash-tab" data-tab="listings" onclick="switchTab('listings')">Mine opslag</button>
+        <button class="dash-tab" data-tab="create" onclick="switchTab('create')">+ Opret opslag</button>
+      </div>
+    </div>
+
+    <!-- TAB: BOOKINGS -->
+    <div class="dash-panel" id="tabBookings">
+      <div id="bookingsList"></div>
+    </div>
+
+    <!-- TAB: LISTINGS -->
+    <div class="dash-panel" id="tabListings" style="display:none;">
+      <div id="listingsList"></div>
+    </div>
+
+    <!-- TAB: CREATE LISTING -->
+    <div class="dash-panel" id="tabCreate" style="display:none;">
+      <div class="create-form-wrap">
+        <h2 style="font-family:var(--serif);font-size:24px;margin-bottom:6px;">Opret nyt opslag</h2>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:28px;">Beskriv dit sted og sæt din pris</p>
+
+        <div id="createMsg" class="lst-book-msg" style="margin-bottom:16px;"></div>
+
+        <div class="create-form" id="createForm">
+          <div class="cf-row">
+            <div class="cf-field">
+              <label class="cf-label">Titel *</label>
+              <input class="cf-input" id="cfTitle" type="text" placeholder="Fx: Hyggelig lejlighed i Midtbyen" maxlength="200">
+            </div>
+          </div>
+
+          <div class="cf-row cf-2col">
+            <div class="cf-field">
+              <label class="cf-label">By *</label>
+              <input class="cf-input" id="cfCity" type="text" placeholder="Fx: København" maxlength="100">
+            </div>
+            <div class="cf-field">
+              <label class="cf-label">Adresse</label>
+              <input class="cf-input" id="cfAddress" type="text" placeholder="Gade og nr." maxlength="300">
+            </div>
+          </div>
+
+          <div class="cf-row">
+            <div class="cf-field">
+              <label class="cf-label">Beskrivelse</label>
+              <textarea class="cf-input cf-textarea" id="cfDesc" placeholder="Beskriv stedet, hvad det er unikt, hvad gæster kan forvente..." maxlength="2000"></textarea>
+            </div>
+          </div>
+
+          <div class="cf-row cf-2col">
+            <div class="cf-field">
+              <label class="cf-label">Pris per nat (kr) *</label>
+              <input class="cf-input" id="cfPrice" type="number" placeholder="500" min="1" max="100000">
+            </div>
+            <div class="cf-field">
+              <label class="cf-label">Maks. gæster</label>
+              <input class="cf-input" id="cfMaxGuests" type="number" placeholder="2" min="1" max="20" value="2">
+            </div>
+          </div>
+
+          <div class="cf-row">
+            <div class="cf-field">
+              <label class="cf-label">Billede URL (valgfrit)</label>
+              <input class="cf-input" id="cfImage" type="url" placeholder="https://..." maxlength="500">
+            </div>
+          </div>
+
+          <div class="cf-row">
+            <div class="cf-field">
+              <label class="cf-label">Faciliteter</label>
+              <div class="cf-amenities">
+                <label class="cf-amenity"><input type="checkbox" value="WiFi"> WiFi</label>
+                <label class="cf-amenity"><input type="checkbox" value="Parkering"> Parkering</label>
+                <label class="cf-amenity"><input type="checkbox" value="Køkken"> Køkken</label>
+                <label class="cf-amenity"><input type="checkbox" value="Vaskemaskine"> Vaskemaskine</label>
+                <label class="cf-amenity"><input type="checkbox" value="TV"> TV</label>
+                <label class="cf-amenity"><input type="checkbox" value="Aircondition"> Aircondition</label>
+                <label class="cf-amenity"><input type="checkbox" value="Kæledyr tilladt"> Kæledyr tilladt</label>
+                <label class="cf-amenity"><input type="checkbox" value="Ingen rygning"> Ingen rygning</label>
+              </div>
+            </div>
+          </div>
+
+          <button class="lst-book-btn" id="createBtn" onclick="createListing()" style="max-width:220px;">Opret opslag</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/my-bookings.js"></script>
+  <script src="js/auth.js"></script>
+  <script>fetch("/api/track",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:location.pathname,referrer:document.referrer||null})});</script>
+</body>
+</html>

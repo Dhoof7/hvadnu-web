@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Booking · UdNu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="logo">
+      <svg class="logo-pin" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12c0 4.215 2.172 7.923 5.455 10.107L12 30l6.545-7.893C21.828 19.923 24 16.215 24 12 24 5.373 18.627 0 12 0z" fill="#0d2247"/><circle cx="12" cy="12" r="4.5" fill="white"/></svg>
+      <span class="logo-wordmark"><span class="logo-ud">Ud</span><span class="logo-nu">Nu</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link-plain">← Tilbage</a>
+      <a href="/my-bookings" class="nav-link-plain">Mine bookinger</a>
+      <div id="navAuthWrap"></div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="bk-hero">
+    <div class="bk-hero-inner">
+      <p class="eyebrow" style="color:rgba(255,255,255,.6);">BOOKING</p>
+      <h1>Book din næste<br><em>oplevelse i byen</em></h1>
+      <p style="color:rgba(255,255,255,.7);font-size:16px;margin-top:12px;">Unikke steder og aktiviteter i hele Danmark</p>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="bk-content">
+
+    <!-- CITY FILTERS -->
+    <div class="bk-filters" id="cityFilters">
+      <button class="bk-filter-btn active" data-city="">Alle byer</button>
+    </div>
+
+    <!-- LISTINGS GRID -->
+    <div id="listingsGrid" class="bk-grid">
+      <div class="bk-loading">
+        <div class="loading-spinner" style="margin:0 auto 16px;"></div>
+        <p style="color:var(--muted);">Henter opslag...</p>
+      </div>
+    </div>
+
+    <!-- HOST CTA -->
+    <div class="bk-host-cta">
+      <div class="bk-host-cta-inner">
+        <h2>Har du et sted at tilbyde?</h2>
+        <p>Bliv host og lad andre opleve din by gennem dine øjne</p>
+        <a href="/my-bookings" class="btn-primary" style="margin-top:20px;display:inline-block;">Opret dit første opslag →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/booking.js"></script>
+  <script src="js/auth.js"></script>
+  <script>fetch("/api/track",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page:location.pathname,referrer:document.referrer||null})});</script>
+</body>
+</html>
