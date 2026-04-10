@@ -172,10 +172,10 @@ function renderListing(l, unavailable) {
   document.getElementById('lstCity').textContent = l.city.charAt(0).toUpperCase() + l.city.slice(1);
   document.getElementById('lstTitle').textContent = l.title;
   document.getElementById('lstMeta').innerHTML = `
-    <span>👥 Op til ${l.max_guests} gæster</span>
+    <span>Op til ${l.max_guests} gæster</span>
     <span style="margin:0 8px;color:var(--border);">|</span>
-    <span>🌍 ${l.city.charAt(0).toUpperCase() + l.city.slice(1)}</span>
-    ${l.address ? `<span style="margin:0 8px;color:var(--border);">|</span><span>📍 ${l.address}</span>` : ''}
+    <span>${l.city.charAt(0).toUpperCase() + l.city.slice(1)}</span>
+    ${l.address ? `<span style="margin:0 8px;color:var(--border);">|</span><span>${l.address}</span>` : ''}
   `;
 
   if (l.description) document.getElementById('lstDesc').textContent = l.description;
@@ -185,7 +185,7 @@ function renderListing(l, unavailable) {
       <div style="margin-top:24px;">
         <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;">Faciliteter</h3>
         <div class="lst-amenities-grid">
-          ${l.amenities.map(a => `<div class="lst-amenity-item">✓ ${a}</div>`).join('')}
+          ${l.amenities.map(a => `<div class="lst-amenity-item">${a}</div>`).join('')}
         </div>
       </div>`;
   }
@@ -219,6 +219,8 @@ function updateBookingUI(ci, co) {
     <div class="bk-sum-row"><span>${Number(listing.price_per_night).toLocaleString('da-DK')} kr × ${nights}</span><span>${Number(total).toLocaleString('da-DK')} kr</span></div>
     <div class="bk-sum-total"><span>Total</span><span>${Number(total).toLocaleString('da-DK')} kr</span></div>
   `;
+  const gf = document.getElementById('guestFields');
+  gf.style.display = 'flex';
   document.getElementById('bookBtn').style.display = 'block';
 }
 
@@ -247,8 +249,17 @@ async function submitBooking() {
   const sel = picker.getSelection();
   if (!sel) { msg.textContent = 'Vælg datoer først.'; msg.className = 'lst-book-msg error'; return; }
 
-  const guests = parseInt(document.getElementById('guestsInput').value) || 1;
-  const message = document.getElementById('msgInput').value;
+  const guests         = parseInt(document.getElementById('guestsInput').value) || 1;
+  const guest_first_name = document.getElementById('guestFirstName').value.trim();
+  const guest_last_name  = document.getElementById('guestLastName').value.trim();
+  const guest_email      = document.getElementById('guestEmail').value.trim();
+  const guest_phone      = document.getElementById('guestPhone').value.trim();
+  const guest_address    = document.getElementById('guestAddress').value.trim();
+  const message          = document.getElementById('msgInput').value.trim();
+
+  if (!guest_first_name || !guest_last_name) { msg.textContent = 'Indtast dit navn.'; msg.className = 'lst-book-msg error'; return; }
+  if (!guest_email) { msg.textContent = 'Indtast din e-mail.'; msg.className = 'lst-book-msg error'; return; }
+  if (!guest_phone) { msg.textContent = 'Indtast dit telefonnummer.'; msg.className = 'lst-book-msg error'; return; }
 
   btn.disabled = true;
   btn.textContent = 'Sender...';
@@ -256,20 +267,22 @@ async function submitBooking() {
 
   try {
     const { data: { session } } = await _sb.auth.getSession();
-    if (!session) { openAuthModal('login'); btn.disabled = false; btn.textContent = 'Anmod om booking'; return; }
+    if (!session) { openAuthModal('login'); btn.disabled = false; btn.textContent = 'Send bookingforespørgsel'; return; }
 
     const res = await fetch('/api/bookings', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.access_token}`,
-      },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
       body: JSON.stringify({
         listing_id: listingId,
         check_in:   sel.checkIn,
         check_out:  sel.checkOut,
         guests,
         message,
+        guest_first_name,
+        guest_last_name,
+        guest_email,
+        guest_phone,
+        guest_address,
       }),
     });
 
@@ -278,24 +291,23 @@ async function submitBooking() {
       msg.textContent = data.error || 'Noget gik galt. Prøv igen.';
       msg.className = 'lst-book-msg error';
       btn.disabled = false;
-      btn.textContent = 'Anmod om booking';
+      btn.textContent = 'Send bookingforespørgsel';
       return;
     }
 
-    msg.textContent = '✓ Booking bekræftet! Se dine bookinger i dit dashboard.';
+    msg.textContent = 'Forespørgsel sendt! Udlejeren skal godkende inden bookingen er bekræftet.';
     msg.className = 'lst-book-msg success';
     btn.style.display = 'none';
-    // Reload unavailable dates to reflect new booking
-    picker.booked.push({ start: new Date(sel.checkIn+'T00:00:00'), end: new Date(sel.checkOut+'T00:00:00') });
+    document.getElementById('guestFields').style.display = 'none';
     picker.checkIn = null; picker.checkOut = null;
     picker.render();
     document.getElementById('bookingSummary').style.display = 'none';
     selection = null;
-  } catch (err) {
+  } catch {
     msg.textContent = 'Netværksfejl. Prøv igen.';
     msg.className = 'lst-book-msg error';
     btn.disabled = false;
-    btn.textContent = 'Anmod om booking';
+    btn.textContent = 'Send bookingforespørgsel';
   }
 }
 

@@ -152,6 +152,7 @@ async function fetchPlans() {
         for (let i = renderedCount; i < matches.length; i++) {
           try {
             const plan = JSON.parse(matches[i][0]);
+            if (!plan.title) continue; // skip day-level objects in multi-day streams
             plan.id = i + 1;
             if (renderedCount === 0) {
               clearInterval(hintInterval);

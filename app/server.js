@@ -200,7 +200,7 @@ app.get('/api/sponsors', (_req, res) => {
 });
 
 app.get('/api/cities', (_req, res) => {
-  const labels = { aalborg: 'Aalborg', aarhus: 'Aarhus', copenhagen: 'København', odense: 'Odense', lystrup: 'Lystrup' };
+  const labels = { aalborg: 'Aalborg', aarhus: 'Aarhus', københavn: 'København', odense: 'Odense', esbjerg: 'Esbjerg', randers: 'Randers', kolding: 'Kolding', horsens: 'Horsens', vejle: 'Vejle', roskilde: 'Roskilde' };
   const unique = [...new Set(PLACES.filter(p => p.active).map(p => p.city))].sort();
   res.json(unique.map(c => ({ value: c, label: labels[c] || c.charAt(0).toUpperCase() + c.slice(1) })));
 });
@@ -420,6 +420,30 @@ function sbServiceHeaders() {
   const key = process.env.SUPABASE_SERVICE_KEY || SUPABASE_ANON;
   return { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' };
 }
+
+async function getUserEmail(userId) {
+  const key = process.env.SUPABASE_SERVICE_KEY;
+  if (!key) return null;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/auth/v1/admin/users/${userId}`, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+    });
+    const u = await r.json();
+    return u.email || null;
+  } catch { return null; }
+}
+
+async function sendEmail({ to, subject, html }) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key || !to) return;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from: 'UdNu <noreply@udnu.dk>', to, subject, html }),
+    });
+  } catch (e) { console.error('Email fejl:', e.message); }
+}
 function extractToken(req) {
   const auth = req.headers.authorization || '';
   return auth.startsWith('Bearer ') ? auth.slice(7) : null;
@@ -517,8 +541,11 @@ app.patch('/api/listings/:id/deactivate', bookingLimiter, async (req, res) => {
 app.post('/api/bookings', bookingLimiter, async (req, res) => {
   const token = extractToken(req);
   if (!token) return res.status(401).json({ error: 'Login krævet' });
-  const { listing_id, check_in, check_out, guests, message } = req.body;
+  const { listing_id, check_in, check_out, guests, message,
+          guest_first_name, guest_last_name, guest_email, guest_address, guest_phone } = req.body;
   if (!listing_id || !check_in || !check_out) return res.status(400).json({ error: 'Mangler felter' });
+  if (!guest_first_name || !guest_last_name || !guest_email || !guest_phone)
+    return res.status(400).json({ error: 'Navn, e-mail og telefon er påkrævet' });
   const cin   = new Date(check_in  + 'T00:00:00');
   const cout  = new Date(check_out + 'T00:00:00');
   const today = new Date(); today.setHours(0, 0, 0, 0);
@@ -547,7 +574,13 @@ app.post('/api/bookings', bookingLimiter, async (req, res) => {
         check_out,
         guests: Math.max(1, Math.min(listing.max_guests, parseInt(guests) || 1)),
         total_price,
-        message: String(message || '').slice(0, 500),
+        status: 'pending',
+        message:          String(message || '').slice(0, 500),
+        guest_first_name: String(guest_first_name || '').slice(0, 100),
+        guest_last_name:  String(guest_last_name  || '').slice(0, 100),
+        guest_email:      String(guest_email      || '').slice(0, 200),
+        guest_address:    String(guest_address    || '').slice(0, 300),
+        guest_phone:      String(guest_phone      || '').slice(0, 50),
       }),
     });
     const data = await r.json();
@@ -620,7 +653,7 @@ app.patch('/api/bookings/:id/cancel', bookingLimiter, async (req, res) => {
   const token = extractToken(req);
   if (!token) return res.status(401).json({ error: 'Login krævet' });
   try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/bookings?id=eq.${req.params.id}&status=eq.confirmed`, {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/bookings?id=eq.${req.params.id}&status=in.(pending,confirmed)`, {
       method: 'PATCH',
       headers: { ...sbHeaders(token), Prefer: 'return=representation' },
       body: JSON.stringify({ status: 'cancelled' }),
@@ -629,6 +662,143 @@ app.patch('/api/bookings/:id/cancel', bookingLimiter, async (req, res) => {
     if (!r.ok) return res.status(r.status).json({ error: 'Fejl' });
     if (!Array.isArray(data) || !data.length) return res.status(404).json({ error: 'Booking ikke fundet' });
     res.json(data[0]);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// PATCH /api/bookings/:id/approve — host approves a pending booking
+app.patch('/api/bookings/:id/approve', bookingLimiter, async (req, res) => {
+  const token = extractToken(req);
+  if (!token) return res.status(401).json({ error: 'Login krævet' });
+  const userId = await getUserId(token);
+  if (!userId) return res.status(401).json({ error: 'Ugyldig session' });
+  try {
+    // Fetch the booking + listing to verify host ownership
+    const bRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/bookings?id=eq.${req.params.id}&status=eq.pending&select=*,listings(host_id,title,city)`,
+      { headers: sbServiceHeaders() }
+    );
+    const rows = await bRes.json();
+    if (!Array.isArray(rows) || !rows.length) return res.status(404).json({ error: 'Booking ikke fundet eller ikke afventende' });
+    const booking = rows[0];
+    if (booking.listings?.host_id !== userId) return res.status(403).json({ error: 'Ingen adgang' });
+
+    // Confirm the booking (service key bypasses RLS)
+    const upRes = await fetch(`${SUPABASE_URL}/rest/v1/bookings?id=eq.${req.params.id}`, {
+      method: 'PATCH',
+      headers: { ...sbServiceHeaders(), Prefer: 'return=representation' },
+      body: JSON.stringify({ status: 'confirmed' }),
+    });
+    const data = await upRes.json();
+    if (!upRes.ok) {
+      if ((data.code === '23P01' || String(data.message || '').includes('no_overlap')))
+        return res.status(409).json({ error: 'Datoerne er allerede booket. Afvis denne booking.' });
+      return res.status(upRes.status).json({ error: 'Kunne ikke godkende' });
+    }
+
+    // Email host with guest contact info
+    const hostEmail = await getUserEmail(userId);
+    if (hostEmail) {
+      await sendEmail({
+        to: hostEmail,
+        subject: `Booking godkendt — ${booking.listings?.title || 'dit opslag'}`,
+        html: `
+          <h2>Du har godkendt en booking</h2>
+          <p><strong>Opslag:</strong> ${booking.listings?.title || ''} (${booking.listings?.city || ''})</p>
+          <p><strong>Datoer:</strong> ${booking.check_in} → ${booking.check_out}</p>
+          <p><strong>Gæst:</strong> ${booking.guest_first_name} ${booking.guest_last_name}</p>
+          <p><strong>E-mail:</strong> ${booking.guest_email}</p>
+          <p><strong>Telefon:</strong> ${booking.guest_phone}</p>
+          ${booking.guest_address ? `<p><strong>Adresse:</strong> ${booking.guest_address}</p>` : ''}
+          ${booking.message ? `<p><strong>Besked:</strong> ${booking.message}</p>` : ''}
+          <p><strong>Total:</strong> ${booking.total_price} kr</p>
+        `,
+      });
+    }
+
+    res.json(Array.isArray(data) ? data[0] : data);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// PATCH /api/bookings/:id/reject — host rejects a pending booking
+app.patch('/api/bookings/:id/reject', bookingLimiter, async (req, res) => {
+  const token = extractToken(req);
+  if (!token) return res.status(401).json({ error: 'Login krævet' });
+  const userId = await getUserId(token);
+  if (!userId) return res.status(401).json({ error: 'Ugyldig session' });
+  try {
+    const bRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/bookings?id=eq.${req.params.id}&status=eq.pending&select=listing_id,listings(host_id)`,
+      { headers: sbServiceHeaders() }
+    );
+    const rows = await bRes.json();
+    if (!Array.isArray(rows) || !rows.length) return res.status(404).json({ error: 'Booking ikke fundet' });
+    if (rows[0].listings?.host_id !== userId) return res.status(403).json({ error: 'Ingen adgang' });
+
+    const upRes = await fetch(`${SUPABASE_URL}/rest/v1/bookings?id=eq.${req.params.id}`, {
+      method: 'PATCH',
+      headers: { ...sbServiceHeaders(), Prefer: 'return=representation' },
+      body: JSON.stringify({ status: 'cancelled' }),
+    });
+    const data = await upRes.json();
+    if (!upRes.ok) return res.status(upRes.status).json({ error: 'Fejl' });
+    res.json(Array.isArray(data) ? data[0] : data);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// DELETE /api/listings/:id
+app.delete('/api/listings/:id', bookingLimiter, async (req, res) => {
+  const token = extractToken(req);
+  if (!token) return res.status(401).json({ error: 'Login krævet' });
+  const userId = await getUserId(token);
+  if (!userId) return res.status(401).json({ error: 'Ugyldig session' });
+  try {
+    // Verify ownership first
+    const chk = await fetch(`${SUPABASE_URL}/rest/v1/listings?id=eq.${req.params.id}&host_id=eq.${userId}&select=id`, { headers: sbServiceHeaders() });
+    const rows = await chk.json();
+    if (!Array.isArray(rows) || !rows.length) return res.status(404).json({ error: 'Opslag ikke fundet' });
+
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/listings?id=eq.${req.params.id}`, {
+      method: 'DELETE',
+      headers: sbServiceHeaders(),
+    });
+    if (!r.ok) return res.status(r.status).json({ error: 'Kunne ikke slette' });
+    res.json({ ok: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// PATCH /api/listings/:id/edit
+app.patch('/api/listings/:id/edit', bookingLimiter, async (req, res) => {
+  const token = extractToken(req);
+  if (!token) return res.status(401).json({ error: 'Login krævet' });
+  const userId = await getUserId(token);
+  if (!userId) return res.status(401).json({ error: 'Ugyldig session' });
+  const { title, description, city, address, price_per_night, max_guests, amenities, image_url } = req.body;
+  if (!title || !city || !price_per_night) return res.status(400).json({ error: 'Titel, by og pris er påkrævet' });
+  const price = parseFloat(price_per_night);
+  if (isNaN(price) || price <= 0) return res.status(400).json({ error: 'Ugyldig pris' });
+  try {
+    // Verify ownership
+    const chk = await fetch(`${SUPABASE_URL}/rest/v1/listings?id=eq.${req.params.id}&host_id=eq.${userId}&select=id`, { headers: sbServiceHeaders() });
+    const rows = await chk.json();
+    if (!Array.isArray(rows) || !rows.length) return res.status(404).json({ error: 'Opslag ikke fundet' });
+
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/listings?id=eq.${req.params.id}`, {
+      method: 'PATCH',
+      headers: { ...sbServiceHeaders(), Prefer: 'return=representation' },
+      body: JSON.stringify({
+        title:           String(title).slice(0, 200),
+        description:     String(description || '').slice(0, 2000),
+        city:            String(city).slice(0, 100).toLowerCase().trim(),
+        address:         String(address || '').slice(0, 300),
+        price_per_night: price,
+        max_guests:      Math.max(1, Math.min(20, parseInt(max_guests) || 2)),
+        amenities:       Array.isArray(amenities) ? amenities.slice(0, 20) : [],
+        image_url:       String(image_url || '').slice(0, 500) || null,
+      }),
+    });
+    const data = await r.json();
+    if (!r.ok) return res.status(r.status).json({ error: 'Kunne ikke opdatere' });
+    res.json(Array.isArray(data) ? data[0] : data);
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 

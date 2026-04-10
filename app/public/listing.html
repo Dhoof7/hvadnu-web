@@ -73,9 +73,36 @@
           <input type="number" id="guestsInput" min="1" value="1" style="width:80px;padding:8px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;">
         </div>
 
-        <textarea id="msgInput" placeholder="Besked til host (valgfrit)" style="width:100%;resize:none;height:70px;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;margin:8px 0 0;"></textarea>
+        <div id="guestFields" style="display:none;margin-top:16px;flex-direction:column;gap:10px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div>
+              <label style="font-size:12px;font-weight:600;color:#0d2247;display:block;margin-bottom:4px;">Fornavn *</label>
+              <input id="guestFirstName" type="text" placeholder="Fornavn" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:600;color:#0d2247;display:block;margin-bottom:4px;">Efternavn *</label>
+              <input id="guestLastName" type="text" placeholder="Efternavn" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;box-sizing:border-box;">
+            </div>
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#0d2247;display:block;margin-bottom:4px;">E-mail *</label>
+            <input id="guestEmail" type="email" placeholder="din@email.dk" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#0d2247;display:block;margin-bottom:4px;">Telefon *</label>
+            <input id="guestPhone" type="tel" placeholder="+45 12 34 56 78" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#0d2247;display:block;margin-bottom:4px;">Adresse (valgfrit)</label>
+            <input id="guestAddress" type="text" placeholder="Gadenavn 12, 9000 Aalborg" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#0d2247;display:block;margin-bottom:4px;">Besked til host (valgfrit)</label>
+            <textarea id="msgInput" placeholder="Hvornår ankommer I? Spørgsmål?" style="width:100%;resize:none;height:65px;padding:9px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;box-sizing:border-box;"></textarea>
+          </div>
+        </div>
 
-        <button id="bookBtn" class="lst-book-btn" style="display:none;" onclick="submitBooking()">Anmod om booking</button>
+        <button id="bookBtn" class="lst-book-btn" style="display:none;" onclick="submitBooking()">Send bookingforespørgsel</button>
         <div id="bookMsg" class="lst-book-msg"></div>
 
         <div id="loginPrompt" style="display:none;text-align:center;padding:16px 0;font-size:14px;color:var(--muted);">

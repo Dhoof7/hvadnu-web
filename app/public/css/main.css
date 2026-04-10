@@ -689,9 +689,9 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 
 .nearby-heading { font-size: 16px; font-weight: 600; color: rgba(255,255,255,.85); margin: 28px 0 14px; letter-spacing: .01em; }
 .nearby-sponsors { display: flex; gap: 12px; flex-wrap: wrap; }
-.nearby-card { display: flex; flex-direction: column; width: 140px; background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.15); border-radius: 12px; overflow: hidden; cursor: pointer; transition: background .2s, border-color .2s, transform .15s; text-align: left; }
+.nearby-card { display: flex; flex-direction: column; width: 110px; background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.15); border-radius: 12px; overflow: hidden; cursor: pointer; transition: background .2s, border-color .2s, transform .15s; text-align: left; }
 .nearby-card:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.35); transform: translateY(-2px); }
-.nearby-img { width: 100%; height: 90px; object-fit: cover; display: block; }
+.nearby-img { width: 100%; height: 72px; object-fit: cover; display: block; }
 .nearby-info { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 4px; }
 .nearby-name { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.3; }
 .nearby-cats { font-size: 11px; color: rgba(255,255,255,.5); text-transform: capitalize; }
@@ -975,6 +975,11 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .dash-status { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: .06em; }
 .dash-status.confirmed { background: #e8f5e9; color: #27ae60; }
 .dash-status.cancelled { background: #fde8e8; color: #c0392b; }
+.dash-status.pending   { background: #fff3e0; color: #e67e22; }
+.dash-action-btn.approve { background: #e8f5e9; color: #27ae60; border-color: #c8e6c9; }
+.dash-action-btn.approve:hover { background: #27ae60; color: #fff; border-color: #27ae60; }
+.dash-action-btn.danger { color: #c0392b; border-color: #fde8e8; }
+.dash-action-btn.danger:hover { background: #c0392b; color: #fff; border-color: #c0392b; }
 
 /* Create listing form */
 .create-form-wrap { max-width: 640px; }
@@ -1000,10 +1005,12 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   .lst-body { grid-template-columns: 1fr; padding: 24px; gap: 24px; }
   .lst-booking-card { position: static; }
   .cal-months { flex-direction: column; }
+  .cal-wrap { overflow-x: auto; }
   .dash-header, .dash-tabs-wrap { padding-left: 24px; padding-right: 24px; }
   .dash-panel { padding: 24px; }
   .cf-2col { flex-direction: column; }
   .dash-item-img { width: 90px; }
+  .dash-item-actions { flex-wrap: wrap; }
 }
 @media (max-width: 600px) {
   .bk-grid { grid-template-columns: 1fr; }
