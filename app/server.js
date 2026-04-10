@@ -591,6 +591,30 @@ app.get('/api/my-listings', async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+// GET /api/host-bookings — bookings made on the host's listings
+app.get('/api/host-bookings', async (req, res) => {
+  const token = extractToken(req);
+  if (!token) return res.status(401).json({ error: 'Login krævet' });
+  const userId = await getUserId(token);
+  if (!userId) return res.status(401).json({ error: 'Ugyldig session' });
+  try {
+    // Fetch all listings owned by this host first
+    const lRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/listings?host_id=eq.${userId}&select=id`,
+      { headers: sbHeaders(token) }
+    );
+    const listings = await lRes.json();
+    if (!listings.length) return res.json([]);
+
+    const ids = listings.map(l => l.id).join(',');
+    const r = await fetch(
+      `${SUPABASE_URL}/rest/v1/bookings?listing_id=in.(${ids})&order=check_in.asc&select=*,listings(id,title,city,address,price_per_night,image_url)`,
+      { headers: sbHeaders(token) }
+    );
+    res.json(await r.json());
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 // PATCH /api/bookings/:id/cancel
 app.patch('/api/bookings/:id/cancel', bookingLimiter, async (req, res) => {
   const token = extractToken(req);

@@ -44,14 +44,20 @@
     <div class="dash-tabs-wrap">
       <div class="dash-tabs">
         <button class="dash-tab active" data-tab="bookings" onclick="switchTab('bookings')">Mine bookinger</button>
+        <button class="dash-tab" data-tab="host" onclick="switchTab('host')">Indgående bookinger</button>
         <button class="dash-tab" data-tab="listings" onclick="switchTab('listings')">Mine opslag</button>
         <button class="dash-tab" data-tab="create" onclick="switchTab('create')">+ Opret opslag</button>
       </div>
     </div>
 
-    <!-- TAB: BOOKINGS -->
+    <!-- TAB: BOOKINGS (guest) -->
     <div class="dash-panel" id="tabBookings">
       <div id="bookingsList"></div>
+    </div>
+
+    <!-- TAB: HOST BOOKINGS -->
+    <div class="dash-panel" id="tabHost" style="display:none;">
+      <div id="hostBookingsList"></div>
     </div>
 
     <!-- TAB: LISTINGS -->

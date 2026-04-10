@@ -871,7 +871,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .bk-hero h1 { font-family: var(--serif); font-size: clamp(32px, 5vw, 52px); color: #fff; margin-top: 12px; }
 
 /* Booking content */
-.bk-content { max-width: 1200px; margin: 0 auto; padding: 40px 48px 80px; }
+.bk-content { max-width: 1200px; margin: 0 auto; padding: 40px 48px 80px; background: #fff; }
 
 /* City filter row */
 .bk-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
@@ -903,6 +903,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .bk-host-cta p { color: rgba(255,255,255,.7); font-size: 16px; }
 
 /* ===== LISTING DETAIL PAGE ===== */
+#listingContent { background: #fff; }
 .lst-hero { height: 420px; background: #ccc; }
 .lst-body { max-width: 1100px; margin: 0 auto; padding: 40px 48px 80px; display: grid; grid-template-columns: 1fr 420px; gap: 48px; align-items: start; }
 .lst-city-badge { display: inline-block; background: var(--bg-soft); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .06em; }
@@ -948,6 +949,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .cal-hint { font-size: 12px; color: var(--muted); text-align: center; margin-top: 10px; }
 
 /* ===== DASHBOARD ===== */
+#dashboardContent { background: var(--bg-soft); }
 .dash-header { background: linear-gradient(135deg, #0d2247, #1a3a6e); padding: 48px; }
 .dash-header h1 { font-family: var(--serif); font-size: 32px; color: #fff; }
 .dash-tabs-wrap { background: #fff; border-bottom: 1px solid var(--border); padding: 0 48px; position: sticky; top: 72px; z-index: 10; }
@@ -955,7 +957,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
 .dash-tab { padding: 16px 24px; font-size: 14px; font-weight: 600; font-family: inherit; background: none; border: none; border-bottom: 2px solid transparent; color: rgba(0,0,0,.5); cursor: pointer; transition: all .15s; }
 .dash-tab:hover { color: #0d2247; }
 .dash-tab.active { color: #0d2247; border-bottom-color: #e8621a; }
-.dash-panel { max-width: 900px; margin: 0 auto; padding: 32px 48px 80px; }
+.dash-panel { max-width: 900px; margin: 0 auto; padding: 32px 48px 80px; background: var(--bg-soft); min-height: 300px; }
 .dash-empty { text-align: center; padding: 60px 0; color: var(--muted); font-size: 15px; }
 .dash-empty a, .dash-empty button { color: #0d2247; font-weight: 600; background: none; border: none; font-family: inherit; font-size: inherit; cursor: pointer; }
 

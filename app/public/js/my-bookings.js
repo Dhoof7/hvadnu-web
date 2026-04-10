@@ -15,7 +15,7 @@ function statusBadge(status) {
 
 // ===== Tab switching =====
 function switchTab(tab) {
-  ['bookings', 'listings', 'create'].forEach(t => {
+  ['bookings', 'host', 'listings', 'create'].forEach(t => {
     document.getElementById(`tab${t.charAt(0).toUpperCase()+t.slice(1)}`).style.display = t === tab ? 'block' : 'none';
     document.querySelector(`[data-tab="${t}"]`).classList.toggle('active', t === tab);
   });
@@ -91,6 +91,48 @@ async function cancelBooking(id) {
   }
 }
 window.cancelBooking = cancelBooking;
+
+// ===== Render incoming bookings (host view) =====
+function renderHostBookings(bookings) {
+  const el = document.getElementById('hostBookingsList');
+  if (!bookings.length) {
+    el.innerHTML = '<div class="dash-empty">Ingen har booket dine opslag endnu.</div>';
+    return;
+  }
+
+  el.innerHTML = bookings.map(b => {
+    const listing = b.listings || {};
+    const nights = nightsBetween(b.check_in, b.check_out);
+    const statusCls = b.status === 'confirmed' ? 'confirmed' : 'cancelled';
+    const statusLabel = b.status === 'confirmed' ? 'Bekræftet' : 'Annulleret';
+    return `
+      <div class="dash-item">
+        <div class="dash-item-img" style="${listing.image_url ? `background:url('${listing.image_url}') center/cover` : 'background:linear-gradient(135deg,#0d2247,#1a3a6e)'}"></div>
+        <div class="dash-item-body">
+          <div class="dash-item-top">
+            <h3>${listing.title || 'Opslag'}</h3>
+            <span class="dash-status ${statusCls}">${statusLabel}</span>
+          </div>
+          <p style="color:var(--muted);font-size:13px;margin:4px 0;">
+            📍 ${listing.city ? listing.city.charAt(0).toUpperCase()+listing.city.slice(1) : ''}
+            ${listing.address ? ' · ' + listing.address : ''}
+          </p>
+          <p style="font-size:14px;margin:8px 0 4px;">
+            📅 ${fmtDate(b.check_in)} → ${fmtDate(b.check_out)}
+            <span style="color:var(--muted);"> (${nights} nætter)</span>
+          </p>
+          <p style="font-size:14px;font-weight:600;">
+            ${Number(b.total_price).toLocaleString('da-DK')} kr i alt
+          </p>
+          ${b.message ? `<p style="font-size:13px;color:var(--muted);margin-top:6px;font-style:italic;">"${b.message}"</p>` : ''}
+        </div>
+        <div class="dash-item-actions">
+          <a href="/listing?id=${b.listing_id}" class="dash-action-btn">Se opslag</a>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
 
 // ===== Render my listings (host) =====
 function renderListings(listings) {
