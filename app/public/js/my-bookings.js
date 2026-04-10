@@ -275,12 +275,14 @@ async function loadData(session) {
   const name = session.user.user_metadata?.full_name || session.user.email || '';
   document.getElementById('dashUserName').textContent = name;
 
-  const [bRes, lRes] = await Promise.all([
-    fetch('/api/my-bookings',  { headers: { Authorization: `Bearer ${session.access_token}` } }),
-    fetch('/api/my-listings',  { headers: { Authorization: `Bearer ${session.access_token}` } }),
+  const [bRes, hRes, lRes] = await Promise.all([
+    fetch('/api/my-bookings',    { headers: { Authorization: `Bearer ${session.access_token}` } }),
+    fetch('/api/host-bookings',  { headers: { Authorization: `Bearer ${session.access_token}` } }),
+    fetch('/api/my-listings',    { headers: { Authorization: `Bearer ${session.access_token}` } }),
   ]);
 
   if (bRes.ok) renderBookings(await bRes.json());
+  if (hRes.ok) renderHostBookings(await hRes.json());
   if (lRes.ok) renderListings(await lRes.json());
 }
 
