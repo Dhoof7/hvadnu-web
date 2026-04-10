@@ -30,4 +30,7 @@ drop policy if exists "listings_host_delete" on listings;
 create policy "listings_host_delete" on listings
   for delete using (host_id = auth.uid());
 
+-- 6. Add multiple images support to listings
+alter table listings add column if not exists images text[] default '{}';
+
 -- Done!

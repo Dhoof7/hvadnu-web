@@ -28,8 +28,7 @@ function renderCard(l) {
     ? `background:url('${l.image_url}') center/cover no-repeat`
     : `background:${listingPlaceholderGradient(l.id)}`;
 
-  const amenityIcons = { WiFi: '📶', Parkering: '🅿️', Køkken: '🍳', Vaskemaskine: '🫧', TV: '📺', Aircondition: '❄️' };
-  const topAmenities = (l.amenities || []).slice(0, 3).map(a => `<span class="bk-amenity">${amenityIcons[a] || '✓'} ${a}</span>`).join('');
+  const topAmenities = (l.amenities || []).slice(0, 3).map(a => `<span class="bk-amenity">${a}</span>`).join('');
 
   return `
     <a href="/listing?id=${l.id}" class="bk-card">

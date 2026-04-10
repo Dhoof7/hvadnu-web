@@ -11,7 +11,7 @@ document.body.insertAdjacentHTML('beforeend', `
     <button onclick="closeAuthModal()" style="position:absolute;top:18px;right:22px;background:none;border:none;font-size:24px;cursor:pointer;color:#aaa;line-height:1;">&times;</button>
 
     <div id="authSuccess" style="display:none;text-align:center;padding:20px 0;">
-      <div style="font-size:48px;margin-bottom:16px;">📬</div>
+      <div style="font-size:48px;margin-bottom:16px;line-height:1;">✉</div>
       <h2 style="font-family:'Playfair Display',serif;font-size:22px;color:#1a1a28;margin-bottom:10px;">Tjek din indbakke</h2>
       <p style="color:#6b6b6b;font-size:14px;line-height:1.6;" id="authSuccessMsg"></p>
       <button onclick="closeAuthModal()" style="margin-top:24px;padding:12px 32px;background:#1a1a28;color:#fff;border:none;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">OK</button>
@@ -196,7 +196,7 @@ function showInAppBrowserOverlay() {
   el.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:99999;display:flex;align-items:flex-end;justify-content:center;padding:0 0 32px;';
   el.innerHTML = `
     <div style="background:#fff;border-radius:24px;padding:32px 28px;width:100%;max-width:420px;margin:0 16px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.4);">
-      <div style="font-size:36px;margin-bottom:12px;">🌐</div>
+      <div style="font-size:36px;margin-bottom:12px;line-height:1;color:#0d2247;">&#9679;</div>
       <h3 style="font-size:18px;font-weight:700;color:#1a1a28;margin-bottom:8px;">Åbn i din rigtige browser</h3>
       <p style="font-size:14px;color:#6b6b6b;margin-bottom:20px;line-height:1.5;">Google tillader ikke login i denne in-app browser.<br>${hint}</p>
       <div style="background:#f5f5f5;border-radius:12px;padding:12px 16px;font-size:13px;color:#555;word-break:break-all;margin-bottom:16px;">${url}</div>

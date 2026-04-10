@@ -492,12 +492,13 @@ app.get('/api/listings/:id', async (req, res) => {
 app.post('/api/listings', bookingLimiter, async (req, res) => {
   const token = extractToken(req);
   if (!token) return res.status(401).json({ error: 'Login krævet' });
-  const { title, description, city, address, price_per_night, max_guests, amenities, image_url } = req.body;
+  const { title, description, city, address, price_per_night, max_guests, amenities, image_url, images } = req.body;
   if (!title || !city || !price_per_night) return res.status(400).json({ error: 'Titel, by og pris er påkrævet' });
   const price = parseFloat(price_per_night);
   if (isNaN(price) || price <= 0) return res.status(400).json({ error: 'Ugyldig pris' });
   const userId = await getUserId(token);
   if (!userId) return res.status(401).json({ error: 'Ugyldig session' });
+  const imgArray = Array.isArray(images) ? images.filter(Boolean).slice(0, 20) : (image_url ? [String(image_url).slice(0, 500)] : []);
   try {
     const r = await fetch(`${SUPABASE_URL}/rest/v1/listings`, {
       method: 'POST',
@@ -511,7 +512,8 @@ app.post('/api/listings', bookingLimiter, async (req, res) => {
         price_per_night: price,
         max_guests: Math.max(1, Math.min(20, parseInt(max_guests) || 2)),
         amenities: Array.isArray(amenities) ? amenities.slice(0, 20) : [],
-        image_url: String(image_url || '').slice(0, 500) || null,
+        image_url: imgArray[0] || null,
+        images: imgArray,
         active: true,
       }),
     });
@@ -778,7 +780,7 @@ app.patch('/api/listings/:id/edit', bookingLimiter, async (req, res) => {
   if (!token) return res.status(401).json({ error: 'Login krævet' });
   const userId = await getUserId(token);
   if (!userId) return res.status(401).json({ error: 'Ugyldig session' });
-  const { title, description, city, address, price_per_night, max_guests, amenities, image_url } = req.body;
+  const { title, description, city, address, price_per_night, max_guests, amenities, image_url, images } = req.body;
   if (!title || !city || !price_per_night) return res.status(400).json({ error: 'Titel, by og pris er påkrævet' });
   const price = parseFloat(price_per_night);
   if (isNaN(price) || price <= 0) return res.status(400).json({ error: 'Ugyldig pris' });
@@ -788,6 +790,7 @@ app.patch('/api/listings/:id/edit', bookingLimiter, async (req, res) => {
     const rows = await chk.json();
     if (!Array.isArray(rows) || !rows.length) return res.status(404).json({ error: 'Opslag ikke fundet' });
 
+    const imgArray = Array.isArray(images) ? images.filter(Boolean).slice(0, 20) : (image_url ? [String(image_url).slice(0, 500)] : []);
     const r = await fetch(`${SUPABASE_URL}/rest/v1/listings?id=eq.${req.params.id}`, {
       method: 'PATCH',
       headers: { ...sbServiceHeaders(), Prefer: 'return=representation' },
@@ -799,7 +802,8 @@ app.patch('/api/listings/:id/edit', bookingLimiter, async (req, res) => {
         price_per_night: price,
         max_guests:      Math.max(1, Math.min(20, parseInt(max_guests) || 2)),
         amenities:       Array.isArray(amenities) ? amenities.slice(0, 20) : [],
-        image_url:       String(image_url || '').slice(0, 500) || null,
+        image_url:       imgArray[0] || null,
+        images:          imgArray,
       }),
     });
     const data = await r.json();

@@ -154,19 +154,47 @@ async function loadListing() {
   }
 }
 
-function renderListing(l, unavailable) {
-  // Hero
-  const hero = document.getElementById('lstHero');
-  if (l.image_url) {
-    hero.style.backgroundImage = `url('${l.image_url}')`;
-    hero.style.backgroundSize = 'cover';
-    hero.style.backgroundPosition = 'center';
-  } else {
-    const colors = ['#0d2247,#1a3a6e','#1a237e,#283593','#37474f,#546e7a'];
-    let hash = 0; for (const c of l.id) hash = (hash * 31 + c.charCodeAt(0)) & 0xffffffff;
-    const [a, b] = colors[Math.abs(hash) % colors.length].split(',');
-    hero.style.background = `linear-gradient(135deg, ${a} 0%, ${b} 100%)`;
+function placeholderBg(id) {
+  const colors = ['#0d2247,#1a3a6e','#1a237e,#283593','#37474f,#546e7a'];
+  let hash = 0; for (const c of (id || 'x')) hash = (hash * 31 + c.charCodeAt(0)) & 0xffffffff;
+  const [a, b] = colors[Math.abs(hash) % colors.length].split(',');
+  return `linear-gradient(135deg, ${a} 0%, ${b} 100%)`;
+}
+
+function renderGallery(l) {
+  const imgs = (l.images && l.images.length) ? l.images : (l.image_url ? [l.image_url] : []);
+  const main  = document.getElementById('lstGalleryMain');
+  const thumbs = document.getElementById('lstGalleryThumbs');
+
+  if (!imgs.length) {
+    main.style.background = placeholderBg(l.id);
+    thumbs.style.display = 'none';
+    return;
   }
+
+  const setMain = (url) => {
+    main.style.backgroundImage = `url('${url}')`;
+    main.style.backgroundSize = 'cover';
+    main.style.backgroundPosition = 'center';
+    thumbs.querySelectorAll('.lst-thumb').forEach(t => t.classList.toggle('active', t.dataset.url === url));
+  };
+
+  setMain(imgs[0]);
+
+  if (imgs.length > 1) {
+    thumbs.innerHTML = imgs.map((url, i) =>
+      `<div class="lst-thumb${i === 0 ? ' active' : ''}" data-url="${url}" style="background:url('${url}') center/cover;"></div>`
+    ).join('');
+    thumbs.querySelectorAll('.lst-thumb').forEach(t => {
+      t.onclick = () => setMain(t.dataset.url);
+    });
+  } else {
+    thumbs.style.display = 'none';
+  }
+}
+
+function renderListing(l, unavailable) {
+  renderGallery(l);
 
   // Info
   document.getElementById('lstCity').textContent = l.city.charAt(0).toUpperCase() + l.city.slice(1);

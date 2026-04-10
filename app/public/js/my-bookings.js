@@ -268,9 +268,20 @@ function openEditModal(l) {
   document.getElementById('eDescInput').value      = l.description || '';
   document.getElementById('ePriceInput').value     = l.price_per_night || '';
   document.getElementById('eMaxGuestsInput').value = l.max_guests || 2;
-  document.getElementById('eImageInput').value     = l.image_url || '';
+  document.getElementById('eImageInput').value     = '';
   document.getElementById('eImageFile').value      = '';
   document.getElementById('editMsg').textContent   = '';
+
+  // Show existing images as thumbnails
+  const existing = document.getElementById('eExistingImages');
+  const imgs = l.images && l.images.length ? l.images : (l.image_url ? [l.image_url] : []);
+  existing.dataset.images = JSON.stringify(imgs);
+  existing.innerHTML = imgs.length
+    ? `<div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Nuværende billeder (${imgs.length})</div>
+       <div style="display:flex;gap:8px;flex-wrap:wrap;">${imgs.map(url => `<img src="${url}" style="width:72px;height:56px;object-fit:cover;border-radius:8px;border:1.5px solid var(--border);">`).join('')}</div>
+       <p style="font-size:12px;color:var(--muted);margin-top:6px;">Upload nye billeder for at erstatte dem.</p>`
+    : '';
+
   // Set amenity checkboxes
   document.querySelectorAll('#eAmenities input').forEach(cb => {
     cb.checked = Array.isArray(l.amenities) && l.amenities.includes(cb.value);
@@ -286,14 +297,28 @@ function closeEditModal() {
 }
 window.closeEditModal = closeEditModal;
 
-async function uploadImageFile(file) {
-  const { data: { session } } = await _sb.auth.getSession();
+async function uploadImageFile(file, session) {
   if (!session || !file) return null;
   const ext  = file.name.split('.').pop();
-  const path = `${session.user.id}/${Date.now()}.${ext}`;
+  const path = `${session.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
   const { data, error } = await _sb.storage.from('listings').upload(path, file, { upsert: true });
   if (error) throw new Error(error.message);
   return _sb.storage.from('listings').getPublicUrl(data.path).data.publicUrl;
+}
+
+// Multi-image manager: returns array of URLs (upload files + keep existing URLs)
+async function collectImages(fileInputId, urlInputId, session) {
+  const urls = [];
+  const urlVal = document.getElementById(urlInputId)?.value.trim();
+  if (urlVal) urls.push(urlVal);
+  const fileInput = document.getElementById(fileInputId);
+  if (fileInput?.files) {
+    for (const file of fileInput.files) {
+      const url = await uploadImageFile(file, session);
+      if (url) urls.push(url);
+    }
+  }
+  return urls;
 }
 
 async function saveEdit() {
@@ -313,11 +338,14 @@ async function saveEdit() {
   try {
     const { data: { session } } = await _sb.auth.getSession();
 
-    let image_url = document.getElementById('eImageInput').value.trim() || null;
-    const fileInput = document.getElementById('eImageFile');
-    if (fileInput.files[0]) {
-      try { image_url = await uploadImageFile(fileInput.files[0]); }
-      catch (e) { msg.textContent = 'Billede upload fejlede: ' + e.message; msg.className = 'lst-book-msg error'; btn.disabled = false; btn.textContent = 'Gem ændringer'; return; }
+    let images;
+    try { images = await collectImages('eImageFile', 'eImageInput', session); }
+    catch (e) { msg.textContent = 'Billede upload fejlede: ' + e.message; msg.className = 'lst-book-msg error'; btn.disabled = false; btn.textContent = 'Gem ændringer'; return; }
+
+    // Preserve existing images if no new ones provided
+    if (!images.length) {
+      const existing = document.getElementById('eExistingImages');
+      if (existing) images = JSON.parse(existing.dataset.images || '[]');
     }
 
     const amenities = [...document.querySelectorAll('#eAmenities input:checked')].map(i => i.value);
@@ -330,7 +358,7 @@ async function saveEdit() {
         address:     document.getElementById('eAddressInput').value.trim(),
         description: document.getElementById('eDescInput').value.trim(),
         max_guests:  parseInt(document.getElementById('eMaxGuestsInput').value) || 2,
-        amenities, image_url,
+        amenities, images,
       }),
     });
 
@@ -373,12 +401,9 @@ async function createListing() {
     const { data: { session } } = await _sb.auth.getSession();
     if (!session) { openAuthModal('login'); btn.disabled = false; btn.textContent = 'Opret opslag'; return; }
 
-    let image_url = document.getElementById('cfImage').value.trim() || null;
-    const fileInput = document.getElementById('cfImageFile');
-    if (fileInput.files[0]) {
-      try { image_url = await uploadImageFile(fileInput.files[0]); }
-      catch (e) { msg.textContent = 'Billede upload fejlede: ' + e.message; msg.className = 'lst-book-msg error'; btn.disabled = false; btn.textContent = 'Opret opslag'; return; }
-    }
+    let images;
+    try { images = await collectImages('cfImageFile', 'cfImage', session); }
+    catch (e) { msg.textContent = 'Billede upload fejlede: ' + e.message; msg.className = 'lst-book-msg error'; btn.disabled = false; btn.textContent = 'Opret opslag'; return; }
 
     const amenities = [...document.querySelectorAll('.cf-amenities input:checked')].map(i => i.value);
 
@@ -391,7 +416,7 @@ async function createListing() {
         description:     document.getElementById('cfDesc').value.trim(),
         price_per_night: price,
         max_guests:      parseInt(document.getElementById('cfMaxGuests').value) || 2,
-        image_url, amenities,
+        images, amenities,
       }),
     });
 
