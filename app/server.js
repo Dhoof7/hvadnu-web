@@ -757,6 +757,12 @@ app.delete('/api/listings/:id', bookingLimiter, async (req, res) => {
     const rows = await chk.json();
     if (!Array.isArray(rows) || !rows.length) return res.status(404).json({ error: 'Opslag ikke fundet' });
 
+    // Delete bookings first (foreign key on delete restrict blocks listing delete)
+    await fetch(`${SUPABASE_URL}/rest/v1/bookings?listing_id=eq.${req.params.id}`, {
+      method: 'DELETE',
+      headers: sbServiceHeaders(),
+    });
+
     const r = await fetch(`${SUPABASE_URL}/rest/v1/listings?id=eq.${req.params.id}`, {
       method: 'DELETE',
       headers: sbServiceHeaders(),
