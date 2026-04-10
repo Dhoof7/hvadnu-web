@@ -57,6 +57,8 @@ button { font-family: var(--sans); cursor: pointer; }
 .nav-links { display: flex; gap: 28px; }
 .nav-links a { color: rgba(0,0,0,.6); font-size: 14px; transition: color .2s; }
 .nav-links a:hover { color: #000; }
+.nav-booking-btn { background: #e8621a; color: #fff !important; padding: 8px 18px; border-radius: 20px; font-weight: 600; transition: background .15s !important; }
+.nav-booking-btn:hover { background: #cf5515 !important; color: #fff !important; }
 .nav-back-btn { color: rgba(0,0,0,.6); font-size: 14px; font-weight: 500; transition: color .2s; margin-left: auto; }
 .nav-back-btn:hover { color: #000; }
 .nav-auth-btn {
