@@ -299,24 +299,24 @@ window.closeEditModal = closeEditModal;
 // ===== Dynamic image slots =====
 function addImageSlot(listId) {
   const list = document.getElementById(listId);
-  const idx  = list.children.length;
   const slot = document.createElement('div');
   slot.className = 'img-slot';
   slot.innerHTML = `
     <div class="img-slot-row">
-      <input type="file" accept="image/*" class="cf-input img-slot-file" style="flex:1;padding:8px 12px;" data-idx="${idx}">
-      <span style="padding:0 8px;color:var(--muted);font-size:13px;">eller</span>
-      <input type="url" class="cf-input img-slot-url" placeholder="Billede URL" style="flex:1;" data-idx="${idx}">
-      <button type="button" onclick="this.closest('.img-slot').remove()" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);padding:0 6px;flex-shrink:0;">&times;</button>
+      <label class="img-slot-pick">
+        <input type="file" accept="image/*" class="img-slot-file" style="display:none;">
+        <span class="img-slot-pick-label">Vælg billede</span>
+      </label>
+      <button type="button" class="img-slot-remove" onclick="this.closest('.img-slot').remove()">&times;</button>
     </div>
-    <div class="img-slot-preview" data-idx="${idx}"></div>
+    <div class="img-slot-preview"></div>
   `;
-  // Show preview on file select
   slot.querySelector('.img-slot-file').addEventListener('change', function() {
     const preview = slot.querySelector('.img-slot-preview');
+    const label   = slot.querySelector('.img-slot-pick-label');
     if (this.files[0]) {
-      const url = URL.createObjectURL(this.files[0]);
-      preview.innerHTML = `<img src="${url}" style="height:70px;border-radius:8px;margin-top:6px;object-fit:cover;">`;
+      label.textContent = this.files[0].name;
+      preview.innerHTML = `<img src="${URL.createObjectURL(this.files[0])}">`;
     }
   });
   list.appendChild(slot);
@@ -339,12 +339,9 @@ async function collectImages(listId, session) {
   if (!list) return urls;
   for (const slot of list.querySelectorAll('.img-slot')) {
     const fileInput = slot.querySelector('.img-slot-file');
-    const urlInput  = slot.querySelector('.img-slot-url');
     if (fileInput?.files[0]) {
       const url = await uploadImageFile(fileInput.files[0], session);
       if (url) urls.push(url);
-    } else if (urlInput?.value.trim()) {
-      urls.push(urlInput.value.trim());
     }
   }
   return urls;
@@ -440,7 +437,7 @@ async function createListing() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
       body: JSON.stringify({
-        title, city: city.toLowerCase(),
+        title, city,
         address:         document.getElementById('cfAddress').value.trim(),
         description:     document.getElementById('cfDesc').value.trim(),
         price_per_night: price,
@@ -477,8 +474,23 @@ async function createListing() {
 }
 window.createListing = createListing;
 
+// ===== Load cities into dropdowns =====
+async function loadCities() {
+  try {
+    const res = await fetch('/api/cities');
+    if (!res.ok) return;
+    const cities = await res.json();
+    const opts = cities.map(c => `<option value="${c.value}">${c.label}</option>`).join('');
+    ['cfCity', 'eCityInput'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = '<option value="">Vælg by...</option>' + opts;
+    });
+  } catch {}
+}
+
 // ===== Init =====
 async function initDashboard() {
+  loadCities();
   const { data: { session } } = await _sb.auth.getSession();
   if (!session) {
     document.getElementById('notLoggedIn').style.display = 'block';
