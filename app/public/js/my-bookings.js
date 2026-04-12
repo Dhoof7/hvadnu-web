@@ -268,8 +268,7 @@ function openEditModal(l) {
   document.getElementById('eDescInput').value      = l.description || '';
   document.getElementById('ePriceInput').value     = l.price_per_night || '';
   document.getElementById('eMaxGuestsInput').value = l.max_guests || 2;
-  document.getElementById('eImageInput').value     = '';
-  document.getElementById('eImageFile').value      = '';
+  document.getElementById('eImageList').innerHTML  = '';
   document.getElementById('editMsg').textContent   = '';
 
   // Show existing images as thumbnails
