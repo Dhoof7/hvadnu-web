@@ -1023,8 +1023,10 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   .bk-grid { grid-template-columns: 1fr 1fr; }
   .bk-hero { padding: 60px 24px 48px; }
   .lst-body { grid-template-columns: 1fr; padding: 24px; gap: 24px; }
-  .lst-booking-card { position: static; }
+  .lst-booking-card { position: static; order: -1; }
   .cal-months { flex-direction: column; }
+  .cal-grid { grid-template-columns: repeat(7, 1fr); }
+  .cal-d, .cal-dn { width: auto; }
   .cal-wrap { overflow-x: auto; }
   .dash-header, .dash-tabs-wrap { padding-left: 24px; padding-right: 24px; }
   .dash-panel { padding: 24px; }
@@ -1042,6 +1044,4 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   .lst-body { padding: 16px 16px 60px; gap: 16px; }
   .lst-booking-card { padding: 20px 16px; border-radius: 16px; }
   .guest-name-row { grid-template-columns: 1fr; }
-  .cal-grid { grid-template-columns: repeat(7, 1fr); }
-  .cal-d, .cal-dn { width: auto; height: 34px; }
 }

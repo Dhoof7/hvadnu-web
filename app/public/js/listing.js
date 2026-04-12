@@ -55,14 +55,16 @@ class DateRangePicker {
   }
 
   render() {
+    const isMobile = window.innerWidth < 700;
     const y2 = this.viewMonth === 11 ? this.viewYear + 1 : this.viewYear;
     const m2 = (this.viewMonth + 1) % 12;
+    const secondMonth = isMobile ? '' : this.renderMonth(y2, m2);
 
     this.el.innerHTML = `
       <div class="cal-wrap">
         <div class="cal-nav-row">
           <button class="cal-btn" id="calPrev">‹</button>
-          <div class="cal-months">${this.renderMonth(this.viewYear, this.viewMonth)}${this.renderMonth(y2, m2)}</div>
+          <div class="cal-months">${this.renderMonth(this.viewYear, this.viewMonth)}${secondMonth}</div>
           <button class="cal-btn" id="calNext">›</button>
         </div>
         <p class="cal-hint">
