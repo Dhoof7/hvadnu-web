@@ -1041,7 +1041,9 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   .dash-item-actions { flex-direction: row; padding: 0 16px 16px; }
   .bk-host-cta { padding: 40px 24px; border-radius: 16px; }
   .lst-gallery-main { height: 260px; }
-  .lst-body { padding: 16px 16px 60px; gap: 16px; }
+  .lst-body { padding: 16px 16px 80px; gap: 16px; }
   .lst-booking-card { padding: 20px 16px; border-radius: 16px; }
   .guest-name-row { grid-template-columns: 1fr; }
+  #bookBtn { display: block !important; }
+  #loginPrompt { display: none !important; }
 }

@@ -277,7 +277,12 @@ async function submitBooking() {
   const btn = document.getElementById('bookBtn');
   const msg = document.getElementById('bookMsg');
   const sel = picker.getSelection();
-  if (!sel) { msg.textContent = 'Vælg datoer først.'; msg.className = 'lst-book-msg error'; return; }
+  if (!sel) {
+    msg.textContent = 'Vælg datoer først.';
+    msg.className = 'lst-book-msg error';
+    msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
 
   const guests         = parseInt(document.getElementById('guestsInput').value) || 1;
   const guest_first_name = document.getElementById('guestFirstName').value.trim();
