@@ -209,10 +209,14 @@ function showInAppBrowserOverlay() {
 
 async function signInWithGoogle() {
   const ua = navigator.userAgent || '';
-  const isInAppBrowser = /FBAN|FBAV|Instagram|Twitter\/|Line\/|Pinterest|Snapchat|TikTok|Musical\.ly|GSA\//.test(ua)
-    || (ua.includes('wv') && /Android/.test(ua));
+  // Known in-app browser identifiers
+  const knownInApp = /FBAN|FBAV|Instagram|Twitter\/|Line\/|Pinterest|Snapchat|TikTok|Musical\.ly|GSA\/|MicroMessenger|WhatsApp|Telegram|Reddit|Discord|LinkedInApp|BytedanceWebview/.test(ua);
+  // Android WebView (has 'wv' flag or Version/x before Chrome)
+  const androidWebView = /Android/.test(ua) && (ua.includes('; wv)') || ua.includes(';wv)') || (/Version\/\d/.test(ua) && /Chrome\//.test(ua)));
+  // iOS WKWebView: has AppleWebKit + iPhone/iPad but NOT Safari/, CriOS/, FxiOS/
+  const iosWebView = /iPhone|iPad/.test(ua) && /AppleWebKit/.test(ua) && !/Safari\//.test(ua) && !/CriOS\//.test(ua) && !/FxiOS\//.test(ua);
 
-  if (isInAppBrowser) {
+  if (knownInApp || androidWebView || iosWebView) {
     showInAppBrowserOverlay();
     return;
   }
