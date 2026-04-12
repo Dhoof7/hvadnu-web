@@ -376,6 +376,13 @@ async function updateNavAuth() {
   const { data: { session } } = await _sb.auth.getSession();
   wrap.innerHTML = '';
 
+  // Mobile-only booking link
+  const bookingLink = document.createElement('a');
+  bookingLink.href = '/booking';
+  bookingLink.textContent = 'Booking';
+  bookingLink.className = 'nav-mobile-booking';
+  wrap.appendChild(bookingLink);
+
   if (session) {
     const meta = session.user.user_metadata || {};
     const name = meta.first_name || (meta.full_name ? meta.full_name.split(' ')[0] : null) || session.user.email.split('@')[0];

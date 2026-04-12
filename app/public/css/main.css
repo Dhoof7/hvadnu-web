@@ -31,6 +31,7 @@ button { font-family: var(--sans); cursor: pointer; }
 #navAuthWrap { display: flex; align-items: center; gap: 10px; min-width: 0; flex-shrink: 1; overflow: hidden; }
 #navAuthWrap .nav-desktop { display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,.04); border: 1px solid rgba(0,0,0,.1); border-radius: 40px; padding: 6px 6px 6px 18px; }
 #navAuthWrap .nav-mobile-btn { display: none; position: relative; }
+.nav-mobile-booking { display: none; }
 .nav-dropdown {
   display: none; position: fixed; top: 60px; right: 16px;
   background: #1a1a28; border: 1px solid rgba(255,255,255,.15);
@@ -793,6 +794,7 @@ h1, h2, h3 { font-family: var(--serif); line-height: 1.1; letter-spacing: -.01em
   .lang-toggle { font-size: 13px; padding: 6px 10px; }
   #navAuthWrap .nav-desktop { display: none; }
   #navAuthWrap .nav-mobile-btn { display: block; }
+  .nav-mobile-booking { display: block; color: #0d2247; font-size: 14px; font-weight: 600; text-decoration: none; padding: 6px 2px; }
   .nav-dropdown { top: 56px; }
 
   /* Prevent iOS zoom on input focus */
